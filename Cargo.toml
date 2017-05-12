@@ -1,0 +1,45 @@
+[package]
+name = "thinline"
+version = "0.1.0"
+authors = ["Sebastian Spiess <spiess.sebastian@web.de>"]
+
+readme = "README.md"
+license = "Apache-2.0"
+
+description = "A parser and builder for function-unittests written in comment sections for C-language family."
+
+[lib]
+name = "thinlinelib"
+
+[features]
+
+runtime = ["clang-sys/runtime"]
+static = ["clang-sys/static"]
+
+clang_3_5 = ["clang-sys/clang_3_5"]
+clang_3_6 = ["clang-sys/clang_3_6", "gte_clang_3_6"]
+clang_3_7 = ["clang-sys/clang_3_7", "gte_clang_3_6", "gte_clang_3_7"]
+clang_3_8 = ["clang-sys/clang_3_8", "gte_clang_3_6", "gte_clang_3_7", "gte_clang_3_8"]
+clang_3_9 = ["clang-sys/clang_3_9", "gte_clang_3_6", "gte_clang_3_7", "gte_clang_3_8", "gte_clang_3_9"]
+clang_4_0 = ["clang-sys/clang_4_0", "gte_clang_3_6", "gte_clang_3_7", "gte_clang_3_8", "gte_clang_3_9", "gte_clang_4_0"]
+
+gte_clang_3_6 = []
+gte_clang_3_7 = []
+gte_clang_3_8 = []
+gte_clang_3_9 = []
+gte_clang_4_0 = []
+
+[dependencies]
+clang = "0"
+clang-sys = "0"
+clap = { version = "2", features = ["yaml"] }
+clippy = {version = "*", optional = true}
+error-chain = "0"
+glob = "0"
+lazy_static = "0"
+log = "0"
+mowl = "1"
+regex = "0"
+walkdir = "1"
+xdg = "2"
+yaml-rust = "0"

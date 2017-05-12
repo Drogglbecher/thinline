@@ -1,0 +1,10 @@
+---
+test_env: ctest
+build_script:
+  linux:
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+libs:
+  - build/libtest.so

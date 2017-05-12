@@ -1,0 +1,23 @@
+---
+test_env: google_test
+src_dirs:
+  - src
+  - include
+include_dirs:
+  - include
+build_script:
+  linux:
+    - mkdir build
+    - cmake -Bbuild -H.
+    - make -C build
+libs:
+  - build/libc_example.so
+tlg:
+  prefix: |
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+  suffix: |
+    #ifdef __cplusplus
+    }
+    #endif

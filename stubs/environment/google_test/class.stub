@@ -1,0 +1,18 @@
+class //#TEST_CLASS#/Test : public ::testing::Test {
+
+    public:
+        //#TEST_CLASS#/Test() {//#CONSTRUCTOR_CONTEXT#/
+        }
+
+        virtual ~//#TEST_CLASS#/Test() {//#DESTRUCTOR_CONTEXT#/
+        }
+
+    protected:
+        virtual void SetUp() {//#SET_UP_CONTEXT#/
+        }
+
+        virtual void TearDown() {//#TEAR_DOWN_CONTEXT#/
+        }
+
+//#CLASS_CONTEXT#/
+};

@@ -1,0 +1,34 @@
+---
+name: thinline
+author: Sebastian Spiess
+about: Generates and executes unittest written in comment sections for C-languge-family
+after_help: 'More info at https://github.com/drogglbecher/thinline'
+global_settings:
+  - VersionlessSubcommands
+  - ColoredHelp
+
+args:
+  - SOURCE-DIR:
+      help: The directory where the sources for test-extraction are located
+      required: true
+      index: 1
+  - build:
+      help: Executes the build script steps given in the project thinline setting file.
+      short: b
+      long: build
+  - dry_run:
+      help: Creates only the test files in the projects .thinline folder without
+            exexcuting them.
+      short: d
+      long: dry-run
+  - project_config:
+      help: The name of the yaml file where the C/C++ project parameters for
+            thinline are stored. This file has to be at <SOURCE-DIR>.
+      long: project-config
+      short: p
+      default_value: .thinline.yml
+      value_name: YAML_FILE
+  - verbose:
+      help: Set the verbosity level (`v` -> DEBUG, `vv` -> TRACE)
+      short: v
+      multiple: true

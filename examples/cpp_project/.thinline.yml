@@ -1,0 +1,24 @@
+---
+test_env: google_test
+src_dirs:
+  - src
+  - include
+include_dirs:
+  - include
+build_script:
+  linux:
+    - mkdir build
+    - cmake -Bbuild -H.
+    - make -C build
+libs:
+  - build/libcpp_example.so
+language_features:
+  cpp:
+    blacklist_namespaces:
+      - std
+      - __gnu_cxx
+      - __cxxabiv1
+      - __gnu_debug
+    whitelist_classes:
+      - c1
+      - c2
