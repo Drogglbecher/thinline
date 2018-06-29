@@ -1,6 +1,6 @@
-use std::io;
-use glob;
 use clang::SourceError;
+use glob;
+use std::io;
 
 error_chain! {
     foreign_links {

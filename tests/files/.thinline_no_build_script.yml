@@ -1,7 +1,0 @@
----
-test_env: ctest
-include_dirs:
-  - include
-  - src
-libs:
-  - build/libtest.so
