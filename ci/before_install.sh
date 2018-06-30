@@ -2,7 +2,7 @@ set -e
 
 function llvm_download() {
     # Get the sources
-    wget http://releases.llvm.org/${LLVM_VERSION}/llvm-${LLVM_VERSION}.tar.xz
+    wget http://releases.llvm.org/${LLVM_VERSION}/llvm-${LLVM_VERSION}.src.tar.xz
     mkdir llvm-${LLVM_VERSION}
     tar xf llvm-${LLVM_VERSION}.tar.xz -C llvm-${LLVM_VERSION} --strip-components=1
 
