@@ -1,3 +1,2 @@
 #[derive(Default)]
-pub struct Synthesis {
-}
+pub struct Synthesis {}
