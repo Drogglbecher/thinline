@@ -38,11 +38,11 @@ impl Anaylsis for AnaylsisC {
         self.project_files.borrow_mut()
     }
 
-    fn extract_entities(&mut self) -> Result<()> {
+    fn extract_entities(&self) -> Result<()> {
         match Clang::new() {
             Ok(clang) => {
                 let index = Index::new(&clang, false, false);
-                for project_file in self.project_files().clone().iter() {
+                for project_file in self.project_files().iter() {
                     self.filter_for_functions(
                         &index.parser(&project_file).parse()?.get_entity(),
                     )?;

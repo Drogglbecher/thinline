@@ -14,10 +14,6 @@ pub trait Anaylsis {
     /// Returns the collected project files for anaylsis.
     fn project_files(&self) -> RefMut<Vec<PathBuf>>;
 
-    fn append_project_file(&self, file: PathBuf) {
-        self.project_files().push(file);
-    }
-
     /// Collect all the sources within the given project dir.
     fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[&str]) -> Result<()> {
         // Check the given project directory
@@ -37,7 +33,7 @@ pub trait Anaylsis {
             for ext in file_types {
                 let src_paths = project_dir.join(src_dir).join("**").join(ext);
                 for entry in glob(src_paths.to_str().unwrap_or("."))? {
-                    self.append_project_file(entry?);
+                    self.project_files().push(entry?);
                 }
             }
         }
@@ -46,5 +42,5 @@ pub trait Anaylsis {
     }
 
     /// Extracts function signatures and comments of thinlines parsed files.
-    fn extract_entities(&mut self) -> Result<()>;
+    fn extract_entities(&self) -> Result<()>;
 }
