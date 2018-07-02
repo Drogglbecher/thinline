@@ -1,6 +1,7 @@
 use analysis::Anaylsis;
 use clang::{Clang, Entity, EntityKind, Index};
 use error::*;
+use function::Function;
 use std::cell::{RefCell, RefMut};
 use std::path::PathBuf;
 
@@ -64,15 +65,23 @@ impl AnaylsisC {
 
             // Search for methods and constructors outside the system headers
             if !child.is_in_system_header() && C_ENTITYKIND_CHECKS.contains(&child_kind) {
-                let fct_type = unwrap_or_continue!(child.get_type()).get_display_name();
-                let fct_name = unwrap_or_continue!(child.get_name());
-                let fct_desc = unwrap_or_continue!(child.get_comment());
+                let function_type = unwrap_or_continue!(child.get_type()).get_display_name();
+                let function_name = unwrap_or_continue!(child.get_name());
+                let function_desc = unwrap_or_continue!(child.get_comment());
+                let function_args = unwrap_or_continue!(child.get_arguments());
 
                 println!(
-                    "Function '{}' with type '{}' and comment '\n{}'",
-                    fct_name,
-                    fct_type,
-                    fct_desc
+                    "Create child '{}' with type '{}'",
+                    function_name,
+                    function_type
+                );
+
+                let mut function = Function::new(
+                    child.get_semantic_parent().and_then(|sp| sp.get_name()),
+                    function_name,
+                    Function::format_type(function_type.as_str())?,
+                    Function::format_arguments(&function_args)?,
+                    Function::format_description(function_desc.as_str())?,
                 );
             }
         }

@@ -12,7 +12,9 @@ extern crate walkdir;
 
 pub mod analysis;
 pub mod analysis_c;
+pub mod argument;
 pub mod error;
+pub mod function;
 pub mod synthesis;
 
 use analysis::Anaylsis;

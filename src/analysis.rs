@@ -28,11 +28,17 @@ pub trait Anaylsis {
 
         // Traverse through the files within the specified source directories
         // and store them for analyzing purposes
-        let file_types = self.file_types();
         for src_dir in search_dirs {
-            for ext in file_types {
-                let src_paths = project_dir.join(src_dir).join("**").join(ext);
-                for entry in glob(src_paths.to_str().unwrap_or("."))? {
+            for ext in self.file_types() {
+                for entry in glob(
+                    project_dir
+                        .join(src_dir)
+                        .join("**")
+                        .join(ext)
+                        .to_str()
+                        .unwrap_or("."),
+                )?
+                {
                     self.project_files().push(entry?);
                 }
             }
