@@ -8,7 +8,7 @@ pub struct Function {
     pub name: String,
     pub ftype: String,
     pub arguments: Vec<Argument>,
-    pub doc_str: Vec<String>,
+    pub description: Vec<String>,
 }
 
 impl<'a> Function {
@@ -18,14 +18,14 @@ impl<'a> Function {
         name: S,
         ftype: &str,
         arguments: Vec<Argument>,
-        doc_str: Vec<String>,
+        description: Vec<String>,
     ) -> Self {
         Function {
             class: class,
             name: name.into(),
             ftype: ftype.into(),
             arguments: arguments,
-            doc_str: doc_str,
+            description: description,
         }
     }
 
