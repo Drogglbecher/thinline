@@ -4,10 +4,9 @@ use thinlinelib::Thinline;
 
 fn main() {
     let mut tl = Thinline::new();
-    match tl.collect_sources("examples/c_project", ".thinline.yml") {
+    match tl.analyze_project("examples/c_project") {
         Ok(_) => {
-            tl.extract_fct_symbols().unwrap();
-            tl.reconstruct_fn().unwrap();
+            println!("Analyzed project successfully.");
         }
         Err(e) => println!("{}", e.to_string()),
     }

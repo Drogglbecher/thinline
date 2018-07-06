@@ -1,4 +1,5 @@
 /// Reprensents a parsed function argument.
+#[derive(Default)]
 pub struct Argument {
     name: String,
     atype: String,
