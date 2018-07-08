@@ -11,27 +11,6 @@ description = "A parser and builder for function-unittests written in comment se
 [lib]
 name = "thinlinelib"
 
-[features]
-
-runtime = ["libloading"]
-static = []
-
-clang_6_0 = ["gte_clang_3_6",
-             "gte_clang_3_7",
-             "gte_clang_3_8",
-             "gte_clang_3_9",
-             "gte_clang_4_0",
-             "gte_clang_5_0",
-             "gte_clang_6_0"]
-
-gte_clang_3_6 = []
-gte_clang_3_7 = []
-gte_clang_3_8 = []
-gte_clang_3_9 = []
-gte_clang_4_0 = []
-gte_clang_5_0 = []
-gte_clang_6_0 = []
-
 [dependencies]
 clang = "0"
 clang-sys = "0"
