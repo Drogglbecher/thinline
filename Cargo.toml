@@ -12,7 +12,7 @@ description = "A parser and builder for function-unittests written in comment se
 name = "thinlinelib"
 
 [dependencies]
-clang = { version = "0", features = ["clang_5_0"] }
+clang = { version = "0", features = ["clang_6_0"] }
 clap = { version = "2", features = ["yaml"] }
 clippy = { version = "*", optional = true }
 error-chain = "0"
