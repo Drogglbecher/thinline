@@ -3,7 +3,7 @@ use clang::{Clang, Index};
 use error::*;
 use project_file::ProjectFile;
 use project_file_c::ProjectFileC;
-use std::cell::{RefCell, RefMut};
+use std::cell::{Ref, RefCell, RefMut};
 
 pub static C_FILE_EXTENSIONS: &[&str] = &["*.c", "*.h"];
 
@@ -13,7 +13,7 @@ pub struct AnalysisC {
     project_files: RefCell<Vec<ProjectFileC>>,
 }
 
-impl Analysis for AnalysisC {
+impl Analysis<ProjectFileC> for AnalysisC {
     fn new() -> Self {
         AnalysisC {
             file_types: C_FILE_EXTENSIONS,
@@ -25,7 +25,11 @@ impl Analysis for AnalysisC {
         self.file_types
     }
 
-    fn project_files(&self) -> RefMut<Vec<ProjectFileC>> {
+    fn project_files(&self) -> Ref<Vec<ProjectFileC>> {
+        self.project_files.borrow()
+    }
+
+    fn project_files_mut(&self) -> RefMut<Vec<ProjectFileC>> {
         self.project_files.borrow_mut()
     }
 

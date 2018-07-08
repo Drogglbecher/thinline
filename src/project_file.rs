@@ -1,7 +1,7 @@
 use clang::Entity;
 use error::*;
 use function::Function;
-use std::cell::RefMut;
+use std::cell::{Ref, RefMut};
 use std::path::PathBuf;
 
 pub trait ProjectFile {
@@ -9,10 +9,12 @@ pub trait ProjectFile {
 
     fn path(&self) -> &PathBuf;
 
-    fn functions(&self) -> RefMut<Vec<Function>>;
+    fn functions(&self) -> Ref<Vec<Function>>;
+
+    fn functions_mut(&self) -> RefMut<Vec<Function>>;
 
     fn add_function(&self, function: Function) {
-        self.functions().push(function);
+        self.functions_mut().push(function);
     }
 
     fn filter_for_functions(&self, entity: &Entity) -> Result<()>;

@@ -2,7 +2,7 @@ use clang::{Entity, EntityKind};
 use error::*;
 use function::Function;
 use project_file::ProjectFile;
-use std::cell::{RefCell, RefMut};
+use std::cell::{Ref, RefCell, RefMut};
 use std::path::PathBuf;
 
 static C_ENTITYKIND_CHECKS: &[EntityKind] = &[EntityKind::FunctionDecl, EntityKind::Method];
@@ -35,7 +35,11 @@ impl ProjectFile for ProjectFileC {
         &self.path
     }
 
-    fn functions(&self) -> RefMut<Vec<Function>> {
+    fn functions(&self) -> Ref<Vec<Function>> {
+        self.functions.borrow()
+    }
+
+    fn functions_mut(&self) -> RefMut<Vec<Function>> {
         self.functions.borrow_mut()
     }
 
@@ -58,13 +62,15 @@ impl ProjectFile for ProjectFileC {
                     function_type
                 );
 
-                let mut function = Function::new(
+                let function = Function::new(
                     child.get_semantic_parent().and_then(|sp| sp.get_name()),
                     function_name,
                     Function::format_type(function_type.as_str())?,
                     Function::format_arguments(&function_args)?,
                     Function::format_description(function_desc.as_str())?,
                 );
+
+                self.functions_mut().push(function);
             }
         }
 
