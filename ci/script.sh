@@ -1,3 +1,7 @@
+if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
+    rvm get head || true
+fi
+
 set -e
 
 export CARGO_TARGET_DIR=`pwd`/target
