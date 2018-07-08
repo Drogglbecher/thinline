@@ -12,14 +12,12 @@ description = "A parser and builder for function-unittests written in comment se
 name = "thinlinelib"
 
 [dependencies]
-clang = "0"
-clang-sys = "0"
+clang = { version = "0.20", features = ["clang_6_0"] }
 clap = { version = "2", features = ["yaml"] }
-clippy = {version = "*", optional = true}
+clippy = { version = "*", optional = true }
 error-chain = "0"
 glob = "0"
 lazy_static = "0"
-libloading = { version = "0.5.0", optional = true }
 log = "0"
 regex = "0"
 slog-envlogger = "2"
