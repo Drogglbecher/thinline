@@ -16,7 +16,9 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
+      - llvm-toolchain-trusty-6.0
     packages:
+      - clang-6.0
       - gcc-8
       - cmake
       - binutils-dev
@@ -37,7 +39,6 @@ cache:
 os:
   - linux
 
-before_install: . ./ci/before_install.sh
 before_script: . ./ci/before_script.sh
 script: . ./ci/script.sh
 after_success: . ./ci/after_success.sh
