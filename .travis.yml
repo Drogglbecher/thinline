@@ -18,6 +18,7 @@ addons:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-trusty-6.0
     packages:
+      - clang-5.0
       - clang-6.0
       - gcc-8
       - cmake

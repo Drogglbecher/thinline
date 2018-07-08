@@ -3,7 +3,6 @@
 </p>
 <p align="center">
 <a href="https://travis-ci.org/Drogglbecher/thinline"><img alt="Travis Status" src="https://travis-ci.org/Drogglbecher/thinline.svg"></a>
-<a href="https://ci.appveyor.com/project/Drogglbecher/thinline"><img alt="Travis Status" src="https://ci.appveyor.com/api/projects/status/r3ldomvr2plv336t?svg=true"></a>
 <a href="https://coveralls.io/github/Drogglbecher/thinline?branch=master"><img alt="Travis Status" src="https://coveralls.io/repos/github/Drogglbecher/thinline/badge.svg?branch=master"></a>
 <a href="https://drogglbecher.github.io/thinline"><img alt="Travis Status" src="https://img.shields.io/badge/master_doc-thinline-blue.svg"></a>
 <a href="https://github.com/Drogglbecher/thinline/blob/master/LICENSE"><img alt="Travis Status" src="https://img.shields.io/badge/license-Apache%202-blue.svg"></a>
@@ -14,7 +13,7 @@
 
 ## Installation
 ### Requirements
-To use *thinline* you need a valid [Rust](https://www.rust-lang.org/en-US/install.html) installation and it's package manager [cargo](https://crates.io/install). Depending on your OS you can install them via the package manager you like the most. Besides this you can use [rustup](https://rustup.rs/) if you want but keep in mind that this can conflict with already existing installations of rust, so uninstall them first. It is also necessary to have a `g++` installed to build your unittest later on (when running *thinline* with `--dry-run` you don't need this since the testfiles are only created). When you want to execute the examples out of the box you should make sure you have `cmake` and `make` and [google test](https://github.com/google/googletest).
+To use *thinline* you need a valid [Rust](https://www.rust-lang.org/en-US/install.html) installation and its package manager [cargo](https://crates.io/install). Depending on your OS you can install them via the package manager you like the most. Besides this you can use [rustup](https://rustup.rs/) if you want but keep in mind that this can conflict with already existing installations of rust, so uninstall them first. It is also necessary to have a `g++` installed to build your unittest later on (when running *thinline* with `--dry-run` you don't need this since the testfiles are only created). When you want to execute the examples out of the box you should make sure you have `cmake` and `make` and [google test](https://github.com/google/googletest).
 
 Besides this *thinline* uses the [rust clang implementation](https://github.com/KyleMayes/clang-rs), so please make sure to also fulfill its [requirements](https://github.com/KyleMayes/clang-sys#dependencies).
 ### Manual installation
