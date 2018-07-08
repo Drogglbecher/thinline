@@ -25,16 +25,14 @@ addons:
 
 env:
   global:
-    - LLVM_VERSION=6.0.0
-    - CLANG_VERSION=6.0.0
     - TRAVIS_CARGO_NIGHTLY_FEATURE=""
     - secure: "P0Ue2XFC+FJhIxAo7mCl5GRlFIRb6oyTdP0yt8fiz2a5cLru9ohomaHzjxTERnvBkMpAeRPRN9HaExgd0/2jkDCy2hGUHyj8U58XBF90mwvIqeg6CnMFQ/YRawQ5vWQ5Q/x4lcY+J6bJzkT9nf+FVY6IOr2gEJiQj1lzWTgmFC4kRbqY5DHwIeiQKPbZj66t5zU4lzo3OaVh7SZhtxYZ8Ccr7kELg90LHUPVmmA453vkEnVk6ZGHPSSKIdi+CAt0VGaF+drquSrOXdDy7/5mHh+J9IiHHe0UCr1fYNuY05iSBiAmTvOXuB4ebfdl/1///qksjG/TesrF6NHEpVoMQzOu1UCB4o7n4B7klzngspxNq0RRvG7Df1D4BYIrk1mZoNDNqkHchZAicyMkmwDQIscIe8IpJupZLt1Vvsgu/2zI/ovpOnkBkvwXjYtipDhtvmI2IwT2BAORcV+/I12kgITlHhRF+GdCPY5uhhNDYmnOYproclenfyKaP0Ojzd/jZtGlULtZsqMSB0XEl6Y84VGHrqZtiHWHYsTc0vAIDYSTjbUFw/ZTWy7peTBgrsqaGWrboevbyTxUxcHzawEbs8Oz0JpZnvPapU9WKFinJYCBNY0HHQIWA8iyzgsatnVDRRji1RInl0o5WGShxr50JIhd0NDk/ZusW2prFifU794="
+  matrix:
+    - LLVM_VERSION=6.0 CLANG_VERSION=clang_6_0
 
 cache:
   cargo: true
   apt: true
-  directories:
-    - $HOME/llvm-${LLVM_VERSION}
 
 os:
   - linux
