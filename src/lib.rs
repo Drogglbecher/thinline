@@ -15,6 +15,7 @@ pub mod analysis_c;
 pub mod argument;
 pub mod error;
 pub mod function;
+pub mod helper;
 pub mod project_file;
 pub mod project_file_c;
 pub mod synthesis;

@@ -7,15 +7,6 @@ use std::path::PathBuf;
 
 static C_ENTITYKIND_CHECKS: &[EntityKind] = &[EntityKind::FunctionDecl, EntityKind::Method];
 
-macro_rules! unwrap_or_continue {
-    ($e:expr) => {
-        match $e {
-            Some(e) => e,
-            None => continue,
-        }
-    };
-}
-
 /// Reprensents a parsed project fike.
 #[derive(Default)]
 pub struct ProjectFileC {
@@ -70,7 +61,7 @@ impl ProjectFile for ProjectFileC {
                     Function::format_description(function_desc.as_str())?,
                 );
 
-                self.functions_mut().push(function);
+                self.add_function(function);
             }
         }
 
