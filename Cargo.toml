@@ -26,7 +26,7 @@ gte_clang_5_0 = []
 gte_clang_6_0 = []
 
 [dependencies]
-clang = version = "0"
+clang = "0"
 clang-sys = "0"
 clap = { version = "2", features = ["yaml"] }
 clippy = { version = "*", optional = true }
