@@ -12,7 +12,7 @@ function llvm_download() {
     if [ -d "${LLVM_DIRECTORY}" ]; then
         echo "Using cached LLVM download for ${LLVM}..."
     else
-        wget http://llvm.org/releases/${LLVM_VERSION_TRIPLE}/${LLVM}.tar.xz
+        wget http://llvm.org/releases/${LLVM_VERSION_TRIPLE}/${LLVM}.tar.xz --debug --verbose
         mkdir llvm
         tar xf ${LLVM}.tar.xz -C "${LLVM_DIRECTORY}" --strip-components=1
     fi
