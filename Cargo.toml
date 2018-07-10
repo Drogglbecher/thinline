@@ -3,6 +3,7 @@ name = "thinline"
 version = "0.1.0"
 authors = ["Sebastian Spiess <spiess.sebastian@web.de>"]
 
+repository = "https://github.com/Drogglbecher/thinline"
 readme = "README.md"
 license = "Apache-2.0"
 
