@@ -33,7 +33,6 @@ cache:
   cargo: true
   apt: true
   directories:
-    - $HOME/.cargo
     - $HOME/.llvm
 
 os:
