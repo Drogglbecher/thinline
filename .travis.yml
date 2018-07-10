@@ -38,7 +38,6 @@ cache:
 
 os:
   - linux
-  - osx
 
 before_install: . ./ci/before_install.sh
 before_script: . ./ci/before_script.sh
