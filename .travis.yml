@@ -30,7 +30,6 @@ env:
     - LLVM_VERSION=6.0 CLANG_VERSION=clang_6_0
 
 cache:
-  cargo: true
   apt: true
   directories:
     - $HOME/.llvm
