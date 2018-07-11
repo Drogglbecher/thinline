@@ -6,6 +6,7 @@ rust:
   - beta
   - nightly
 
+sudo: required
 dist: trusty
 
 matrix:
