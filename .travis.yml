@@ -18,11 +18,8 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - cmake
-      - libcurl4-openssl-dev
-      - libiberty-dev
-      - libelf-dev
-      - libdw-dev
-      - binutils-dev
+      - libssl-dev
+      - zlib1g-dev
 
 env:
   global:
@@ -43,10 +40,9 @@ os:
 before_install: . ./ci/install.sh
 
 before_script:
-  - pip install 'travis-cargo<0.2' --user --verbose 
+  - pip install 'travis-cargo<0.2' --user --verbose
   - export PATH=$HOME/.local/bin:$PATH
   - export PATH=$HOME/Library/Python/2.7/bin:$PATH
-  - cargo install cargo-kcov
 
 script:
   - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then rvm get head || true; fi
@@ -56,10 +52,12 @@ script:
   - RUST_BACKTRACE=1 cargo test --verbose --features "$CLANG_VERSION runtime" -- --nocapture
   - cargo doc --no-deps
 
-after_success:
-  - if [[ "$TRAVIS_RUST_VERSION" == "stable" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then travis-cargo doc-upload; fi
-  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cargo kcov --print-install-kcov-sh | sh; fi
-  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cargo kcov --coveralls --kcov ./kcov-35/build/src/kcov; fi
+after_success: |
+  if [[ "$TRAVIS_RUST_VERSION" == "stable" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    travis-cargo doc-upload; fi
+    RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
+    cargo tarpaulin --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
+  fi
 
 notifications:
   email:
