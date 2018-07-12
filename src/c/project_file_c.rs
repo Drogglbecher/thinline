@@ -42,10 +42,10 @@ impl ProjectFile for ProjectFileC {
 
             // Search for methods and constructors outside the system headers
             if !child.is_in_system_header() && C_ENTITYKIND_CHECKS.contains(&child_kind) {
-                let function_type = unwrap_or_continue!(child.get_type()).get_display_name();
-                let function_name = unwrap_or_continue!(child.get_name());
-                let function_desc = unwrap_or_continue!(child.get_comment());
-                let function_args = unwrap_or_continue!(child.get_arguments());
+                let function_type = unwrap_or_return!(child.get_type(), continue).get_display_name();
+                let function_name = unwrap_or_return!(child.get_name(), continue);
+                let function_desc = unwrap_or_return!(child.get_comment(), continue);
+                let function_args = unwrap_or_return!(child.get_arguments(), continue);
 
                 println!(
                     "Create child '{}' with type '{}'",

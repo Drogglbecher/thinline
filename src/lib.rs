@@ -6,22 +6,22 @@ extern crate clang;
 extern crate error_chain;
 extern crate glob;
 extern crate lazy_static;
+#[macro_use]
+extern crate mac;
 extern crate regex;
 extern crate slog_envlogger;
 extern crate walkdir;
 
 pub mod analysis;
-pub mod analysis_c;
 pub mod argument;
+pub mod c;
 pub mod error;
 pub mod function;
-pub mod helper;
 pub mod project_file;
-pub mod project_file_c;
 pub mod synthesis;
 
 use analysis::Analysis;
-use analysis_c::AnalysisC;
+use c::analysis_c::AnalysisC;
 use error::*;
 use std::path::PathBuf;
 use synthesis::*;

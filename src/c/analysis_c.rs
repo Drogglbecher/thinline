@@ -2,7 +2,7 @@ use analysis::Analysis;
 use clang::{Clang, Index};
 use error::*;
 use project_file::ProjectFile;
-use project_file_c::ProjectFileC;
+use c::project_file_c::ProjectFileC;
 use std::cell::{Ref, RefCell, RefMut};
 
 pub static C_FILE_EXTENSIONS: &[&str] = &["*.c", "*.h"];
