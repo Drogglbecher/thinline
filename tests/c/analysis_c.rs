@@ -2,7 +2,7 @@ extern crate thinlinelib;
 
 use std::path::Path;
 use thinlinelib::analysis::Analysis;
-use thinlinelib::analysis_c::{AnalysisC, C_FILE_EXTENSIONS};
+use thinlinelib::c::analysis_c::{AnalysisC, C_FILE_EXTENSIONS};
 
 #[test]
 fn test_new() {
