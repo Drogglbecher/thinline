@@ -79,17 +79,21 @@ mod test_extract_entities {
 
     #[test]
     fn should_succeed() {
-        // Given
-        let analysis = AnalysisC::new();
-        let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
-
-        // Then
         {
+            // Given
+            let analysis = AnalysisC::new();
+
+            // Then
             assert!(analysis.extract_entities().is_ok());
         }
         {
-            assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_ok());
+            // Given
+            let analysis = AnalysisC::new();
+            let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
+
+            // Then
             assert!(analysis.extract_entities().is_ok());
+            assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_ok());
         }
     }
 }
