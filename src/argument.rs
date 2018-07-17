@@ -1,5 +1,5 @@
 /// Reprensents a parsed function argument.
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Argument {
     name: String,
     atype: String,

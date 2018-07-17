@@ -45,10 +45,8 @@ impl Thinline {
     /// Analyzes the project which should be tested.
     pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_dir: P) -> Result<()> {
         self.analysis_c = AnalysisC::new();
-        self.analysis_c.collect_sources(
-            &project_dir.into(),
-            &["src", "include"],
-        )?;
+        self.analysis_c
+            .collect_sources(&project_dir.into(), &["src", "include"])?;
         self.analysis_c.extract_entities()?;
 
         Ok(())

@@ -1,8 +1,8 @@
 use analysis::Analysis;
+use c::project_file_c::ProjectFileC;
 use clang::{Clang, Index};
 use error::*;
 use project_file::ProjectFile;
-use c::project_file_c::ProjectFileC;
 use std::cell::{Ref, RefCell, RefMut};
 
 pub static C_FILE_EXTENSIONS: &[&str] = &["*.c", "*.h"];
@@ -38,10 +38,9 @@ impl Analysis<ProjectFileC> for AnalysisC {
             Ok(clang) => {
                 let index = Index::new(&clang, false, false);
                 for project_file in self.project_files().iter() {
-                    project_file.extract_functions(&index
-                        .parser(project_file.path())
-                        .parse()?
-                        .get_entity())?;
+                    project_file.extract_functions(
+                        &index.parser(project_file.path()).parse()?.get_entity(),
+                    )?;
                 }
             }
             Err(e) => bail!(e),
