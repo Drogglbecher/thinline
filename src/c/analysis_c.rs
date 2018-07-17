@@ -38,7 +38,7 @@ impl Analysis<ProjectFileC> for AnalysisC {
             Ok(clang) => {
                 let index = Index::new(&clang, false, false);
                 for project_file in self.project_files().iter() {
-                    project_file.filter_for_functions(&index
+                    project_file.extract_functions(&index
                         .parser(project_file.path())
                         .parse()?
                         .get_entity())?;

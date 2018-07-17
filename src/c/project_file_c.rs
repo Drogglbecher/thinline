@@ -34,7 +34,7 @@ impl ProjectFile for ProjectFileC {
         self.functions.borrow_mut()
     }
 
-    fn filter_for_functions(&self, entity: &Entity) -> Result<()> {
+    fn extract_functions(&self, entity: &Entity) -> Result<()> {
 
         // Iterate through the child entities of the current entity
         for child in entity.get_children() {
@@ -66,5 +66,36 @@ impl ProjectFile for ProjectFileC {
         }
 
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod test_extract_functions {
+    use analysis::Analysis;
+    use c::analysis_c::AnalysisC;
+    use clang::{Clang, Index};
+    use std::path::Path;
+    use super::*;
+
+    #[test]
+    fn should_succeed() {
+        // Given
+        let analysis = AnalysisC::new();
+        let c_test_src_path = Path::new("tests").join("testdata").join("c_sources").join("test1.c");
+        assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_ok());
+
+        match Clang::new() {
+            Ok(clang) => {
+                let index = Index::new(&clang, false, false);
+                match &index.parser(analysis.project_files()[0].path()).parse() {
+                    Ok(index_parsed) => assert!(analysis.project_files()[0].extract_functions(&index_parsed.get_entity()).is_ok()),
+                    Err(_) => assert!(false)
+                }
+
+                assert_eq!(analysis.project_files().len(), 1);
+                assert_eq!(analysis.project_files()[0].clone().functions().len(), 1);
+            },
+            Err(_) => assert!(false)
+        }
     }
 }

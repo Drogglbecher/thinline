@@ -17,5 +17,5 @@ pub trait ProjectFile {
         self.functions_mut().push(function);
     }
 
-    fn filter_for_functions(&self, entity: &Entity) -> Result<()>;
+    fn extract_functions(&self, entity: &Entity) -> Result<()>;
 }
