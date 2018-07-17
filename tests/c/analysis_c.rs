@@ -92,8 +92,8 @@ mod test_extract_entities {
             let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
 
             // Then
-            assert!(analysis.extract_entities().is_ok());
             assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_ok());
+            assert!(analysis.extract_entities().is_ok());
         }
     }
 }
