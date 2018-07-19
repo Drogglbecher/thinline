@@ -1,22 +1,22 @@
 use clang::{Entity, EntityKind};
 use error::*;
 use function::Function;
-use project_file::ProjectFile;
+use project_file::{ProjectFile, ProjectFileT};
 use std::cell::{Ref, RefCell, RefMut};
+use std::marker::PhantomData;
 use std::path::PathBuf;
 
 static C_ENTITYKIND_CHECKS: &[EntityKind] = &[EntityKind::FunctionDecl, EntityKind::Method];
 
 /// Reprensents a parsed project fike.
-#[derive(Default, Clone)]
-pub struct ProjectFileC {
-    path: PathBuf,
-    functions: RefCell<Vec<Function>>,
-}
 
-impl ProjectFile for ProjectFileC {
+impl<T> ProjectFileT<T> for ProjectFile<T>
+where
+    T: Default,
+{
     fn new<S: Into<PathBuf>>(path: S) -> Self {
-        ProjectFileC {
+        ProjectFile {
+            pf_type: PhantomData,
             path: path.into(),
             functions: RefCell::new(Vec::new()),
         }
@@ -71,13 +71,14 @@ impl ProjectFile for ProjectFileC {
 #[cfg(test)]
 mod test_extract_functions {
     use super::*;
+    use c::*;
     use clang::{Clang, Index};
     use std::path::PathBuf;
 
     #[test]
     fn should_succeed() {
         // Given
-        let c_test_src_path = ProjectFileC::new(
+        let c_test_src_path: ProjectFile<c::C> = ProjectFile::new(
             PathBuf::from("tests")
                 .join("testdata")
                 .join("c_sources")

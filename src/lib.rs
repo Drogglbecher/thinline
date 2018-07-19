@@ -20,23 +20,29 @@ pub mod function;
 pub mod project_file;
 pub mod synthesis;
 
-use analysis::Analysis;
-use c::analysis_c::AnalysisC;
+use analysis::AnalysisT;
+use c::analysis_c::Analysis;
 use error::*;
 use std::path::PathBuf;
 use synthesis::*;
 
 #[derive(Default)]
 /// Global structure representing the Thinline lib.
-pub struct Thinline {
+pub struct Thinline<T>
+where
+    T: Default,
+{
     /// The structure holding the analysis_c data.
-    pub analysis_c: AnalysisC,
+    pub analysis_c: Analysis<T>,
 
     /// The structure holding the synthesized testdata.
     pub synthesis: Synthesis,
 }
 
-impl Thinline {
+impl<T> Thinline<T>
+where
+    T: Default,
+{
     /// Creates an instance of the lib containing Thinlines functionality.
     pub fn new() -> Self {
         Self::default()
@@ -44,7 +50,7 @@ impl Thinline {
 
     /// Analyzes the project which should be tested.
     pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_dir: P) -> Result<()> {
-        self.analysis_c = AnalysisC::new();
+        self.analysis_c = Analysis::new();
         self.analysis_c
             .collect_sources(&project_dir.into(), &["src", "include"])?;
         self.analysis_c.extract_entities()?;

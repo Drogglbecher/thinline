@@ -19,14 +19,14 @@ mod test_collect_sources {
     #[cfg(test)]
     mod should_succeed {
 
+        use c::*;
         use std::path::Path;
-        use thinlinelib::analysis::Analysis;
-        use thinlinelib::c::analysis_c::AnalysisC;
+        use thinlinelib::c::analysis_c::Analysis;
 
         #[test]
         fn when_directory_is_valid() {
             // Given
-            let analysis = AnalysisC::new();
+            let analysis: Analysis<c::C> = Analysis::new();
 
             // When
             let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
@@ -40,14 +40,14 @@ mod test_collect_sources {
     #[cfg(test)]
     mod should_fail {
 
+        use c::*;
         use std::path::Path;
-        use thinlinelib::analysis::Analysis;
-        use thinlinelib::c::analysis_c::AnalysisC;
+        use thinlinelib::c::analysis_c::Analysis;
 
         #[test]
         fn when_directory_not_existing() {
             // Given
-            let analysis = AnalysisC::new();
+            let analysis: Analysis<c::C> = Analysis::new();
 
             // When
             let c_test_src_path = Path::new("not").join("existing");
@@ -59,7 +59,7 @@ mod test_collect_sources {
         #[test]
         fn when_path_is_no_directory() {
             // Given
-            let analysis = AnalysisC::new();
+            let analysis: Analysis<c::C> = Analysis::new();
 
             // When
             let c_test_src_path = Path::new("tests").join("lib.rs");
@@ -73,22 +73,22 @@ mod test_collect_sources {
 #[cfg(test)]
 mod test_extract_entities {
 
+    use c::*;
     use std::path::Path;
-    use thinlinelib::analysis::Analysis;
-    use thinlinelib::c::analysis_c::AnalysisC;
+    use thinlinelib::c::analysis_c::Analysis;
 
     #[test]
     fn should_succeed() {
         {
             // Given
-            let analysis = AnalysisC::new();
+            let analysis: Analysis<c::C> = Analysis::new();
 
             // Then
             assert!(analysis.extract_entities().is_ok());
         }
         {
             // Given
-            let analysis = AnalysisC::new();
+            let analysis: Analysis<C> = Analysis::new();
             let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
 
             // Then

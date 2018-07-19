@@ -1,13 +1,13 @@
 use error::*;
 use glob::glob;
-use project_file::ProjectFile;
+use project_file::{ProjectFile, ProjectFileT};
 use std::cell::{Ref, RefMut};
 use std::path::PathBuf;
 
 /// A generic trait for source file analysis>
-pub trait Analysis<PF>
+pub trait AnalysisT<T>
 where
-    PF: ProjectFile,
+    T: Default,
 {
     /// Creates a new Analysis instance.
     fn new() -> Self;
@@ -16,10 +16,10 @@ where
     fn file_types(&self) -> &[&str];
 
     /// Returns a reference to the collected project files for anaylsis.
-    fn project_files(&self) -> Ref<Vec<PF>>;
+    fn project_files(&self) -> Ref<Vec<ProjectFile<T>>>;
 
     /// Returns a mutable reference to the collected project files for anaylsis.
-    fn project_files_mut(&self) -> RefMut<Vec<PF>>;
+    fn project_files_mut(&self) -> RefMut<Vec<ProjectFile<T>>>;
 
     /// Collect all the sources within the given project dir.
     fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[&str]) -> Result<()> {
@@ -45,7 +45,7 @@ where
                         .to_str()
                         .unwrap_or("."),
                 )? {
-                    self.project_files_mut().push(PF::new(entry?));
+                    self.project_files_mut().push(ProjectFile::new(entry?));
                 }
             }
         }
