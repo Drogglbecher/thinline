@@ -3,7 +3,7 @@ use clang::Entity;
 use error::*;
 
 /// Reprensents a parsed function type.
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct Function {
     pub class: Option<String>,
     pub name: String,
@@ -32,25 +32,29 @@ impl<'a> Function {
 
     pub fn format_type(ftype: &'a str) -> Result<&'a str> {
         let ftype_vec: Vec<&str> = ftype.split('(').collect();
-        Ok(ftype_vec
-            .get(0)
-            .ok_or_else(|| "Function type can not be parsed from signature.")?
-            .trim_right())
+        Ok(
+            ftype_vec
+                .get(0)
+                .ok_or_else(|| "Function type can not be parsed from signature.")?
+                .trim_right(),
+        )
     }
 
     pub fn format_description(description: &'a str) -> Result<Vec<String>> {
-        Ok(description
-            .split('\n')
-            .map(|fd| {
-                String::from(
-                    fd.trim_left()
-                        .trim_left_matches('*')
-                        .trim_left_matches('/')
-                        .trim_left(),
-                )
-            })
-            .filter(|ref c| !c.is_empty() && c.as_str() != "**")
-            .collect())
+        Ok(
+            description
+                .split('\n')
+                .map(|fd| {
+                    String::from(
+                        fd.trim_left()
+                            .trim_left_matches('*')
+                            .trim_left_matches('/')
+                            .trim_left(),
+                    )
+                })
+                .filter(|ref c| !c.is_empty() && c.as_str() != "**")
+                .collect(),
+        )
     }
 
     pub fn format_arguments(arguments: &[Entity]) -> Result<Vec<Argument>> {

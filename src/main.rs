@@ -29,12 +29,12 @@ fn run() -> Result<()> {
     let matches = app.get_matches();
 
     // Creates a new Thinline instance
-    let mut thinline: Thinline<c::C> = Thinline::new();
+    let mut thinline: Thinline<C> = Thinline::new();
 
     // Reads the source directory where file traversing should start
-    let source_directory = matches
-        .value_of("SOURCE-DIR")
-        .ok_or_else(|| "CLI parameter 'source_directory' missing.")?;
+    let source_directory = matches.value_of("SOURCE-DIR").ok_or_else(
+        || "CLI parameter 'source_directory' missing.",
+    )?;
 
     thinline.analyze_project(source_directory)?;
 
