@@ -1,9 +1,8 @@
-use analysis::{AnalysisT, Analysis};
+use analysis::Analysis;
 use clang::{Clang, EntityKind, Index};
 use error::*;
 use function::Function;
 use language_type::LanguageType;
-use project_file::ProjectFileT;
 
 static C_FILE_EXTENSIONS: &[&str] = &["*.c", "*.h"];
 static C_ENTITYKIND_CHECKS: &[EntityKind] = &[EntityKind::FunctionDecl, EntityKind::Method];

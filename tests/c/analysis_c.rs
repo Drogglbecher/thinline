@@ -7,7 +7,7 @@ mod test_collect_sources {
     mod should_succeed {
 
         use std::path::Path;
-        use thinlinelib::analysis::{AnalysisT, Analysis};
+        use thinlinelib::analysis::Analysis;
         use thinlinelib::c::C;
 
         #[test]
@@ -28,7 +28,7 @@ mod test_collect_sources {
     mod should_fail {
 
         use std::path::Path;
-        use thinlinelib::analysis::{AnalysisT, Analysis};
+        use thinlinelib::analysis::Analysis;
         use thinlinelib::c::C;
 
         #[test]
@@ -61,9 +61,9 @@ mod test_collect_sources {
 mod test_extract_entities {
 
     use std::path::Path;
-    use thinlinelib::analysis::{AnalysisT, Analysis};
+    use thinlinelib::analysis::Analysis;
     use thinlinelib::c::C;
-    use thinlinelib::project_file::{ProjectFileT, ProjectFile};
+    use thinlinelib::project_file::ProjectFile;
 
     #[test]
     fn should_succeed() {

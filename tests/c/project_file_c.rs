@@ -1,7 +1,7 @@
 extern crate thinlinelib;
 
 use std::path::PathBuf;
-use thinlinelib::project_file::{ProjectFileT, ProjectFile};
+use thinlinelib::project_file::ProjectFile;
 use thinlinelib::c::C;
 
 #[test]

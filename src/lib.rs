@@ -21,7 +21,7 @@ pub mod language_type;
 pub mod project_file;
 pub mod synthesis;
 
-use analysis::{AnalysisT, Analysis};
+use analysis::Analysis;
 use error::*;
 use language_type::LanguageType;
 use std::path::PathBuf;
