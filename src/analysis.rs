@@ -8,7 +8,7 @@ use std::path::PathBuf;
 #[derive(Default, Debug)]
 pub struct Analysis<T>
 where
-    T: LanguageType<T>,
+    T: LanguageType,
 {
     file_types: &'static [&'static str],
     project_files: RefCell<Vec<ProjectFile<T>>>,
@@ -16,7 +16,7 @@ where
 
 impl<T> Analysis<T>
 where
-    T: LanguageType<T>,
+    T: LanguageType,
 {
     /// Creates a new Analysis instance.
     pub fn new() -> Self {

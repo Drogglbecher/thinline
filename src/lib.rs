@@ -8,6 +8,7 @@ extern crate glob;
 extern crate lazy_static;
 #[macro_use]
 extern crate mac;
+extern crate python_parser;
 extern crate regex;
 extern crate slog_envlogger;
 extern crate walkdir;
@@ -19,6 +20,7 @@ pub mod error;
 pub mod function;
 pub mod language_type;
 pub mod project_file;
+pub mod python;
 pub mod synthesis;
 
 use analysis::Analysis;
@@ -31,7 +33,7 @@ use synthesis::*;
 /// Global structure representing the Thinline lib.
 pub struct Thinline<T>
 where
-    T: LanguageType<T>,
+    T: LanguageType,
 {
     /// The structure holding the analysis_c data.
     pub analysis: Analysis<T>,
@@ -42,7 +44,7 @@ where
 
 impl<T> Thinline<T>
 where
-    T: LanguageType<T>,
+    T: LanguageType,
 {
     /// Creates an instance of the lib containing Thinlines functionality.
     pub fn new() -> Self {
@@ -54,7 +56,7 @@ where
         self.analysis = Analysis::new();
         self.analysis.collect_sources(
             &project_dir.into(),
-            &["src", "include"],
+            &[".", "include"],
         )?;
         self.analysis.extract_entities()?;
 

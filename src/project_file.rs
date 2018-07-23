@@ -14,7 +14,7 @@ pub struct ProjectFile<T> {
 /// Reprensents a parsed project file.
 impl<T> ProjectFile<T>
 where
-    T: LanguageType<T>,
+    T: LanguageType,
 {
     pub fn new<S: Into<PathBuf>>(path: S) -> Self {
         ProjectFile {

@@ -10,12 +10,12 @@ static C_ENTITYKIND_CHECKS: &[EntityKind] = &[EntityKind::FunctionDecl, EntityKi
 #[derive(Default, Clone, Debug)]
 pub struct C {}
 
-impl LanguageType<C> for C {
+impl LanguageType for C {
     fn file_types() -> &'static [&'static str] {
         C_FILE_EXTENSIONS
     }
 
-    fn extract_functions(analysis: &Analysis<C>) -> Result<()> {
+    fn extract_functions<C: LanguageType>(analysis: &Analysis<C>) -> Result<()> {
         match Clang::new() {
             Ok(clang) => {
                 let index = Index::new(&clang, false, false);

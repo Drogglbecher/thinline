@@ -13,6 +13,7 @@ pub mod error;
 use clap::App;
 use std::process::exit;
 use thinlinelib::c::*;
+use thinlinelib::python::*;
 use thinlinelib::error::*;
 use thinlinelib::Thinline;
 
@@ -29,7 +30,7 @@ fn run() -> Result<()> {
     let matches = app.get_matches();
 
     // Creates a new Thinline instance
-    let mut thinline: Thinline<C> = Thinline::new();
+    let mut thinline: Thinline<Python> = Thinline::new();
 
     // Reads the source directory where file traversing should start
     let source_directory = matches.value_of("SOURCE-DIR").ok_or_else(
