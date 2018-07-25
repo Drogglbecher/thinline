@@ -54,10 +54,8 @@ where
     /// Analyzes the project which should be tested.
     pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_dir: P) -> Result<()> {
         self.analysis = Analysis::new();
-        self.analysis.collect_sources(
-            &project_dir.into(),
-            &[".", "include"],
-        )?;
+        self.analysis
+            .collect_sources(&project_dir.into(), &[".", "include"])?;
         self.analysis.extract_entities()?;
 
         Ok(())

@@ -27,25 +27,23 @@ impl LanguageType for C {
                         let child_kind = child.get_kind();
 
                         // Search for methods and constructors outside the system headers
-                        if !child.is_in_system_header() &&
-                            C_ENTITYKIND_CHECKS.contains(&child_kind)
+                        if !child.is_in_system_header() && C_ENTITYKIND_CHECKS.contains(&child_kind)
                         {
-                            let function_type = unwrap_or_return!(child.get_type(), continue)
-                                .get_display_name();
+                            let function_type =
+                                unwrap_or_return!(child.get_type(), continue).get_display_name();
                             let function_name = unwrap_or_return!(child.get_name(), continue);
                             let function_desc = unwrap_or_return!(child.get_comment(), continue);
                             let function_args = unwrap_or_return!(child.get_arguments(), continue);
 
                             println!(
                                 "Create child '{}' with type '{}'",
-                                function_name,
-                                function_type
+                                function_name, function_type
                             );
 
                             let function = Function::new(
                                 child.get_semantic_parent().and_then(|sp| sp.get_name()),
                                 function_name,
-                                Function::format_type(function_type.as_str())?,
+                                Some(String::from(Function::format_type(function_type.as_str())?)),
                                 Function::format_arguments(&function_args)?,
                                 Function::format_description(function_desc.as_str())?,
                             );

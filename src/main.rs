@@ -13,8 +13,8 @@ pub mod error;
 use clap::App;
 use std::process::exit;
 use thinlinelib::c::*;
-use thinlinelib::python::*;
 use thinlinelib::error::*;
+use thinlinelib::python::*;
 use thinlinelib::Thinline;
 
 fn main() {
@@ -33,9 +33,9 @@ fn run() -> Result<()> {
     let mut thinline: Thinline<Python> = Thinline::new();
 
     // Reads the source directory where file traversing should start
-    let source_directory = matches.value_of("SOURCE-DIR").ok_or_else(
-        || "CLI parameter 'source_directory' missing.",
-    )?;
+    let source_directory = matches
+        .value_of("SOURCE-DIR")
+        .ok_or_else(|| "CLI parameter 'source_directory' missing.")?;
 
     thinline.analyze_project(source_directory)?;
 
