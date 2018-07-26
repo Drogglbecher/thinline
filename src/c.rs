@@ -1,5 +1,6 @@
 use analysis::Analysis;
-use clang::{Clang, EntityKind, Index};
+use argument::Argument;
+use clang::{Clang, Entity, EntityKind, Index};
 use error::*;
 use function::Function;
 use language_type::LanguageType;
@@ -9,6 +10,24 @@ static C_ENTITYKIND_CHECKS: &[EntityKind] = &[EntityKind::FunctionDecl, EntityKi
 
 #[derive(Default, Clone, Debug)]
 pub struct C {}
+
+impl C {
+    fn format_arguments(arguments: &[Entity]) -> Result<Vec<Argument>> {
+        let mut args = Vec::new();
+
+        for argument in arguments {
+            args.push(Argument::new(
+                argument.get_display_name().unwrap_or(String::new()),
+                Some(argument
+                    .get_type()
+                    .ok_or_else(|| "Argument type can not be parsed from signature.")?
+                    .get_display_name()),
+            ));
+        }
+
+        Ok(args)
+    }
+}
 
 impl LanguageType for C {
     fn file_types() -> &'static [&'static str] {
@@ -32,21 +51,22 @@ impl LanguageType for C {
                             let function_type =
                                 unwrap_or_return!(child.get_type(), continue).get_display_name();
                             let function_name = unwrap_or_return!(child.get_name(), continue);
-                            let function_desc = unwrap_or_return!(child.get_comment(), continue);
                             let function_args = unwrap_or_return!(child.get_arguments(), continue);
+                            let function_desc = unwrap_or_return!(child.get_comment(), continue);
 
                             println!(
                                 "Create child '{}' with type '{}'",
                                 function_name, function_type
                             );
 
-                            let function = Function::new(
+                            let mut function = Function::new(
                                 child.get_semantic_parent().and_then(|sp| sp.get_name()),
                                 function_name,
-                                Some(String::from(Function::format_type(function_type.as_str())?)),
-                                Function::format_arguments(&function_args)?,
-                                Function::format_description(function_desc.as_str())?,
                             );
+
+                            function.set_format_type(function_type.as_str());
+                            function.set_arguments(&Self::format_arguments(&function_args)?);
+                            function.set_description(function_desc.as_str());
 
                             project_file.add_function(function);
                         }

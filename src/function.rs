@@ -1,5 +1,4 @@
 use argument::Argument;
-use clang::Entity;
 use error::*;
 
 /// Reprensents a parsed function type.
@@ -12,34 +11,36 @@ pub struct Function {
     pub description: Vec<String>,
 }
 
-impl<'a> Function {
+impl Function {
     /// Creates a new `Function` instance.
-    pub fn new<S: Into<String>>(
-        class: Option<String>,
-        name: S,
-        ftype: Option<String>,
-        arguments: Vec<Argument>,
-        description: Vec<String>,
-    ) -> Self {
+    pub fn new<S: Into<String>>(class: Option<String>, name: S) -> Self {
         Function {
             class: class,
             name: name.into(),
-            ftype: ftype,
-            arguments: arguments,
-            description: description,
+            ftype: None,
+            arguments: Vec::new(),
+            description: Vec::new(),
         }
     }
 
-    pub fn format_type(ftype: &'a str) -> Result<&'a str> {
-        let ftype_vec: Vec<&str> = ftype.split('(').collect();
-        Ok(ftype_vec
-            .get(0)
-            .ok_or_else(|| "Function type can not be parsed from signature.")?
-            .trim_right())
+    pub fn set_format_type(&mut self, ftype: &str) -> Result<()> {
+        if ftype.is_empty() {
+            self.ftype = None;
+        } else {
+            let ftype_vec: Vec<&str> = ftype.split('(').collect();
+            self.ftype = Some(String::from(
+                ftype_vec
+                    .get(0)
+                    .ok_or_else(|| "Function type can not be parsed from signature.")?
+                    .trim_right(),
+            ));
+        }
+
+        Ok(())
     }
 
-    pub fn format_description(description: &'a str) -> Result<Vec<String>> {
-        Ok(description
+    pub fn set_description(&mut self, description: &str) {
+        self.description = description
             .split('\n')
             .map(|fd| {
                 String::from(
@@ -50,22 +51,10 @@ impl<'a> Function {
                 )
             })
             .filter(|ref c| !c.is_empty() && c.as_str() != "**")
-            .collect())
+            .collect()
     }
 
-    pub fn format_arguments(arguments: &[Entity]) -> Result<Vec<Argument>> {
-        let mut args = Vec::new();
-
-        for fct_arg in arguments {
-            args.push(Argument::new(
-                fct_arg.get_display_name().unwrap_or(String::new()),
-                fct_arg
-                    .get_type()
-                    .ok_or_else(|| "Argument type can not be parsed from signature.")?
-                    .get_display_name(),
-            ));
-        }
-
-        Ok(args)
+    pub fn set_arguments(&mut self, arguments: &[Argument]) {
+        self.arguments = arguments.into();
     }
 }

@@ -108,7 +108,7 @@ mod test_extract_entities {
                 "tests/testdata/c_sources/./test1.c"
             );
             assert_eq!(project_file.functions()[0].name, "test_int_no1");
-            assert_eq!(project_file.functions()[0].ftype, "int");
+            assert_eq!(project_file.functions()[0].ftype, Some(String::from("int")));
             assert_eq!(project_file.functions()[0].arguments.len(), 2);
             assert_eq!(project_file.functions()[0].description.len(), 6);
         }

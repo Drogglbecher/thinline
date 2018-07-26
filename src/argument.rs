@@ -2,14 +2,14 @@
 #[derive(Default, Debug, Clone)]
 pub struct Argument {
     name: String,
-    atype: String,
+    atype: Option<String>,
 }
 
 impl Argument {
-    pub fn new<S: Into<String>>(name: S, atype: S) -> Self {
+    pub fn new<S: Into<String>>(name: S, atype: Option<String>) -> Self {
         Argument {
             name: name.into(),
-            atype: atype.into(),
+            atype: atype,
         }
     }
 }
