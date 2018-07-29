@@ -29,3 +29,6 @@ class class1:
         #!TL_TESTCASE
         """
         return float1 + float2
+
+    def test_nodoc():
+        return "No docs"
