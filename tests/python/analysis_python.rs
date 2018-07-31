@@ -72,7 +72,7 @@ mod test_collect_sources {
 #[cfg(test)]
 mod test_extract_entities {
 
-    use std::path::Path;
+    use std::path::{Path, MAIN_SEPERATOR};
     use thinlinelib::analysis::{Analysis, ProjectFile};
     use thinlinelib::language_type::Python;
 
@@ -114,11 +114,11 @@ mod test_extract_entities {
 
             let filtered_project_files: Vec<&ProjectFile<Python>> = project_files
                 .iter()
-                .filter(|pf| pf.path().to_str().unwrap().ends_with("/test1.py"))
+                .filter(|pf| pf.path().to_str().unwrap().ends_with(MAIN_SEPERATOR + "test1.py"))
                 .collect();
 
-            let project_file = filtered_project_files[0];
             assert_eq!(filtered_project_files.len(), 1);
+            let project_file = filtered_project_files[0];
 
             assert_eq!(project_file.functions().len(), 4);
             let functions = project_file.functions();

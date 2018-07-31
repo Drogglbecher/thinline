@@ -67,7 +67,7 @@ impl LanguageType for C {
 
                             let mut function = Function::new(None, function_name);
 
-                            function.set_format_type(function_type.as_str());
+                            function.set_format_type(function_type.as_str())?;
                             function.set_arguments(&Self::format_arguments(&function_args)?);
                             function.set_description(function_desc.as_str());
 
@@ -193,7 +193,6 @@ impl LanguageType for Python {
             }
 
             for (_, function) in functions.into_iter() {
-                println!("{:?}", function);
                 project_file.add_function(function);
             }
         }
