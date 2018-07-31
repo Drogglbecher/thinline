@@ -3,7 +3,7 @@
 </p>
 <p align="center">
     <a href="https://travis-ci.org/Drogglbecher/thinline"><img alt="Travis Status" src="https://travis-ci.org/Drogglbecher/thinline.svg"></a>
-    <a href="https://ci.appveyor.com/project/Drogglbecher/thinline"><img alt="Appveyor Status" src="https://ci.appveyor.com/api/projects/status/r3ldomvr2plv336t"></a>
+    <a href="https://ci.appveyor.com/project/Drogglbecher/thinline"><img alt="Appveyor Status" src="https://ci.appveyor.com/api/projects/status/r3ldomvr2plv336t/branch/master?svg=true"></a>
     <a href="https://coveralls.io/github/Drogglbecher/thinline?branch=master"><img alt="Test Coverage" src="https://coveralls.io/repos/github/Drogglbecher/thinline/badge.svg?branch=master"></a>
     <a href="https://drogglbecher.github.io/thinline"><img alt="Documentation" src="https://img.shields.io/badge/master_doc-thinline-blue.svg"></a>
     <a href="https://github.com/Drogglbecher/thinline/blob/master/LICENSE"><img alt="License Apache 2" src="https://img.shields.io/badge/license-Apache%202-blue.svg"></a>
