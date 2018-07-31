@@ -14,13 +14,9 @@ extern crate slog_envlogger;
 extern crate walkdir;
 
 pub mod analysis;
-pub mod argument;
-pub mod c;
 pub mod error;
 pub mod function;
 pub mod language_type;
-pub mod project_file;
-pub mod python;
 pub mod synthesis;
 
 use analysis::Analysis;

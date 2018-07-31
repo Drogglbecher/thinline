@@ -1,7 +1,7 @@
 extern crate thinlinelib;
 
 use thinlinelib::Thinline;
-use thinlinelib::c::C;
+use thinlinelib::language_type::C;
 
 fn main() {
     let mut tl: Thinline<C> = Thinline::new();

@@ -8,7 +8,7 @@ mod test_collect_sources {
 
         use std::path::Path;
         use thinlinelib::analysis::Analysis;
-        use thinlinelib::c::C;
+        use thinlinelib::language_type::C;
 
         #[test]
         fn when_directory_is_valid() {
@@ -29,7 +29,7 @@ mod test_collect_sources {
 
         use std::path::Path;
         use thinlinelib::analysis::Analysis;
-        use thinlinelib::c::C;
+        use thinlinelib::language_type::C;
 
         #[test]
         fn when_directory_not_existing() {
@@ -61,9 +61,8 @@ mod test_collect_sources {
 mod test_extract_entities {
 
     use std::path::Path;
-    use thinlinelib::analysis::Analysis;
-    use thinlinelib::c::C;
-    use thinlinelib::project_file::ProjectFile;
+    use thinlinelib::analysis::{Analysis, ProjectFile};
+    use thinlinelib::language_type::C;
 
     #[test]
     fn should_succeed() {
@@ -102,11 +101,7 @@ mod test_extract_entities {
             assert_eq!(filtered_project_files.len(), 1);
 
             assert_eq!(project_file.functions().len(), 4);
-            assert!(project_file.functions()[0].class.is_some());
-            assert_eq!(
-                project_file.functions()[0].clone().class.unwrap(),
-                "tests/testdata/c_sources/./test1.c"
-            );
+            assert!(project_file.functions()[0].class.is_none());
             assert_eq!(project_file.functions()[0].name, "test_int_no1");
             assert_eq!(project_file.functions()[0].ftype, Some(String::from("int")));
             assert_eq!(project_file.functions()[0].arguments.len(), 2);

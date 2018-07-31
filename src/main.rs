@@ -12,9 +12,8 @@ pub mod error;
 
 use clap::App;
 use std::process::exit;
-use thinlinelib::c::*;
+use thinlinelib::language_type::{C, Python};
 use thinlinelib::error::*;
-use thinlinelib::python::*;
 use thinlinelib::Thinline;
 
 fn main() {
