@@ -1,7 +1,7 @@
 use error::*;
-use function::Function;
+use function::Namespace;
 use glob::glob;
-use language_type::LanguageType;
+use language_type::{C, LanguageType};
 use std::cell::{Ref, RefCell, RefMut};
 use std::marker::PhantomData;
 use std::path::PathBuf;
@@ -10,7 +10,7 @@ use std::path::PathBuf;
 pub struct ProjectFile<T> {
     pub pf_type: PhantomData<T>,
     pub path: PathBuf,
-    pub functions: RefCell<Vec<Function>>,
+    pub namespaces: RefCell<Vec<Namespace>>,
 }
 
 /// Reprensents a parsed project file.
@@ -22,7 +22,7 @@ where
         ProjectFile {
             pf_type: PhantomData,
             path: path.into(),
-            functions: RefCell::new(Vec::new()),
+            namespaces: RefCell::new(Vec::new()),
         }
     }
 
@@ -30,15 +30,15 @@ where
         &self.path
     }
 
-    pub fn functions(&self) -> Ref<Vec<Function>> {
-        self.functions.borrow()
+    pub fn functions(&self) -> Ref<Vec<Namespace>> {
+        self.namespaces.borrow()
     }
 
-    pub fn functions_mut(&self) -> RefMut<Vec<Function>> {
-        self.functions.borrow_mut()
+    pub fn functions_mut(&self) -> RefMut<Vec<Namespace>> {
+        self.namespaces.borrow_mut()
     }
 
-    pub fn add_function(&self, function: Function) {
+    pub fn add_function(&self, function: Namespace) {
         self.functions_mut().push(function);
     }
 }
@@ -57,6 +57,12 @@ where
     T: LanguageType,
 {
     /// Creates a new Analysis instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let analysis_c: Analysis<C> = Analysis::new();
+    /// ```
     pub fn new() -> Self {
         Analysis {
             file_types: T::file_types(),

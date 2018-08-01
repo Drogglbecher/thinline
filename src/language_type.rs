@@ -65,9 +65,9 @@ impl LanguageType for C {
                             let function_args = unwrap_or_return!(child.get_arguments(), continue);
                             let function_desc = unwrap_or_return!(child.get_comment(), continue);
 
-                            let mut function = Function::new(None, function_name);
+                            let mut function = Function::new(function_name);
 
-                            function.set_format_type(function_type.as_str())?;
+                            function.set_return_type(function_type.as_str())?;
                             function.set_arguments(&Self::format_arguments(&function_args)?);
                             function.set_description(function_desc.as_str());
 
@@ -108,7 +108,7 @@ impl Python {
                                 let function =
                                     functions
                                         .entry(Self::build_hash_key(class, func))
-                                        .or_insert(Function::new(class.map(str::to_string), func));
+                                        .or_insert(Function::new(func));
                                 function.set_description(&expr.content.to_string_lossy());
                             }
                         }
@@ -124,7 +124,7 @@ impl Python {
                         // Function is not already in local function hashmap?
                         if !functions.contains_key(&key) {
                             let mut function: Function =
-                                Function::new(class.map(str::to_string), expr.name.as_str());
+                                Function::new(expr.name.as_str());
 
                             // Split arguments and add them to the function
                             let mut arguments: Vec<Argument> = Vec::new();
