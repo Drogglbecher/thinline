@@ -1,5 +1,5 @@
 use error::*;
-use function::Namespace;
+use function::Entity;
 use glob::glob;
 use language_type::{C, LanguageType};
 use std::cell::{Ref, RefCell, RefMut};
@@ -10,7 +10,7 @@ use std::path::PathBuf;
 pub struct ProjectFile<T> {
     pub pf_type: PhantomData<T>,
     pub path: PathBuf,
-    pub namespaces: RefCell<Vec<Namespace>>,
+    pub entities: RefCell<Vec<Entity>>,
 }
 
 /// Reprensents a parsed project file.
@@ -22,7 +22,7 @@ where
         ProjectFile {
             pf_type: PhantomData,
             path: path.into(),
-            namespaces: RefCell::new(Vec::new()),
+            entities: RefCell::new(Vec::new()),
         }
     }
 
@@ -30,16 +30,16 @@ where
         &self.path
     }
 
-    pub fn functions(&self) -> Ref<Vec<Namespace>> {
-        self.namespaces.borrow()
+    pub fn entities(&self) -> Ref<Vec<Entity>> {
+        self.entities.borrow()
     }
 
-    pub fn functions_mut(&self) -> RefMut<Vec<Namespace>> {
-        self.namespaces.borrow_mut()
+    pub fn entities_mut(&self) -> RefMut<Vec<Entity>> {
+        self.entities.borrow_mut()
     }
 
-    pub fn add_function(&self, function: Namespace) {
-        self.functions_mut().push(function);
+    pub fn add_entity(&self, entity: Entity) {
+        self.entities_mut().push(entity);
     }
 }
 
@@ -91,9 +91,9 @@ where
         if !project_dir.exists() || !project_dir.is_dir() {
             return Err(Error::from(format!(
                 "The given project dir '{}' does not exist.",
-                project_dir
-                    .to_str()
-                    .ok_or_else(|| "Unable to stringify project dir path.")?
+                project_dir.to_str().ok_or_else(
+                    || "Unable to stringify project dir path.",
+                )?
             )));
         }
 
@@ -108,7 +108,8 @@ where
                         .join(ext)
                         .to_str()
                         .unwrap_or("."),
-                )? {
+                )?
+                {
                     self.project_files_mut().push(ProjectFile::new(entry?));
                 }
             }

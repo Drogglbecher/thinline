@@ -118,25 +118,31 @@ impl Function {
     }
 }
 
-trait Entity: Default {
-    fn name(&self) -> Option<&str>;
+#[derive(Clone, Debug, PartialEq)]
+/// The different types an Entitiy can have.
+pub enum EntityType {
+    /// A class definition.
+    Class,
+
+    /// A namespace.
+    Namespace,
+
+    /// The index of a new entity hierarchy.
+    Index,
 }
 
-/// Reprensents a parsed class type.
-#[derive(Default, Clone, Debug)]
-pub struct Class {
-    pub name: Option<String>,
-    functions: Vec<Function>,
+#[derive(Clone, Debug)]
+/// The representation of an Entity as a possbile generic node on the
+/// abstract syntax tree. An Entity has to be kind of a EntityType.
+pub struct Entity {
+    name: String,
+    entities: Option<Vec<Entity>>,
+    functions: Option<Vec<Function>>,
+    etype: EntityType,
 }
 
-impl Entity for Class {
-    fn name(&self) -> Option<&str> {
-        self.name.as_ref().map(String::as_str)
-    }
-}
-
-impl Class {
-    /// Creates a new Class instance.
+impl Entity {
+    /// Creates a new Entity instance.
     ///
     /// # Example
     ///
@@ -144,87 +150,82 @@ impl Class {
     /// let class = Class::new(Some("testClass"));
     /// assert_eq!(class.functions.len(), 0);
     /// ```
-    pub fn new<S: Into<Option<String>>>(name: S) -> Self {
-        Class {
+    pub fn new<S: Into<String>>(etype: EntityType, name: S) -> Self {
+        Entity {
             name: name.into(),
-            functions: Vec::new(),
+            entities: None,
+            functions: None,
+            etype: etype,
         }
     }
 
-    /// Returns the function instance for the given function ID.
-    fn function(&self, function_id: &str) -> Option<&mut Function> {
-        let filtered_functions: Vec<Function> = self.functions
-            .into_iter()
-            .filter(|f| f.name.as_str() == function_id)
-            .collect();
-
-        if filtered_functions.get(0).is_some() {
-            let function: Function = filtered_functions[0];
-            return Some(&mut function);
-        }
-
-        None
-    }
-}
-
-/// Reprensents a parsed namespace type.
-#[derive(Default, Clone, Debug)]
-pub struct Namespace {
-    name: Option<String>,
-    classes: Vec<Class>,
-    namespaces: Option<Vec<Namespace>>,
-}
-
-impl Entity for Namespace {
-    fn name(&self) -> Option<&str> {
-        self.name.as_ref().map(String::as_str)
-    }
-}
-
-impl Namespace {
-    /// Creates a new Namespace instance.
+    /// Adds an Entity to the Entity instance.
     ///
     /// # Example
     ///
     /// ```
-    /// let namespace = Namespace::new(Some("testNamespace"));
-    /// assert_eq!(namespace.classes.len(), 0);
+    /// let outer_entity = Entity::new("outer_entity", EntityType::Namespace);
+    /// let inner_entity = Entity::new("inner_entity", EntityType::Class);
+    /// outer_entity.add_entity(inner_entity);
+    ///
+    /// assert_eq!(outer_entity.entities.is_some());
     /// ```
-    pub fn new<S: Into<Option<String>>>(name: S) -> Self {
-        Namespace {
-            name: name.into(),
-            classes: Vec::new(),
-            namespaces: None,
+    pub fn add_entity(&mut self, entity: Entity) -> Option<&mut Entity> {
+        if self.entities.is_none() {
+            self.entities = Some(Vec::new());
         }
-    }
 
-    fn entity<T>(entity_vec: Vec<T>, entity: &str) -> Option<&mut T>
-    where
-        T: Entity,
-    {
-        let filtered_entities: Vec<T> = entity_vec
-            .into_iter()
-            .filter(|c| c.name() == Some(entity))
-            .collect();
-
-        if filtered_entities.get(0).is_some() {
-            let entity: T = filtered_entities[0];
-            return Some(&mut entity);
+        if let Some(entities) = &mut self.entities {
+            entities.push(entity);
+            return entities.last_mut();
         }
 
         None
     }
 
-    /// Returns the class instance for the given class ID.
-    pub fn class<'a>(&self, class_id: &'a str) -> Option<&'a mut Class> {
-        return Namespace::entity(self.classes, class_id)
+    /// Adds a Function to the Entity instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let entity = Entity::new("entity", EntityType::Namespace);
+    /// outer_entity.add_entity(inner_entity);
+    ///
+    /// assert_eq!(outer_entity.entities.is_some());
+    /// ```
+    pub fn add_function(&mut self, function: Function) {
+        if self.functions.is_none() {
+            self.functions = Some(Vec::new());
+        }
+
+        if let Some(functions) = &mut self.functions {
+            functions.push(function);
+        }
     }
 
-    /// Returns the namespace instance for the given namespace ID.
-    pub fn namespace<'a>(&self, namespace_id: &'a str) -> Option<&'a mut Namespace> {
-        match self.namespaces {
-            Some(nss) => return Namespace::entity(nss, namespace_id),
-            None => return None,
+    /// Returns an Entity with the given name or None when nothing is found.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let outer_entity = Entity::new("outer_entity", EntityType::Namespace);
+    /// let inner_entity = Entity::new("inner_entity", EntityType::Class);
+    /// outer_entity.add_entity(inner_entity);
+    ///
+    /// assert!(outer_entity.entity(EntityType::Class, "inner_entity").is_some());
+    /// ```
+    pub fn entity(&self, etype: EntityType, name: &str) -> Option<&Entity> {
+        if let Some(entities) = &self.entities {
+            let filtered_entities: Vec<&Entity> = entities
+                .into_iter()
+                .filter(|c| c.name == name && c.etype == etype)
+                .collect();
+
+            if let Some(entity) = filtered_entities.get(0) {
+                return Some(&entity);
+            }
         }
+
+        None
     }
 }

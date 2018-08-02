@@ -1,7 +1,7 @@
 use analysis::Analysis;
-use clang::{Clang, Entity, EntityKind, Index};
+use clang;
 use error::*;
-use function::{Argument, Function};
+use function::{Argument, Entity, EntityType, Function};
 use python_parser::ast::{CompoundStatement, Expression, Statement};
 use python_parser::{file_input, make_strspan};
 use std::collections::HashMap;
@@ -14,14 +14,15 @@ pub trait LanguageType: Default {
 }
 
 static C_FILE_EXTENSIONS: &[&str] = &["*.c", "*.h"];
-static C_ENTITYKIND_CHECKS: &[EntityKind] = &[EntityKind::FunctionDecl, EntityKind::Method];
+static C_ENTITYKIND_CHECKS: &[clang::EntityKind] =
+    &[clang::EntityKind::FunctionDecl, clang::EntityKind::Method];
 static PYTHON_FILE_EXTENSIONS: &[&str] = &["*.py"];
 
 #[derive(Default, Clone, Debug)]
 pub struct C {}
 
 impl C {
-    fn format_arguments(arguments: &[Entity]) -> Result<Vec<Argument>> {
+    fn format_arguments(arguments: &[clang::Entity]) -> Result<Vec<Argument>> {
         let mut args = Vec::new();
 
         for argument in arguments {
@@ -46,34 +47,41 @@ impl LanguageType for C {
     }
 
     fn extract_functions<C: LanguageType>(analysis: &Analysis<C>) -> Result<()> {
-        match Clang::new() {
+        match clang::Clang::new() {
             Ok(clang) => {
-                let index = Index::new(&clang, false, false);
+                let index = clang::Index::new(&clang, false, false);
                 for project_file in analysis.project_files().iter() {
-                    let parsed_path = &index.parser(project_file.path()).parse()?;
-                    let entity = parsed_path.get_entity();
-                    // Iterate through the child entities of the current entity
-                    for child in entity.get_children() {
-                        let child_kind = child.get_kind();
+                    let mut entity = Entity::new(EntityType::Index, "");
+                    {
+                        let parsed_path = &index.parser(project_file.path()).parse()?;
+                        let clang_entity = parsed_path.get_entity();
+                        // Iterate through the child entities of the current entity
+                        for child in clang_entity.get_children() {
+                            let child_kind = child.get_kind();
 
-                        // Search for methods and constructors outside the system headers
-                        if !child.is_in_system_header() && C_ENTITYKIND_CHECKS.contains(&child_kind)
-                        {
-                            let function_type =
-                                unwrap_or_return!(child.get_type(), continue).get_display_name();
-                            let function_name = unwrap_or_return!(child.get_name(), continue);
-                            let function_args = unwrap_or_return!(child.get_arguments(), continue);
-                            let function_desc = unwrap_or_return!(child.get_comment(), continue);
+                            // Search for methods and constructors outside the system headers
+                            if !child.is_in_system_header() &&
+                                C_ENTITYKIND_CHECKS.contains(&child_kind)
+                            {
+                                let function_type = unwrap_or_return!(child.get_type(), continue)
+                                    .get_display_name();
+                                let function_name = unwrap_or_return!(child.get_name(), continue);
+                                let function_args =
+                                    unwrap_or_return!(child.get_arguments(), continue);
+                                let function_desc =
+                                    unwrap_or_return!(child.get_comment(), continue);
 
-                            let mut function = Function::new(function_name);
+                                let mut function = Function::new(function_name);
 
-                            function.set_return_type(function_type.as_str())?;
-                            function.set_arguments(&Self::format_arguments(&function_args)?);
-                            function.set_description(function_desc.as_str());
+                                function.set_return_type(function_type.as_str())?;
+                                function.set_arguments(&Self::format_arguments(&function_args)?);
+                                function.set_description(function_desc.as_str());
 
-                            project_file.add_function(function);
+                                entity.add_function(function);
+                            }
                         }
                     }
+                    project_file.add_entity(entity);
                 }
             }
             Err(e) => bail!(e),
@@ -105,10 +113,9 @@ impl Python {
                     if let Some(func) = function {
                         if let Expression::String(expr_v) = ent {
                             for expr in expr_v.iter() {
-                                let function =
-                                    functions
-                                        .entry(Self::build_hash_key(class, func))
-                                        .or_insert(Function::new(func));
+                                let function = functions
+                                    .entry(Self::build_hash_key(class, func))
+                                    .or_insert(Function::new(func));
                                 function.set_description(&expr.content.to_string_lossy());
                             }
                         }
@@ -123,8 +130,7 @@ impl Python {
 
                         // Function is not already in local function hashmap?
                         if !functions.contains_key(&key) {
-                            let mut function: Function =
-                                Function::new(expr.name.as_str());
+                            let mut function: Function = Function::new(expr.name.as_str());
 
                             // Split arguments and add them to the function
                             let mut arguments: Vec<Argument> = Vec::new();
@@ -193,7 +199,7 @@ impl LanguageType for Python {
             }
 
             for (_, function) in functions.into_iter() {
-                project_file.add_function(function);
+                // project_file.add_function(function);
             }
         }
 
