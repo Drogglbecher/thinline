@@ -57,12 +57,6 @@ where
     T: LanguageType,
 {
     /// Creates a new Analysis instance.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// let analysis_c: Analysis<C> = Analysis::new();
-    /// ```
     pub fn new() -> Self {
         Analysis {
             file_types: T::file_types(),

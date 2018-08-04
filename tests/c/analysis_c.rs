@@ -100,12 +100,15 @@ mod test_extract_entities {
             let project_file = filtered_project_files[0];
             assert_eq!(filtered_project_files.len(), 1);
 
-            assert_eq!(project_file.functions().len(), 4);
-            assert!(project_file.functions()[0].class.is_none());
-            assert_eq!(project_file.functions()[0].name, "test_int_no1");
-            assert_eq!(project_file.functions()[0].ftype, Some(String::from("int")));
-            assert_eq!(project_file.functions()[0].arguments.len(), 2);
-            assert_eq!(project_file.functions()[0].description.len(), 6);
+            assert!(project_file.entities()[0].entities.is_none());
+            let index = &project_file.entities()[0];
+            if let Some(functions) = &index.functions {
+                assert_eq!(functions.len(), 4);
+                assert_eq!(functions[0].name, "test_int_no1");
+                assert_eq!(functions[0].return_type, Some(String::from("int")));
+                assert_eq!(functions[0].arguments.len(), 2);
+                assert_eq!(functions[0].description.len(), 6);
+            }
         }
     }
 }

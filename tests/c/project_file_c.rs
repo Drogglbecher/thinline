@@ -11,5 +11,5 @@ fn test_new() {
 
     // Then
     assert_eq!(*project_file.path(), PathBuf::from("testpath"));
-    assert_eq!(project_file.functions().len(), 0);
+    assert_eq!(project_file.entit().len(), 0);
 }

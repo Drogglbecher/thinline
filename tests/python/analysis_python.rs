@@ -74,6 +74,7 @@ mod test_extract_entities {
 
     use std::path::Path;
     use thinlinelib::analysis::{Analysis, ProjectFile};
+    use thinlinelib::function::EntityType;
     use thinlinelib::language_type::Python;
 
     #[test]
@@ -120,21 +121,36 @@ mod test_extract_entities {
             assert_eq!(filtered_project_files.len(), 1);
             let project_file = filtered_project_files[0];
 
-            assert_eq!(project_file.functions().len(), 4);
-            let functions = project_file.functions();
-            let ffct = functions
-                .iter()
-                .filter(|fctf| fctf.name.contains("test_str"))
-                .next();
+            assert!(project_file.entities().get(0).is_some());
+            let index = &project_file.entities()[0];
 
-            assert!(ffct.is_some());
-            let fct = ffct.unwrap();
+            if let Some(index_functions) = &index.functions {
+                assert_eq!(index_functions.len(), 1);
+            } else {
+                assert!(false);
+            }
 
-            assert!(fct.class.is_some());
-            assert_eq!(fct.name, "test_str");
-            assert_eq!(fct.ftype, None);
-            assert_eq!(fct.arguments.len(), 2);
-            assert_eq!(fct.description.len(), 3);
+            if let Some(entities) = &index.entities {
+                assert_eq!(entities.len(), 1);
+                if let EntityType::Class(class_entity) = &entities[0] {
+                    if let Some(functions) = &class_entity.functions {
+                        let ffct = functions
+                            .iter()
+                            .filter(|fctf| fctf.name.contains("test_str"))
+                            .next();
+
+                        assert!(ffct.is_some());
+                        let fct = ffct.unwrap();
+
+                        assert_eq!(fct.name, "test_str");
+                        assert_eq!(fct.return_type, None);
+                        assert_eq!(fct.arguments.len(), 2);
+                        assert_eq!(fct.description.len(), 3);
+                    }
+                }
+            } else {
+                assert!(false);
+            }
         }
     }
 }
