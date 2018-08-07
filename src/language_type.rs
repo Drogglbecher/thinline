@@ -12,10 +12,10 @@ pub trait LanguageType: Default {
     fn extract_functions<T: LanguageType>(analysis: &Analysis<T>) -> Result<()>;
 }
 
-static C_FILE_EXTENSIONS: &[&str] = &["*.c", "*.h"];
+static C_FILE_EXTENSIONS: &[&str] = &["c", "h"];
 static C_ENTITYKIND_CHECKS: &[clang::EntityKind] =
     &[clang::EntityKind::FunctionDecl, clang::EntityKind::Method];
-static PYTHON_FILE_EXTENSIONS: &[&str] = &["*.py"];
+static PYTHON_FILE_EXTENSIONS: &[&str] = &["py"];
 
 #[derive(Default, Clone, Debug)]
 pub struct C;
@@ -81,6 +81,7 @@ impl LanguageType for C {
                                 index.add_function(function);
                             }
                         }
+                        println!("{:#?}", index);
                         project_file.add_entity(index);
                     }
                 }

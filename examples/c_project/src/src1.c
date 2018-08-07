@@ -32,4 +32,3 @@ int test_empty_fct() {
 int main(int argc, char* argv[]) {
     test_int_no1(1, 2);
 }
-

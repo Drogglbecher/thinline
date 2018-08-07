@@ -19,7 +19,7 @@ pub mod function;
 pub mod language_type;
 pub mod synthesis;
 
-use analysis::Analysis;
+use analysis::{Analysis, ProjectFile};
 use error::*;
 use language_type::LanguageType;
 use std::path::PathBuf;
@@ -48,10 +48,32 @@ where
     }
 
     /// Analyzes the project which should be tested.
-    pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_dir: P) -> Result<()> {
+    pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_path: P) -> Result<()> {
         self.analysis = Analysis::new();
-        self.analysis
-            .collect_sources(&project_dir.into(), &[".", "include"])?;
+        let project_path_p = project_path.into();
+
+        if project_path_p.is_dir() {
+            // Project path is a directory, thus it is neccessay to traverse to the project
+            // and collect all the sources.
+            self.analysis
+                .collect_sources(&project_path_p, &[".", "include"])?;
+        }
+
+        if project_path_p.is_file() {
+            if let Some(ext) = project_path_p.extension() {
+                // Project path is a file and has the right extension.
+                if T::file_types().contains(
+                    &ext.to_str()
+                        .ok_or_else(|| "Unable to stringify file extension.")?,
+                ) {
+                    // Push it to the project file vectory for analyzing purposes.
+                    self.analysis
+                        .project_files_mut()
+                        .push(ProjectFile::new(&project_path_p));
+                }
+            }
+        }
+
         self.analysis.extract_entities()?;
 
         Ok(())
