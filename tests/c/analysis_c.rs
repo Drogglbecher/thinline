@@ -94,7 +94,7 @@ mod test_extract_entities {
 
             let filtered_project_files: Vec<&ProjectFile<C>> = project_files
                 .iter()
-                .filter(|pf| pf.path().to_str().unwrap().ends_with("test1.c"))
+                .filter(|pf| pf.path.to_str().unwrap().ends_with("test1.c"))
                 .collect();
 
             let project_file = filtered_project_files[0];

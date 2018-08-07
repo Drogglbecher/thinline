@@ -115,7 +115,7 @@ mod test_extract_entities {
 
             let filtered_project_files: Vec<&ProjectFile<Python>> = project_files
                 .iter()
-                .filter(|pf| pf.path().to_str().unwrap().ends_with("test1.py"))
+                .filter(|pf| pf.path.to_str().unwrap().ends_with("test1.py"))
                 .collect();
 
             assert_eq!(filtered_project_files.len(), 1);

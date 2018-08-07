@@ -1,7 +1,7 @@
 use error::*;
 use function::Entity;
 use glob::glob;
-use language_type::{C, LanguageType};
+use language_type::LanguageType;
 use std::cell::{Ref, RefCell, RefMut};
 use std::marker::PhantomData;
 use std::path::PathBuf;
@@ -18,6 +18,20 @@ impl<T> ProjectFile<T>
 where
     T: LanguageType,
 {
+    /// Creates a new ProjectFile instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::path::PathBuf;
+    /// use thinlinelib::analysis::ProjectFile;
+    /// use thinlinelib::language_type::C;
+    ///
+    /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
+    ///
+    /// assert_eq!(project_file.path, PathBuf::from("test/project_file"));
+    /// assert_eq!(project_file.entities().len(), 0);
+    /// ```
     pub fn new<S: Into<PathBuf>>(path: S) -> Self {
         ProjectFile {
             pf_type: PhantomData,
@@ -26,18 +40,64 @@ where
         }
     }
 
-    pub fn path(&self) -> &PathBuf {
-        &self.path
-    }
-
+    /// Returns a reference to the entities list.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::cell::Ref;
+    /// use thinlinelib::analysis::ProjectFile;
+    /// use thinlinelib::language_type::C;
+    /// use thinlinelib::function::Entity;
+    ///
+    /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
+    /// project_file.add_entity(Entity::new("testEntity"));
+    ///
+    /// assert_eq!(project_file.entities().len(), 1);
+    /// ```
     pub fn entities(&self) -> Ref<Vec<Entity>> {
         self.entities.borrow()
     }
 
+    /// Returns a mutable reference to the entities list.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::cell::Ref;
+    /// use thinlinelib::analysis::ProjectFile;
+    /// use thinlinelib::language_type::C;
+    /// use thinlinelib::function::Entity;
+    ///
+    /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
+    /// project_file.add_entity(Entity::new("testEntity"));
+    ///
+    /// let mut entities = project_file.entities_mut();
+    /// assert_eq!(entities.len(), 1);
+    ///
+    /// entities.clear();
+    /// assert_eq!(entities.len(), 0);
+    /// ```
     pub fn entities_mut(&self) -> RefMut<Vec<Entity>> {
         self.entities.borrow_mut()
     }
 
+    /// Adds an Entity to the entities list.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::cell::Ref;
+    /// use thinlinelib::analysis::ProjectFile;
+    /// use thinlinelib::language_type::C;
+    /// use thinlinelib::function::Entity;
+    ///
+    /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
+    /// assert_eq!(project_file.entities().len(), 0);
+    ///
+    /// project_file.add_entity(Entity::new("testEntity"));
+    /// assert_eq!(project_file.entities().len(), 1);
+    /// ```
     pub fn add_entity(&self, entity: Entity) {
         self.entities_mut().push(entity);
     }
@@ -48,8 +108,8 @@ pub struct Analysis<T>
 where
     T: LanguageType,
 {
-    file_types: &'static [&'static str],
-    project_files: RefCell<Vec<ProjectFile<T>>>,
+    pub file_types: &'static [&'static str],
+    pub project_files: RefCell<Vec<ProjectFile<T>>>,
 }
 
 impl<T> Analysis<T>
@@ -57,16 +117,23 @@ where
     T: LanguageType,
 {
     /// Creates a new Analysis instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::analysis::Analysis;
+    /// use thinlinelib::language_type::{C, LanguageType};
+    ///
+    /// let analysis: Analysis<C> = Analysis::new();
+    ///
+    /// assert_eq!(analysis.file_types, C::file_types());
+    /// assert_eq!(analysis.project_files().len(), 0);
+    /// ```
     pub fn new() -> Self {
         Analysis {
             file_types: T::file_types(),
             project_files: RefCell::new(Vec::new()),
         }
-    }
-
-    /// Returns the file types which should be analyzed.
-    pub fn file_types(&self) -> &[&str] {
-        self.file_types
     }
 
     /// Returns a reference to the collected project files for anaylsis.
@@ -75,6 +142,20 @@ where
     }
 
     /// Returns a mutable reference to the collected project files for anaylsis.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::analysis::{Analysis, ProjectFile};
+    /// use thinlinelib::language_type::C;
+    ///
+    /// let analysis: Analysis<C> = Analysis::new();
+    /// let mut project_files = analysis.project_files_mut();
+    /// assert_eq!(project_files.len(), 0);
+    ///
+    /// project_files.push(ProjectFile::new("test/anotherFile"));
+    /// assert_eq!(project_files.len(), 1);
+    /// ```
     pub fn project_files_mut(&self) -> RefMut<Vec<ProjectFile<T>>> {
         self.project_files.borrow_mut()
     }
@@ -94,7 +175,7 @@ where
         // Traverse through the files within the specified source directories
         // and store them for analyzing purposes
         for src_dir in search_dirs {
-            for ext in self.file_types() {
+            for ext in self.file_types {
                 for entry in glob(
                     project_dir
                         .join(src_dir)

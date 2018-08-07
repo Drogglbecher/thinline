@@ -18,7 +18,7 @@ static C_ENTITYKIND_CHECKS: &[clang::EntityKind] =
 static PYTHON_FILE_EXTENSIONS: &[&str] = &["*.py"];
 
 #[derive(Default, Clone, Debug)]
-pub struct C {}
+pub struct C;
 
 impl C {
     fn format_arguments(arguments: &[clang::Entity]) -> Result<Vec<Argument>> {
@@ -73,7 +73,7 @@ impl LanguageType for C {
                 let clang_index = clang::Index::new(&clang, false, false);
                 for project_file in analysis.project_files().iter() {
                     if let EntityType::Index(mut index) = EntityType::Index(Entity::new("")) {
-                        let parsed_path = &clang_index.parser(project_file.path()).parse()?;
+                        let parsed_path = &clang_index.parser(&project_file.path).parse()?;
                         let clang_entity = parsed_path.get_entity();
                         // Iterate through the child entities of the current entity
                         for child in clang_entity.get_children() {
@@ -93,7 +93,7 @@ impl LanguageType for C {
 }
 
 #[derive(Default, Clone, Debug)]
-pub struct Python {}
+pub struct Python;
 
 impl Python {
     fn extract_function_doc(function: &mut Function, statement: &Statement) {
@@ -153,7 +153,7 @@ impl LanguageType for Python {
     fn extract_functions<Python: LanguageType>(analysis: &Analysis<Python>) -> Result<()> {
         for project_file in analysis.project_files().iter() {
             // Parse file to string
-            let mut file = File::open(project_file.path())?;
+            let mut file = File::open(&project_file.path)?;
             let mut content = String::new();
             file.read_to_string(&mut content)?;
 
@@ -166,7 +166,7 @@ impl LanguageType for Python {
                     }
                     Err(_) => bail!("Unable to create python AST."),
                 }
-                println!("{:?}", index);
+                println!("{:#?}", index);
                 project_file.add_entity(index);
             }
         }
@@ -181,7 +181,7 @@ fn new_c() {
     let analysis: Analysis<C> = Analysis::new();
 
     // Then
-    assert_eq!(analysis.file_types(), C_FILE_EXTENSIONS);
+    assert_eq!(analysis.file_types, C_FILE_EXTENSIONS);
     assert_eq!(analysis.project_files().len(), 0);
 }
 
@@ -191,6 +191,6 @@ fn new_python() {
     let analysis: Analysis<Python> = Analysis::new();
 
     // Then
-    assert_eq!(analysis.file_types(), PYTHON_FILE_EXTENSIONS);
+    assert_eq!(analysis.file_types, PYTHON_FILE_EXTENSIONS);
     assert_eq!(analysis.project_files().len(), 0);
 }
