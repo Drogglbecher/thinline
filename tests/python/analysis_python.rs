@@ -144,8 +144,14 @@ mod test_extract_entities {
 
                         assert_eq!(fct.name, "test_str");
                         assert_eq!(fct.return_type, None);
-                        assert_eq!(fct.arguments.len(), 2);
-                        assert_eq!(fct.description.len(), 3);
+                        assert!(fct.arguments.is_some());
+                        if let Some(args) = &fct.arguments {
+                            assert_eq!(args.len(), 2);
+                        }
+                        assert!(fct.description.is_some());
+                        if let Some(desc) = &fct.description {
+                            assert_eq!(desc.len(), 3);
+                        }
                     }
                 }
             } else {

@@ -104,10 +104,18 @@ mod test_extract_entities {
             let index = &project_file.entities()[0];
             if let Some(functions) = &index.functions {
                 assert_eq!(functions.len(), 4);
-                assert_eq!(functions[0].name, "test_int_no1");
-                assert_eq!(functions[0].return_type, Some(String::from("int")));
-                assert_eq!(functions[0].arguments.len(), 2);
-                assert_eq!(functions[0].description.len(), 6);
+
+                let fct = &functions[0];
+                assert_eq!(fct.name, "test_int_no1");
+                assert_eq!(fct.return_type, Some(String::from("int")));
+                assert!(fct.arguments.is_some());
+                if let Some(args) = &fct.arguments {
+                    assert_eq!(args.len(), 2);
+                }
+                assert!(fct.description.is_some());
+                if let Some(desc) = &fct.description {
+                    assert_eq!(desc.len(), 6);
+                }
             }
         }
     }

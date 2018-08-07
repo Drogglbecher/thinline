@@ -48,8 +48,10 @@ impl Function {
     ///
     /// let function = Function::new("testFunction");
     ///
-    /// assert_eq!(function.arguments.len(), 0);
-    /// assert_eq!(function.description.len(), 0);
+    /// assert_eq!(function.name, String::from("testFunction"));
+    /// assert!(function.return_type.is_none());
+    /// assert!(function.arguments.is_none());
+    /// assert!(function.description.is_none());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
         Function {
@@ -109,7 +111,7 @@ impl Function {
     /// #!TL_TESTCASE
     /// ");
     ///
-    /// assert_eq!(function.description.len(), 6);
+    /// assert!(function.description.is_some());
     /// ```
     pub fn set_description(&mut self, description: &str) {
         self.description = Some(
