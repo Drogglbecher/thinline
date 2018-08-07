@@ -34,8 +34,8 @@ impl Argument {
 pub struct Function {
     pub name: String,
     pub return_type: Option<String>,
-    pub arguments: Vec<Argument>,
-    pub description: Vec<String>,
+    pub arguments: Option<Vec<Argument>>,
+    pub description: Option<Vec<String>>,
 }
 
 impl Function {
@@ -55,8 +55,8 @@ impl Function {
         Function {
             name: name.into(),
             return_type: None,
-            arguments: Vec::new(),
-            description: Vec::new(),
+            arguments: None,
+            description: None,
         }
     }
 
@@ -112,22 +112,28 @@ impl Function {
     /// assert_eq!(function.description.len(), 6);
     /// ```
     pub fn set_description(&mut self, description: &str) {
-        self.description = description
-            .split('\n')
-            .map(|fd| {
-                String::from(
-                    fd.trim_left()
-                        .trim_left_matches('*')
-                        .trim_left_matches('/')
-                        .trim_left(),
-                )
-            })
-            .filter(|ref c| !c.is_empty() && c.as_str() != "**")
-            .collect()
+        self.description = Some(
+            description
+                .split('\n')
+                .map(|fd| {
+                    String::from(
+                        fd.trim_left()
+                            .trim_left_matches('*')
+                            .trim_left_matches('/')
+                            .trim_left(),
+                    )
+                })
+                .filter(|ref c| !c.is_empty() && c.as_str() != "**")
+                .collect(),
+        )
     }
 
     pub fn set_arguments(&mut self, arguments: &[Argument]) {
-        self.arguments = arguments.into();
+        if arguments.is_empty() {
+            self.arguments = None;
+        } else {
+            self.arguments = Some(arguments.into());
+        }
     }
 }
 

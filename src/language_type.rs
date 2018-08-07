@@ -44,16 +44,22 @@ impl C {
 
         // Search for methods and constructors outside the system headers
         if !entity.is_in_system_header() && C_ENTITYKIND_CHECKS.contains(&entity_kind) {
-            let function_type = unwrap_or_return!(entity.get_type(), Ok(None)).get_display_name();
-            let function_name = unwrap_or_return!(entity.get_name(), Ok(None));
-            let function_args = unwrap_or_return!(entity.get_arguments(), Ok(None));
-            let function_desc = unwrap_or_return!(entity.get_comment(), Ok(None));
+            let mut function = Function::new(unwrap_or_return!(entity.get_name(), Ok(None)));
 
-            let mut function = Function::new(function_name);
+            // Set return type.
+            if let Some(return_type) = entity.get_type() {
+                function.set_return_type(return_type.get_display_name().as_str())?;
+            }
 
-            function.set_return_type(function_type.as_str())?;
-            function.set_arguments(&Self::format_arguments(&function_args)?);
-            function.set_description(function_desc.as_str());
+            // Set arguments vector.
+            if let Some(arguments) = entity.get_arguments() {
+                function.set_arguments(&Self::format_arguments(&arguments)?);
+            }
+
+            // Set description.
+            if let Some(description) = entity.get_comment() {
+                function.set_description(description.as_str());
+            }
 
             return Ok(Some(function));
         }
@@ -75,6 +81,7 @@ impl LanguageType for C {
                     if let EntityType::Index(mut index) = EntityType::Index(Entity::new("")) {
                         let parsed_path = &clang_index.parser(&project_file.path).parse()?;
                         let clang_entity = parsed_path.get_entity();
+
                         // Iterate through the child entities of the current entity
                         for child in clang_entity.get_children() {
                             if let Ok(Some(function)) = Self::analyse_clang_entity(&child) {
