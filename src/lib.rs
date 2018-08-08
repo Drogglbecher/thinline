@@ -53,6 +53,7 @@ where
         Self::default()
     }
 
+    /// Parses configuration from the given config yaml.
     pub fn parse_project_config<P: Into<PathBuf>>(
         &mut self,
         project_dir: P,

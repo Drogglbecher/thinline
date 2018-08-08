@@ -41,7 +41,10 @@ fn run() -> Result<()> {
         .value_of("project_config")
         .ok_or_else(|| "CLI parameter 'project_config' missing.")?;
 
+    // Parses the project config.
     thinline.parse_project_config(source_directory, thinline_cfg_name)?;
+
+    // Analyze the project at the given source directory.
     thinline.analyze_project(source_directory)?;
 
     Ok(())

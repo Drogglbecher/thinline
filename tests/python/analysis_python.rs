@@ -19,7 +19,7 @@ mod test_collect_sources {
             let python_test_src_path = Path::new("tests").join("testdata").join("python_sources");
             assert!(
                 analysis
-                    .collect_sources(&python_test_src_path, &["."])
+                    .collect_sources(&python_test_src_path, &[String::from(".")])
                     .is_ok()
             );
 
@@ -46,7 +46,7 @@ mod test_collect_sources {
             // Then
             assert!(
                 analysis
-                    .collect_sources(&python_test_src_path, &["."])
+                    .collect_sources(&python_test_src_path, &[String::from(".")])
                     .is_err()
             );
         }
@@ -62,7 +62,7 @@ mod test_collect_sources {
             // Then
             assert!(
                 analysis
-                    .collect_sources(&python_test_src_path, &["."])
+                    .collect_sources(&python_test_src_path, &[String::from(".")])
                     .is_err()
             );
         }
@@ -94,7 +94,7 @@ mod test_extract_entities {
             // Then
             assert!(
                 analysis
-                    .collect_sources(&python_test_src_path, &["."])
+                    .collect_sources(&python_test_src_path, &[String::from(".")])
                     .is_ok()
             );
             assert!(analysis.extract_entities().is_ok());
@@ -106,7 +106,7 @@ mod test_extract_entities {
 
             assert!(
                 analysis
-                    .collect_sources(&python_test_src_path, &["."])
+                    .collect_sources(&python_test_src_path, &[String::from(".")])
                     .is_ok()
             );
             assert!(analysis.extract_entities().is_ok());

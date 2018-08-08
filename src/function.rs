@@ -130,6 +130,7 @@ impl Function {
         )
     }
 
+    /// Sets arguments for the Function.
     pub fn set_arguments(&mut self, arguments: &[Argument]) {
         if arguments.is_empty() {
             self.arguments = None;

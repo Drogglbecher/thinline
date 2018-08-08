@@ -17,7 +17,7 @@ mod test_collect_sources {
 
             // When
             let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
-            assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_ok());
+            assert!(analysis.collect_sources(&c_test_src_path, &[String::from(".")]).is_ok());
 
             // Then
             assert_eq!(analysis.project_files().len(), 5);
@@ -40,7 +40,7 @@ mod test_collect_sources {
             let c_test_src_path = Path::new("not").join("existing");
 
             // Then
-            assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_err());
+            assert!(analysis.collect_sources(&c_test_src_path, &[String::from(".")]).is_err());
         }
 
         #[test]
@@ -52,7 +52,7 @@ mod test_collect_sources {
             let c_test_src_path = Path::new("tests").join("lib.rs");
 
             // Then
-            assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_err());
+            assert!(analysis.collect_sources(&c_test_src_path, &[String::from(".")]).is_err());
         }
     }
 }
@@ -79,7 +79,7 @@ mod test_extract_entities {
             let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
 
             // Then
-            assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_ok());
+            assert!(analysis.collect_sources(&c_test_src_path, &[String::from(".")]).is_ok());
             assert!(analysis.extract_entities().is_ok());
         }
         {
@@ -87,7 +87,7 @@ mod test_extract_entities {
             let analysis: Analysis<C> = Analysis::new();
             let c_test_src_path = Path::new("tests").join("testdata").join("c_sources");
 
-            assert!(analysis.collect_sources(&c_test_src_path, &["."]).is_ok());
+            assert!(analysis.collect_sources(&c_test_src_path, &[String::from(".")]).is_ok());
             assert!(analysis.extract_entities().is_ok());
 
             let project_files: Vec<ProjectFile<C>> = analysis.project_files().to_vec();
