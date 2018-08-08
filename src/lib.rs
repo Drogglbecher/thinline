@@ -12,14 +12,17 @@ extern crate python_parser;
 extern crate regex;
 extern crate slog_envlogger;
 extern crate walkdir;
+extern crate yaml_rust;
 
 pub mod analysis;
+pub mod config_parser;
 pub mod error;
 pub mod function;
 pub mod language_type;
 pub mod synthesis;
 
 use analysis::{Analysis, ProjectFile};
+use config_parser::ProjectParameters;
 use error::*;
 use language_type::LanguageType;
 use std::path::PathBuf;
@@ -31,6 +34,9 @@ pub struct Thinline<T>
 where
     T: LanguageType,
 {
+    /// The parsed project parameters.
+    pub project_parameters: ProjectParameters,
+
     /// The structure holding the analysis_c data.
     pub analysis: Analysis<T>,
 
@@ -45,6 +51,33 @@ where
     /// Creates an instance of the lib containing Thinlines functionality.
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn parse_project_config<P: Into<PathBuf>>(
+        &mut self,
+        project_dir: P,
+        config_name: &str,
+    ) -> Result<()> {
+        let project_config = project_dir.into().join(config_name);
+
+        if !project_config.exists() || !project_config.is_file() {
+            return Err(Error::from(format!(
+                "The given project config file '{}' does not exist or is a directory.",
+                project_config
+                    .to_str()
+                    .ok_or_else(|| "Unable to stringify project config file.")?
+            )));
+        }
+
+        self.project_parameters = ProjectParameters::parse(
+            project_config
+                .to_str()
+                .ok_or_else(|| "Unable to stringify project config file.")?,
+        )?;
+
+        println!("{:?}", self.project_parameters);
+
+        Ok(())
     }
 
     /// Analyzes the project which should be tested.

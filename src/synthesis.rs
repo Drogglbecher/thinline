@@ -13,4 +13,5 @@ pub struct TestFile<T> {
 impl<T> TestFile<T>
 where
     T: LanguageType,
-{}
+{
+}
