@@ -88,8 +88,10 @@ where
         if project_path_p.is_dir() {
             // Project path is a directory, thus it is neccessay to traverse to the project
             // and collect all the sources.
-            self.analysis
-                .collect_sources(&project_path_p, &[".", "include"])?;
+            if let Some(source_dirs) = &self.project_parameters.source_dirs {
+                self.analysis
+                    .collect_sources(&project_path_p, &source_dirs)?;
+            }
         }
 
         if project_path_p.is_file() {

@@ -161,7 +161,7 @@ where
     }
 
     /// Collect all the sources within the given project dir.
-    pub fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[&str]) -> Result<()> {
+    pub fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[String]) -> Result<()> {
         // Check the given project directory
         if !project_dir.exists() || !project_dir.is_dir() {
             return Err(Error::from(format!(
