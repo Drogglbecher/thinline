@@ -74,7 +74,7 @@ mod test_extract_entities {
 
     use std::path::Path;
     use thinlinelib::analysis::{Analysis, ProjectFile};
-    use thinlinelib::function::EntityType;
+    use thinlinelib::entity::EntityType;
     use thinlinelib::language_type::Python;
 
     #[test]

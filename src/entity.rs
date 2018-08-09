@@ -13,7 +13,7 @@ impl Argument {
     /// # Example
     ///
     /// ```
-    /// use thinlinelib::function::Argument;
+    /// use thinlinelib::entity::Argument;
     ///
     /// let argument = Argument::new("int1", Some("int"));
     ///
@@ -44,7 +44,7 @@ impl Function {
     /// # Example
     ///
     /// ```
-    /// use thinlinelib::function::Function;
+    /// use thinlinelib::entity::Function;
     ///
     /// let function = Function::new("testFunction");
     ///
@@ -67,7 +67,7 @@ impl Function {
     /// # Example
     ///
     /// ```
-    /// use thinlinelib::function::Function;
+    /// use thinlinelib::entity::Function;
     ///
     /// let mut function = Function::new("testFunction");
     /// function.set_return_type("int");
@@ -99,7 +99,7 @@ impl Function {
     /// # Example
     ///
     /// ```
-    /// use thinlinelib::function::Function;
+    /// use thinlinelib::entity::Function;
     ///
     /// let mut function = Function::new("testFunction");
     /// function.set_description("
@@ -168,7 +168,7 @@ impl Entity {
     /// # Example
     ///
     /// ```
-    /// use thinlinelib::function::Entity;
+    /// use thinlinelib::entity::Entity;
     ///
     /// let class = Entity::new("testClass");
     ///
@@ -188,7 +188,7 @@ impl Entity {
     /// # Example
     ///
     /// ```
-    /// use thinlinelib::function::{Entity, EntityType};
+    /// use thinlinelib::entity::{Entity, EntityType};
     ///
     /// let mut entity = Entity::new("outer_entity");
     /// let entity_type = EntityType::Class(Entity::new("inner_entity"));
@@ -214,7 +214,7 @@ impl Entity {
     /// # Example
     ///
     /// ```
-    /// use thinlinelib::function::{Entity, Function};
+    /// use thinlinelib::entity::{Entity, Function};
     ///
     /// let mut entity = Entity::new("entity");
     /// let function = Function::new("func");

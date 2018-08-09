@@ -1,7 +1,7 @@
 use analysis::Analysis;
 use clang;
 use error::*;
-use function::{Argument, Entity, EntityType, Function};
+use entity::{Argument, Entity, EntityType, Function};
 use python_parser::ast::{CompoundStatement, Expression, Statement};
 use python_parser::{file_input, make_strspan};
 use std::fs::File;

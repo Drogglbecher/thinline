@@ -16,8 +16,8 @@ extern crate yaml_rust;
 
 pub mod analysis;
 pub mod config_parser;
+pub mod entity;
 pub mod error;
-pub mod function;
 pub mod language_type;
 pub mod synthesis;
 

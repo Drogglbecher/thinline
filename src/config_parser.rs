@@ -87,7 +87,7 @@ pub struct ProjectParameters {
     pub test_env: String,
 
     /// The build steps which should be executed when the build-option is set.
-    pub build_script: Option<BuildScript>,
+    pub build_script: BuildScript,
 
     /// Paths to libraries which should be linked.
     pub lib_paths: Option<Vec<String>>,
@@ -103,8 +103,9 @@ impl ProjectParameters {
     /// Parses the project parameters from the given yaml file.
     pub fn parse(yml: &str) -> Result<ProjectParameters> {
         if let Ok(yml_params) = YamlLoader::load_from_str(read_to_string(yml)?.as_str()) {
-            let mut params = ProjectParameters::default();
             if let Some(yml_param) = yml_params.get(0) {
+                let mut params = ProjectParameters::default();
+
                 params.test_env = String::from(
                     yml_param
                         .get_str(&["test_env"])
@@ -113,8 +114,8 @@ impl ProjectParameters {
 
                 params.source_dirs = yml_param.get_str_vec(&["src_dirs"]).to_string_vec();
                 params.include_dirs = yml_param.get_str_vec(&["include_dirs"]).to_string_vec();
-                // params.build_script.linux = yml_param.get_str_vec(&["build_script", "linux"]).to_string_vec();
-                // params.build_script.windows = yml_param.get_str_vec(&["build_script", "windows"]).to_string_vec();
+                params.build_script.linux = yml_param.get_str_vec(&["build_script", "linux"]).to_string_vec();
+                params.build_script.windows = yml_param.get_str_vec(&["build_script", "windows"]).to_string_vec();
                 params.lib_paths = yml_param.get_str_vec(&["libs"]).to_string_vec();
 
                 return Ok(params);

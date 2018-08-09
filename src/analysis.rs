@@ -1,5 +1,5 @@
 use error::*;
-use function::Entity;
+use entity::Entity;
 use glob::glob;
 use language_type::LanguageType;
 use std::cell::{Ref, RefCell, RefMut};
@@ -45,10 +45,9 @@ where
     /// # Example
     ///
     /// ```
-    /// use std::cell::Ref;
     /// use thinlinelib::analysis::ProjectFile;
+    /// use thinlinelib::entity::Entity;
     /// use thinlinelib::language_type::C;
-    /// use thinlinelib::function::Entity;
     ///
     /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
     /// project_file.add_entity(Entity::new("testEntity"));
@@ -64,10 +63,9 @@ where
     /// # Example
     ///
     /// ```
-    /// use std::cell::Ref;
     /// use thinlinelib::analysis::ProjectFile;
+    /// use thinlinelib::entity::Entity;
     /// use thinlinelib::language_type::C;
-    /// use thinlinelib::function::Entity;
     ///
     /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
     /// project_file.add_entity(Entity::new("testEntity"));
@@ -87,10 +85,9 @@ where
     /// # Example
     ///
     /// ```
-    /// use std::cell::Ref;
     /// use thinlinelib::analysis::ProjectFile;
+    /// use thinlinelib::entity::Entity;
     /// use thinlinelib::language_type::C;
-    /// use thinlinelib::function::Entity;
     ///
     /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
     /// assert_eq!(project_file.entities().len(), 0);
