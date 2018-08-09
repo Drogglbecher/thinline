@@ -5,6 +5,7 @@ use error::*;
 pub struct Argument {
     pub name: String,
     pub atype: Option<String>,
+    pub value: Option<String>,
 }
 
 impl Argument {
@@ -25,7 +26,25 @@ impl Argument {
         Argument {
             name: name.into(),
             atype: atype.map(S::into),
+            value: None,
         }
+    }
+
+    /// Sets a value to the argument.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::entity::Argument;
+    ///
+    /// let mut argument = Argument::new("arg", Some("std::string"));
+    /// argument.set_value("FirstArg");
+    ///
+    /// assert!(argument.value.is_some());
+    ///
+    /// ```
+    pub fn set_value(&mut self, value: &str) {
+        self.value = Some(String::from(value));
     }
 }
 
@@ -140,8 +159,88 @@ impl Function {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+/// Reprensents a parsed enum argument.
+#[derive(Default, Debug, Clone, PartialEq)]
+pub struct Enum {
+    pub name: String,
+    pub etype: Option<String>,
+    pub arguments: Option<Vec<Argument>>,
+}
+
+impl Enum {
+    /// Creates a new Enum instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::entity::Enum;
+    ///
+    /// let enumeration = Enum::new("testEnum");
+    ///
+    /// assert_eq!(enumeration.name, String::from("testEnum"));
+    /// assert!(enumeration.etype.is_none());
+    /// assert!(enumeration.arguments.is_none());
+    /// ```
+    pub fn new<S: Into<String>>(name: S) -> Self {
+        Enum {
+            name: name.into(),
+            etype: None,
+            arguments: None,
+        }
+    }
+
+    /// Sets arguments for the Enum.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::entity::{Argument, Enum};
+    ///
+    /// let mut enumeration = Enum::new("testEnum");
+    /// let args = vec![Argument::new("Zero", Some("0")), Argument::new("Two", Some("2"))];
+    /// enumeration.set_arguments(&args);
+    ///
+    /// assert!(enumeration.arguments.is_some());
+    /// assert_eq!(enumeration.arguments.unwrap().len(), 2);
+    /// ```
+    pub fn set_arguments(&mut self, arguments: &[Argument]) {
+        if arguments.is_empty() {
+            self.arguments = None;
+        } else {
+            self.arguments = Some(arguments.into());
+        }
+    }
+
+    /// Adds an Argument to the Enum argument list.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::entity::{Argument, Enum};
+    ///
+    /// let mut argument = Argument::new("arg", Some("std::string"));
+    /// argument.set_value("FirstArg");
+    ///
+    /// let mut enumeration = Enum::new("enum");
+    /// enumeration.push_argument(argument);
+    ///
+    /// assert!(enumeration.arguments.is_some());
+    /// assert_eq!(enumeration.arguments.unwrap().len(), 1);
+    ///
+    /// ```
+    pub fn push_argument(&mut self, argument: Argument) {
+        if self.arguments.is_none() {
+            self.arguments = Some(Vec::new());
+        }
+
+        if let Some(arguments) = &mut self.arguments {
+            arguments.push(argument);
+        }
+    }
+}
+
 /// The different types an Entitiy can have.
+#[derive(Clone, Debug, PartialEq)]
 pub enum EntityType {
     /// A class definition.
     Class(Entity),
