@@ -1,5 +1,18 @@
 use error::*;
 
+macro_rules! implement_conversion {
+    ($t:ident) => {
+        impl EntityConversion for $t {
+            fn convert(entity_type: &mut EntityType) -> Option<&mut $t> {
+                match entity_type {
+                    EntityType::$t(entity) => Some(entity),
+                    _ => None,
+                }
+            }
+        }
+    };
+}
+
 /// Reprensents a parsed function argument.
 #[derive(Default, Debug, Clone, PartialEq)]
 pub struct Argument {
@@ -242,14 +255,29 @@ impl Enum {
 /// The different types an Entitiy can have.
 #[derive(Clone, Debug, PartialEq)]
 pub enum EntityType {
-    /// A class definition.
-    Class(Entity),
-
-    /// A namespace.
-    Namespace(Entity),
-
     /// The index of a new entity hierarchy.
-    Index(Entity),
+    Entity(Entity),
+
+    /// A function.
+    Function(Function),
+
+    /// An enumeration.
+    Enum(Enum),
+}
+
+pub trait EntityConversion {
+    fn convert(entity_type: &mut EntityType) -> Option<&mut Self>;
+}
+
+implement_conversion!(Entity);
+implement_conversion!(Function);
+implement_conversion!(Enum);
+
+fn convert<T>(entity_type: &mut EntityType) -> Option<&mut T>
+where
+    T: EntityConversion,
+{
+    T::convert(entity_type)
 }
 
 /// The representation of an Entity as a possbile generic node on the
@@ -258,7 +286,6 @@ pub enum EntityType {
 pub struct Entity {
     pub name: String,
     pub entities: Option<Vec<EntityType>>,
-    pub functions: Option<Vec<Function>>,
 }
 
 impl Entity {
@@ -271,14 +298,13 @@ impl Entity {
     ///
     /// let class = Entity::new("testClass");
     ///
-    /// assert!(class.functions.is_none());
+    /// assert_eq!(class.name, "testClass");
     /// assert!(class.entities.is_none());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
         Entity {
             name: name.into(),
             entities: None,
-            functions: None,
         }
     }
 
@@ -290,45 +316,38 @@ impl Entity {
     /// use thinlinelib::entity::{Entity, EntityType};
     ///
     /// let mut entity = Entity::new("outer_entity");
-    /// let entity_type = EntityType::Class(Entity::new("inner_entity"));
-    /// entity.add_entity(entity_type);
+    /// let entity_type = EntityType::Entity(Entity::new("inner_entity"));
+    /// entity.add_entity::<Entity>(entity_type);
     ///
     /// assert!(entity.entities.is_some());
     /// ```
-    pub fn add_entity(&mut self, entity: EntityType) -> Option<&mut EntityType> {
+    pub fn add_entity<T>(&mut self, entity: EntityType) -> Option<&mut T>
+    where
+        T: EntityConversion,
+    {
         if self.entities.is_none() {
             self.entities = Some(Vec::new());
         }
 
         if let Some(entities) = &mut self.entities {
             entities.push(entity);
-            return entities.last_mut();
+            if let Some(entity) = entities.last_mut() {
+                return convert(entity);
+            }
         }
 
         None
     }
 
-    /// Adds a Function to the Entity instance.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use thinlinelib::entity::{Entity, Function};
-    ///
-    /// let mut entity = Entity::new("entity");
-    /// let function = Function::new("func");
-    /// entity.add_function(function);
-    ///
-    /// assert!(entity.functions.is_some());
-    /// ```
-    pub fn add_function(&mut self, function: Function) -> Option<&mut Function> {
-        if self.functions.is_none() {
-            self.functions = Some(Vec::new());
-        }
-
-        if let Some(functions) = &mut self.functions {
-            functions.push(function);
-            return functions.last_mut();
+    pub fn functions(&self) -> Option<Vec<&Function>> {
+        if let Some(entities) = &self.entities {
+            let mut entity_vec: Vec<&Function> = Vec::new();
+            for entity in entities {
+                if let EntityType::Function(fct) = entity {
+                    entity_vec.push(&fct);
+                }
+            }
+            return Some(entity_vec);
         }
 
         None

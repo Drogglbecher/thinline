@@ -100,9 +100,8 @@ mod test_extract_entities {
             let project_file = filtered_project_files[0];
             assert_eq!(filtered_project_files.len(), 1);
 
-            assert!(project_file.entities()[0].entities.is_none());
             let index = &project_file.entities()[0];
-            if let Some(functions) = &index.functions {
+            if let Some(functions) = &index.functions() {
                 assert_eq!(functions.len(), 4);
 
                 let fct = &functions[0];

@@ -1,5 +1,5 @@
-use error::*;
 use entity::Entity;
+use error::*;
 use glob::glob;
 use language_type::LanguageType;
 use std::cell::{Ref, RefCell, RefMut};

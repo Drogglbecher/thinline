@@ -6,8 +6,6 @@ extern crate clang;
 extern crate error_chain;
 extern crate glob;
 extern crate lazy_static;
-#[macro_use]
-extern crate mac;
 extern crate python_parser;
 extern crate regex;
 extern crate slog_envlogger;

@@ -29,7 +29,7 @@ fn run() -> Result<()> {
     let matches = app.get_matches();
 
     // Creates a new Thinline instance
-    let mut thinline: Thinline<Python> = Thinline::new();
+    let mut thinline: Thinline<C> = Thinline::new();
 
     // Reads the source directory where file traversing should start.
     let source_directory = matches

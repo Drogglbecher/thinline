@@ -124,16 +124,16 @@ mod test_extract_entities {
             assert!(project_file.entities().get(0).is_some());
             let index = &project_file.entities()[0];
 
-            if let Some(index_functions) = &index.functions {
+            if let Some(index_functions) = &index.functions() {
                 assert_eq!(index_functions.len(), 1);
             } else {
                 assert!(false);
             }
 
             if let Some(entities) = &index.entities {
-                assert_eq!(entities.len(), 1);
-                if let EntityType::Class(class_entity) = &entities[0] {
-                    if let Some(functions) = &class_entity.functions {
+                assert_eq!(entities.len(), 2);
+                if let EntityType::Entity(class_entity) = &entities[0] {
+                    if let Some(functions) = &class_entity.functions() {
                         let ffct = functions
                             .iter()
                             .filter(|fctf| fctf.name.contains("test_str"))

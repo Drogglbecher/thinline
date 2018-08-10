@@ -112,10 +112,14 @@ impl ProjectParameters {
                         .ok_or_else(|| "Unable to get parameters for 'test_env'.")?,
                 );
 
-                params.source_dirs = yml_param.get_str_vec(&["src_dirs"]).to_string_vec();
+                params.source_dirs = yml_param.get_str_vec(&["analysis_dirs"]).to_string_vec();
                 params.include_dirs = yml_param.get_str_vec(&["include_dirs"]).to_string_vec();
-                params.build_script.linux = yml_param.get_str_vec(&["build_script", "linux"]).to_string_vec();
-                params.build_script.windows = yml_param.get_str_vec(&["build_script", "windows"]).to_string_vec();
+                params.build_script.linux = yml_param
+                    .get_str_vec(&["build_script", "linux"])
+                    .to_string_vec();
+                params.build_script.windows = yml_param
+                    .get_str_vec(&["build_script", "windows"])
+                    .to_string_vec();
                 params.lib_paths = yml_param.get_str_vec(&["libs"]).to_string_vec();
 
                 return Ok(params);

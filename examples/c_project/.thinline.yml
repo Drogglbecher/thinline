@@ -1,6 +1,6 @@
 ---
 test_env: google_test
-src_dirs:
+analysis_dirs:
   - src
   - include
 include_dirs:
