@@ -16,9 +16,9 @@ pub trait LanguageType: Default {
 static C_FILE_EXTENSIONS: &[&str] = &["c", "h"];
 
 #[derive(Default, Clone, Debug)]
-pub struct C;
+struct CFamily;
 
-impl C {
+impl CFamily {
     fn format_arguments(arguments: &[clang::Entity]) -> Result<Vec<Argument>> {
         let mut args = Vec::new();
 
@@ -37,6 +37,58 @@ impl C {
         Ok(args)
     }
 
+    fn analyse_clang_function_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+        if let Some(entity_name) = entity.get_name() {
+            let mut function = Function::new(entity_name);
+
+            // Set return type.
+            if let Some(return_type) = entity.get_type() {
+                function.set_return_type(
+                    return_type.get_display_name().as_str(),
+                )?;
+            }
+
+            // Set arguments vector.
+            if let Some(arguments) = entity.get_arguments() {
+                function.set_arguments(&Self::format_arguments(&arguments)?);
+            }
+
+            // Set description.
+            if let Some(description) = entity.get_comment() {
+                function.set_description(description.as_str());
+            }
+
+            return Ok(Some(EntityType::Function(function)));
+        }
+
+        Ok(None)
+    }
+
+    fn analyse_clang_enum_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+        if let Some(entity_name) = entity.get_name() {
+            let enumeration = Enum::new(entity_name);
+
+            return Ok(Some(EntityType::Enum(enumeration)));
+        }
+
+        Ok(None)
+    }
+
+    fn analyse_clang_generic_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+        if let Some(entity_name) = entity.get_name() {
+            let entity = Entity::new(entity_name);
+
+            return Ok(Some(EntityType::Entity(entity)));
+        }
+
+        Ok(None)
+    }
+}
+
+#[derive(Default, Clone, Debug)]
+pub struct C;
+
+impl C {
     fn analyse_clang_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
         let entity_kind = entity.get_kind();
 
@@ -44,33 +96,10 @@ impl C {
         if !entity.is_in_system_header() {
             match &entity_kind {
                 clang::EntityKind::FunctionDecl => {
-                    if let Some(entity_name) = entity.get_name() {
-                        let mut function = Function::new(entity_name);
-
-                        // Set return type.
-                        if let Some(return_type) = entity.get_type() {
-                            function.set_return_type(return_type.get_display_name().as_str())?;
-                        }
-
-                        // Set arguments vector.
-                        if let Some(arguments) = entity.get_arguments() {
-                            function.set_arguments(&Self::format_arguments(&arguments)?);
-                        }
-
-                        // Set description.
-                        if let Some(description) = entity.get_comment() {
-                            function.set_description(description.as_str());
-                        }
-
-                        return Ok(Some(EntityType::Function(function)));
-                    }
+                    return CFamily::analyse_clang_function_entity(entity);
                 }
                 clang::EntityKind::EnumDecl => {
-                    if let Some(entity_name) = entity.get_name() {
-                        let enumeration = Enum::new(entity_name);
-
-                        return Ok(Some(EntityType::Enum(enumeration)));
-                    }
+                    return CFamily::analyse_clang_enum_entity(entity);
                 }
                 _ => {}
             }
@@ -123,7 +152,31 @@ pub struct Cpp;
 
 impl Cpp {
     fn analyse_clang_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
-        C::analyse_clang_entity(entity)
+        let entity_kind = entity.get_kind();
+
+        // Search for functions outside the system headers
+        if !entity.is_in_system_header() {
+            match &entity_kind {
+                clang::EntityKind::Constructor |
+                clang::EntityKind::Destructor |
+                clang::EntityKind::Method |
+                clang::EntityKind::FunctionDecl => {
+                    return CFamily::analyse_clang_function_entity(entity);
+                }
+                clang::EntityKind::EnumDecl => {
+                    return CFamily::analyse_clang_enum_entity(entity);
+                }
+                clang::EntityKind::ClassDecl |
+                clang::EntityKind::Namespace => {
+                    return CFamily::analyse_clang_generic_entity(entity);
+                }
+                _ => {}
+            }
+
+            return Ok(None);
+        }
+
+        Ok(None)
     }
 
     fn analyse_clang_entity_tree(parent: &mut Entity, clang_entity: &clang::Entity) -> Result<()> {
