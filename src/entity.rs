@@ -339,6 +339,7 @@ impl Entity {
         None
     }
 
+    /// Returns the functions of an entity.
     pub fn functions(&self) -> Option<Vec<&Function>> {
         if let Some(entities) = &self.entities {
             let mut entity_vec: Vec<&Function> = Vec::new();
