@@ -20,7 +20,7 @@ mod test_collect_sources {
             assert!(analysis.collect_sources(&c_test_src_path, &[String::from(".")]).is_ok());
 
             // Then
-            assert_eq!(analysis.project_files().len(), 5);
+            assert_eq!(analysis.project_files().len(), 6);
         }
     }
 
