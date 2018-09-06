@@ -309,22 +309,56 @@ impl LanguageType for Python {
     }
 }
 
-#[test]
-fn new_c() {
-    // Given
-    let analysis: Analysis<C> = Analysis::new();
+#[cfg(test)]
+mod c {
+    use super::{Analysis, C, C_FILE_EXTENSIONS, LanguageType};
 
-    // Then
-    assert_eq!(analysis.file_types, C_FILE_EXTENSIONS);
-    assert_eq!(analysis.project_files().len(), 0);
+    #[test]
+    fn new() {
+        let analysis: Analysis<C> = Analysis::new();
+
+        assert_eq!(analysis.file_types, C_FILE_EXTENSIONS);
+        assert_eq!(analysis.project_files().len(), 0);
+    }
+
+    #[test]
+    fn file_types() {
+        assert_eq!(C::file_types(), C_FILE_EXTENSIONS);
+    }
 }
 
-#[test]
-fn new_python() {
-    // Given
-    let analysis: Analysis<Python> = Analysis::new();
+#[cfg(test)]
+mod cpp {
+    use super::{Analysis, Cpp, CPP_FILE_EXTENSIONS, LanguageType};
 
-    // Then
-    assert_eq!(analysis.file_types, PYTHON_FILE_EXTENSIONS);
-    assert_eq!(analysis.project_files().len(), 0);
+    #[test]
+    fn new() {
+        let analysis: Analysis<Cpp> = Analysis::new();
+
+        assert_eq!(analysis.file_types, CPP_FILE_EXTENSIONS);
+        assert_eq!(analysis.project_files().len(), 0);
+    }
+
+    #[test]
+    fn file_types() {
+        assert_eq!(Cpp::file_types(), CPP_FILE_EXTENSIONS);
+    }
+}
+
+#[cfg(test)]
+mod python {
+    use super::{Analysis, LanguageType, Python, PYTHON_FILE_EXTENSIONS};
+
+    #[test]
+    fn new() {
+        let analysis: Analysis<Python> = Analysis::new();
+
+        assert_eq!(analysis.file_types, PYTHON_FILE_EXTENSIONS);
+        assert_eq!(analysis.project_files().len(), 0);
+    }
+
+    #[test]
+    fn file_types() {
+        assert_eq!(Python::file_types(), PYTHON_FILE_EXTENSIONS);
+    }
 }
