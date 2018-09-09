@@ -32,6 +32,7 @@ env:
 
 cache:
   apt: true
+  cargo: true
   directories:
     - $HOME/.llvm
 
