@@ -192,6 +192,6 @@ where
 
     /// Extracts function signatures and comments of thinlines parsed files.
     pub fn extract_entities(&self) -> Result<()> {
-        T::extract_functions(&self)
+        T::extract_entities(&self)
     }
 }

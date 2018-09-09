@@ -9,7 +9,7 @@ use std::io::Read;
 
 pub trait LanguageType: Default {
     fn file_types() -> &'static [&'static str];
-    fn extract_functions<T: LanguageType>(analysis: &Analysis<T>) -> Result<()>;
+    fn extract_entities<T: LanguageType>(analysis: &Analysis<T>) -> Result<()>;
 }
 
 /// The file extensions which should be checked for C project analysis.
@@ -116,7 +116,7 @@ impl LanguageType for C {
         C_FILE_EXTENSIONS
     }
 
-    fn extract_functions<C: LanguageType>(analysis: &Analysis<C>) -> Result<()> {
+    fn extract_entities<C: LanguageType>(analysis: &Analysis<C>) -> Result<()> {
         match clang::Clang::new() {
             Ok(clang) => {
                 let clang_index = clang::Index::new(&clang, false, false);
@@ -198,7 +198,7 @@ impl LanguageType for Cpp {
         CPP_FILE_EXTENSIONS
     }
 
-    fn extract_functions<Cpp: LanguageType>(analysis: &Analysis<Cpp>) -> Result<()> {
+    fn extract_entities<Cpp: LanguageType>(analysis: &Analysis<Cpp>) -> Result<()> {
         match clang::Clang::new() {
             Ok(clang) => {
                 let clang_index = clang::Index::new(&clang, false, false);
@@ -284,7 +284,7 @@ impl LanguageType for Python {
         PYTHON_FILE_EXTENSIONS
     }
 
-    fn extract_functions<Python: LanguageType>(analysis: &Analysis<Python>) -> Result<()> {
+    fn extract_entities<Python: LanguageType>(analysis: &Analysis<Python>) -> Result<()> {
         for project_file in analysis.project_files().iter() {
             // Parse file to string
             let mut file = File::open(&project_file.path)?;
