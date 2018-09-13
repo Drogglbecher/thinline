@@ -59,14 +59,16 @@ mod entity {
             let mut fct = Function::new("fct");
 
             {
-                fct.set_description("
+                fct.set_description(
+                    "
                     **this
                     is
                     a
 
                     multiline
                     **
-                    //comment");
+                    //comment",
+                );
 
                 assert!(fct.description.is_some());
                 let fct_desc = fct.description.unwrap();
@@ -85,14 +87,14 @@ mod entity {
             let mut fct = Function::new("fct");
 
             {
-                fct.set_arguments(&vec!());
+                fct.set_arguments(&vec![]);
                 assert!(fct.arguments.is_none());
             }
 
             {
                 let arg1 = Argument::new("arg1", Some("std::string"));
                 let arg2 = Argument::new("arg2", Some("std::uint32"));
-                fct.set_arguments(&vec!(arg1, arg2));
+                fct.set_arguments(&vec![arg1, arg2]);
 
                 assert!(fct.arguments.is_some());
                 let fct_args = fct.arguments.unwrap();
@@ -122,12 +124,15 @@ mod entity {
             let mut enumeration = Enum::new("enum");
 
             {
-                enumeration.set_arguments(&vec!());
+                enumeration.set_arguments(&vec![]);
                 assert!(enumeration.arguments.is_none());
             }
 
             {
-                let args = vec![Argument::new("Zero", Some("0")), Argument::new("Two", Some("2"))];
+                let args = vec![
+                    Argument::new("Zero", Some("0")),
+                    Argument::new("Two", Some("2")),
+                ];
                 enumeration.set_arguments(&args);
 
                 assert!(enumeration.arguments.is_some());

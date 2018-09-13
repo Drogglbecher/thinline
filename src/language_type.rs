@@ -7,6 +7,15 @@ use python_parser::{file_input, make_strspan};
 use std::fs::File;
 use std::io::Read;
 
+lazy_static! {
+    static ref CLANG: Option<clang::Clang> = {
+        match clang::Clang::new() {
+            Ok(clang) => Some(clang),
+            Err(_) => None,
+        }
+    };
+}
+
 pub trait LanguageType: Default {
     fn file_types() -> &'static [&'static str];
     fn extract_entities<T: LanguageType>(analysis: &Analysis<T>) -> Result<()>;
@@ -43,9 +52,7 @@ impl CFamily {
 
             // Set return type.
             if let Some(return_type) = entity.get_type() {
-                function.set_return_type(
-                    return_type.get_display_name().as_str(),
-                )?;
+                function.set_return_type(return_type.get_display_name().as_str())?;
             }
 
             // Set arguments vector.
@@ -117,27 +124,24 @@ impl LanguageType for C {
     }
 
     fn extract_entities<C: LanguageType>(analysis: &Analysis<C>) -> Result<()> {
-        match clang::Clang::new() {
-            Ok(clang) => {
-                let clang_index = clang::Index::new(&clang, false, false);
-                for project_file in analysis.project_files().iter() {
-                    if let EntityType::Entity(mut index) = EntityType::Entity(Entity::new("")) {
-                        let parsed_path = &clang_index.parser(&project_file.path).parse()?;
-                        let clang_entity = parsed_path.get_entity();
+        if let Some(ref clang) = *CLANG {
+            let clang_index = clang::Index::new(&clang, false, false);
+            for project_file in analysis.project_files().iter() {
+                if let EntityType::Entity(mut index) = EntityType::Entity(Entity::new("")) {
+                    let parsed_path = &clang_index.parser(&project_file.path).parse()?;
+                    let clang_entity = parsed_path.get_entity();
 
-                        // Iterate through the child entities of the current entity
-                        for child in clang_entity.get_children() {
-                            if let Ok(Some(entity)) = Self::analyse_clang_entity(&child) {
-                                index.add_entity::<Entity>(entity);
-                            }
+                    // Iterate through the child entities of the current entity
+                    for child in clang_entity.get_children() {
+                        if let Ok(Some(entity)) = Self::analyse_clang_entity(&child) {
+                            index.add_entity::<Entity>(entity);
                         }
-
-                        println!("{:#?}", index);
-                        project_file.add_entity(index);
                     }
+
+                    println!("{:#?}", index);
+                    project_file.add_entity(index);
                 }
             }
-            Err(e) => bail!(e),
         }
 
         Ok(())
@@ -157,17 +161,16 @@ impl Cpp {
         // Search for functions outside the system headers
         if !entity.is_in_system_header() {
             match &entity_kind {
-                clang::EntityKind::Constructor |
-                clang::EntityKind::Destructor |
-                clang::EntityKind::Method |
-                clang::EntityKind::FunctionDecl => {
+                clang::EntityKind::Constructor
+                | clang::EntityKind::Destructor
+                | clang::EntityKind::Method
+                | clang::EntityKind::FunctionDecl => {
                     return CFamily::analyse_clang_function_entity(entity);
                 }
                 clang::EntityKind::EnumDecl => {
                     return CFamily::analyse_clang_enum_entity(entity);
                 }
-                clang::EntityKind::ClassDecl |
-                clang::EntityKind::Namespace => {
+                clang::EntityKind::ClassDecl | clang::EntityKind::Namespace => {
                     return CFamily::analyse_clang_generic_entity(entity);
                 }
                 _ => {}
@@ -199,22 +202,19 @@ impl LanguageType for Cpp {
     }
 
     fn extract_entities<Cpp: LanguageType>(analysis: &Analysis<Cpp>) -> Result<()> {
-        match clang::Clang::new() {
-            Ok(clang) => {
-                let clang_index = clang::Index::new(&clang, false, false);
-                for project_file in analysis.project_files().iter() {
-                    if let EntityType::Entity(mut index) = EntityType::Entity(Entity::new("")) {
-                        let parsed_path = &clang_index.parser(&project_file.path).parse()?;
-                        let clang_entity = parsed_path.get_entity();
+        if let Some(ref clang) = *CLANG {
+            let clang_index = clang::Index::new(&clang, false, false);
+            for project_file in analysis.project_files().iter() {
+                if let EntityType::Entity(mut index) = EntityType::Entity(Entity::new("")) {
+                    let parsed_path = &clang_index.parser(&project_file.path).parse()?;
+                    let clang_entity = parsed_path.get_entity();
 
-                        Self::analyse_clang_entity_tree(&mut index, &clang_entity)?;
+                    Self::analyse_clang_entity_tree(&mut index, &clang_entity)?;
 
-                        println!("{:#?}", index);
-                        project_file.add_entity(index);
-                    }
+                    println!("{:#?}", index);
+                    project_file.add_entity(index);
                 }
             }
-            Err(e) => bail!(e),
         }
 
         Ok(())
@@ -311,7 +311,7 @@ impl LanguageType for Python {
 
 #[cfg(test)]
 mod c {
-    use super::{Analysis, C, C_FILE_EXTENSIONS, LanguageType};
+    use super::{Analysis, LanguageType, C, C_FILE_EXTENSIONS};
 
     #[test]
     fn new() {
@@ -329,7 +329,7 @@ mod c {
 
 #[cfg(test)]
 mod cpp {
-    use super::{Analysis, Cpp, CPP_FILE_EXTENSIONS, LanguageType};
+    use super::{Analysis, Cpp, LanguageType, CPP_FILE_EXTENSIONS};
 
     #[test]
     fn new() {

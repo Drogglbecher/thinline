@@ -5,6 +5,7 @@ extern crate clang;
 #[macro_use]
 extern crate error_chain;
 extern crate glob;
+#[macro_use]
 extern crate lazy_static;
 extern crate python_parser;
 extern crate regex;
@@ -62,15 +63,17 @@ where
         if !project_config.exists() || !project_config.is_file() {
             return Err(Error::from(format!(
                 "The given project config file '{}' does not exist or is a directory.",
-                project_config.to_str().ok_or_else(
-                    || "Unable to stringify project config file.",
-                )?
+                project_config
+                    .to_str()
+                    .ok_or_else(|| "Unable to stringify project config file.")?
             )));
         }
 
-        self.project_parameters = ProjectParameters::parse(project_config.to_str().ok_or_else(
-            || "Unable to stringify project config file.",
-        )?)?;
+        self.project_parameters = ProjectParameters::parse(
+            project_config
+                .to_str()
+                .ok_or_else(|| "Unable to stringify project config file.")?,
+        )?;
 
         println!("{:?}", self.project_parameters);
 
@@ -86,21 +89,22 @@ where
             // Project path is a directory, thus it is neccessay to traverse to the project
             // and collect all the sources.
             if let Some(source_dirs) = &self.project_parameters.source_dirs {
-                self.analysis.collect_sources(&project_path_p, &source_dirs)?;
+                self.analysis
+                    .collect_sources(&project_path_p, &source_dirs)?;
             }
         }
 
         if project_path_p.is_file() {
             if let Some(ext) = project_path_p.extension() {
                 // Project path is a file and has the right extension.
-                if T::file_types().contains(&ext.to_str().ok_or_else(
-                    || "Unable to stringify file extension.",
-                )?)
-                {
+                if T::file_types().contains(
+                    &ext.to_str()
+                        .ok_or_else(|| "Unable to stringify file extension.")?,
+                ) {
                     // Push it to the project file vectory for analyzing purposes.
-                    self.analysis.project_files_mut().push(ProjectFile::new(
-                        &project_path_p,
-                    ));
+                    self.analysis
+                        .project_files_mut()
+                        .push(ProjectFile::new(&project_path_p));
                 }
             }
         }

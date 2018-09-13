@@ -1,7 +1,7 @@
 extern crate thinlinelib;
 
-use thinlinelib::error::*;
 use std::io;
+use thinlinelib::error::*;
 
 static ERROR_STR: &str = "Something went wrong here.";
 
