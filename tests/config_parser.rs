@@ -11,10 +11,9 @@ mod project_parameters {
 
         #[test]
         fn when_yaml_is_valid() {
-            let test_yml_path = Path::new("tests")
-                .join("testdata")
-                .join("config")
-                .join("config1.yml");
+            let test_yml_path = Path::new("tests").join("testdata").join("config").join(
+                "config1.yml",
+            );
             let parameters_res = ProjectParameters::parse(test_yml_path.to_str().unwrap());
 
             assert!(parameters_res.is_ok());
@@ -45,10 +44,9 @@ mod project_parameters {
 
         #[test]
         fn when_yaml_is_not_existing() {
-            let test_yml_path = Path::new("tests")
-                .join("testdata")
-                .join("config")
-                .join("non_existing.yml");
+            let test_yml_path = Path::new("tests").join("testdata").join("config").join(
+                "non_existing.yml",
+            );
             let parameters_res = ProjectParameters::parse(test_yml_path.to_str().unwrap());
 
             assert!(parameters_res.is_err());
@@ -56,10 +54,9 @@ mod project_parameters {
 
         #[test]
         fn when_yaml_is_empty() {
-            let test_yml_path = Path::new("tests")
-                .join("testdata")
-                .join("config")
-                .join("config3.yml");
+            let test_yml_path = Path::new("tests").join("testdata").join("config").join(
+                "config3.yml",
+            );
             let parameters_res = ProjectParameters::parse(test_yml_path.to_str().unwrap());
 
             assert!(parameters_res.is_err());
@@ -67,10 +64,9 @@ mod project_parameters {
 
         #[test]
         fn when_no_test_env_could_be_parsed() {
-            let test_yml_path = Path::new("tests")
-                .join("testdata")
-                .join("config")
-                .join("config2.yml");
+            let test_yml_path = Path::new("tests").join("testdata").join("config").join(
+                "config2.yml",
+            );
             let parameters_res = ProjectParameters::parse(test_yml_path.to_str().unwrap());
 
             assert!(parameters_res.is_err());

@@ -86,7 +86,7 @@ mod analysis {
                 #[snapshot]
                 fn extract_entities_c() -> Vec<EntityType> {
                     let analysis: Analysis<C> = Analysis::new();
-                    let c_test_src_path = Path::new("tests").join("analysis_c");
+                    let c_test_src_path = Path::new("tests").join("testdata").join("analysis");
                     assert!(
                         analysis
                             .collect_sources(&c_test_src_path, &[String::from(".")])
@@ -189,7 +189,7 @@ mod analysis {
                 #[snapshot]
                 fn extract_entities_cpp() -> Vec<EntityType> {
                     let analysis: Analysis<Cpp> = Analysis::new();
-                    let cpp_test_src_path = Path::new("tests").join("analysis_cpp");
+                    let cpp_test_src_path = Path::new("tests").join("testdata").join("analysis");
                     assert!(
                         analysis
                             .collect_sources(&cpp_test_src_path, &[String::from(".")])
@@ -294,7 +294,7 @@ mod analysis {
             #[snapshot]
             fn extract_entities_python() -> Vec<EntityType> {
                 let analysis: Analysis<Python> = Analysis::new();
-                let py_test_src_path = Path::new("tests").join("analysis_python");
+                let py_test_src_path = Path::new("tests").join("testdata").join("analysis");
                 assert!(
                     analysis
                         .collect_sources(&py_test_src_path, &[String::from(".")])

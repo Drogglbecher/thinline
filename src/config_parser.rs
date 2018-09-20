@@ -106,11 +106,9 @@ impl ProjectParameters {
             if let Some(yml_param) = yml_params.get(0) {
                 let mut params = ProjectParameters::default();
 
-                params.test_env = String::from(
-                    yml_param
-                        .get_str(&["test_env"])
-                        .ok_or_else(|| "Unable to get parameters for 'test_env'.")?,
-                );
+                params.test_env = String::from(yml_param.get_str(&["test_env"]).ok_or_else(
+                    || "Unable to get parameters for 'test_env'.",
+                )?);
 
                 params.source_dirs = yml_param.get_str_vec(&["analysis_dirs"]).to_string_vec();
                 params.include_dirs = yml_param.get_str_vec(&["include_dirs"]).to_string_vec();
@@ -139,12 +137,11 @@ mod value_parser {
 
     #[test]
     fn parse_yaml_config_str_succeed() {
-        let yml_path = Path::new("tests")
-            .join("testdata")
-            .join("config")
-            .join("config1.yml");
-        let yml_params =
-            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
+        let yml_path = Path::new("tests").join("testdata").join("config").join(
+            "config1.yml",
+        );
+        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
+            .unwrap();
         let yml_param = yml_params.get(0);
 
         let test_env = yml_param.unwrap().get_str(&["test_env"]);
@@ -153,12 +150,11 @@ mod value_parser {
 
     #[test]
     fn parse_yaml_config_str_failed() {
-        let yml_path = Path::new("tests")
-            .join("testdata")
-            .join("config")
-            .join("config1.yml");
-        let yml_params =
-            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
+        let yml_path = Path::new("tests").join("testdata").join("config").join(
+            "config1.yml",
+        );
+        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
+            .unwrap();
         let yml_param = yml_params.get(0);
 
         {
@@ -171,12 +167,11 @@ mod value_parser {
             assert!(test_env.is_none());
         }
 
-        let yml_path = Path::new("tests")
-            .join("testdata")
-            .join("config")
-            .join("config4.yml");
-        let yml_params =
-            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
+        let yml_path = Path::new("tests").join("testdata").join("config").join(
+            "config4.yml",
+        );
+        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
+            .unwrap();
         let yml_param = yml_params.get(0);
 
         {
@@ -187,12 +182,11 @@ mod value_parser {
 
     #[test]
     fn parse_yaml_config_str_vec_failed() {
-        let yml_path = Path::new("tests")
-            .join("testdata")
-            .join("config")
-            .join("config1.yml");
-        let yml_params =
-            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
+        let yml_path = Path::new("tests").join("testdata").join("config").join(
+            "config1.yml",
+        );
+        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
+            .unwrap();
         let yml_param = yml_params.get(0);
 
         {

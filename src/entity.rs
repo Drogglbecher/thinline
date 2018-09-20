@@ -1,7 +1,4 @@
 use error::*;
-use serde::ser::{Serialize, Serializer, SerializeStruct};
-use serde::de::Deserialize;
-use snapshot::Snapable;
 
 macro_rules! implement_conversion {
     ($t:ident) => {
@@ -25,9 +22,7 @@ pub struct Description {
 impl Description {
     /// Creates a new Description instance.
     pub fn new() -> Self {
-        Self {
-            description: Vec::new(),
-        }
+        Self { description: Vec::new() }
     }
 
     /// Sets and formats the description.

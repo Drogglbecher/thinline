@@ -163,9 +163,9 @@ where
         if !project_dir.exists() || !project_dir.is_dir() {
             return Err(Error::from(format!(
                 "The given project dir '{}' does not exist.",
-                project_dir
-                    .to_str()
-                    .ok_or_else(|| "Unable to stringify project dir path.")?
+                project_dir.to_str().ok_or_else(
+                    || "Unable to stringify project dir path.",
+                )?
             )));
         }
 
@@ -180,7 +180,8 @@ where
                         .join(String::from("*.") + ext)
                         .to_str()
                         .unwrap_or("."),
-                )? {
+                )?
+                {
                     self.project_files_mut().push(ProjectFile::new(entry?));
                 }
             }
