@@ -1,3 +1,5 @@
+#![feature(proc_macro)]
+
 #![cfg_attr(feature = "clippy", feature(plugin))]
 #![cfg_attr(feature = "clippy", plugin(clippy))]
 
@@ -9,7 +11,11 @@ extern crate glob;
 extern crate lazy_static;
 extern crate python_parser;
 extern crate regex;
+#[macro_use]
+extern crate serde_derive;
+extern crate serde;
 extern crate slog_envlogger;
+extern crate snapshot;
 extern crate walkdir;
 extern crate yaml_rust;
 

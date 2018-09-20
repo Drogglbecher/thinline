@@ -71,7 +71,7 @@ mod entity {
                 );
 
                 assert!(fct.description.is_some());
-                let fct_desc = fct.description.unwrap();
+                let fct_desc = fct.description.unwrap().description;
 
                 assert_eq!(fct_desc.len(), 5);
                 assert_eq!(fct_desc[0], "this");

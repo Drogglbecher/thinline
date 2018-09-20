@@ -1,0 +1,364 @@
+{
+  "analysis::analysis::c::test_collect_sources::extract_entities::extract_entities_c": {
+    "file": "tests/analysis.rs",
+    "module_path": "analysis::analysis::c::test_collect_sources::extract_entities",
+    "test_function": "extract_entities_c",
+    "recorded_value": [
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "int",
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": "int",
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "description": [
+              "#TL_TESTCASE(Source1::CheckIfSumWorks)",
+              "int test_no = 2;",
+              "#TL_EQ[TL_FCT(no1: test_no, no2: 5) => 7]",
+              "#TL_EQ[TL_FCT(no1: 5, no2: 2) => 7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));",
+              "#!TL_TESTCASE"
+            ]
+          },
+          "name": "test_int_no1",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "const int *const",
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": "const int *const",
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "description": [
+              "#TL_TESTCASE(Source1::TestPtr)",
+              "int test_no = 2;",
+              "int test_no2 = 5;",
+              "#TL_EQ[TL_FCT(no1: &test_no, no2: &test_no2) => 7]",
+              "#!TL_TESTCASE"
+            ]
+          },
+          "name": "test_ptr",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": null,
+          "description": {
+            "description": [
+              "#TL_TESTCASE(Source1::EmptyFct)",
+              "#TL_EQ[TL_FCT() => 7]",
+              "#TL_NE[TL_FCT() => 4]",
+              "#!TL_TESTCASE"
+            ]
+          },
+          "name": "test_empty_fct",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "const int",
+              "name": "argc",
+              "value": null
+            },
+            {
+              "atype": "char *const []",
+              "name": "argv",
+              "value": null
+            }
+          ],
+          "description": {
+            "description": [
+              "This function has parameters, yeah"
+            ]
+          },
+          "name": "main",
+          "return_type": "int"
+        }
+      }
+    ]
+  },
+  "analysis::analysis::cpp::test_collect_sources::extract_entities::extract_entities_cpp": {
+    "file": "tests/analysis.rs",
+    "module_path": "analysis::analysis::cpp::test_collect_sources::extract_entities",
+    "test_function": "extract_entities_cpp",
+    "recorded_value": [
+      {
+        "Entity": {
+          "description": null,
+          "entities": [
+            {
+              "Entity": {
+                "description": null,
+                "entities": [
+                  {
+                    "Function": {
+                      "arguments": [
+                        {
+                          "atype": "unsigned int",
+                          "name": "no1",
+                          "value": null
+                        },
+                        {
+                          "atype": "unsigned int",
+                          "name": "no2",
+                          "value": null
+                        }
+                      ],
+                      "description": {
+                        "description": [
+                          "#TL_TESTCASE(c1::AddTwoNumbers)",
+                          "unsigned int no1 = 5;",
+                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]",
+                          "#TL_LT[this->class_inst->TL_FCT(no1: no1, no2: 10) => 30]",
+                          "#!TL_TESTCASE"
+                        ]
+                      },
+                      "name": "add_two_numbers",
+                      "return_type": "unsigned int"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": null,
+                      "description": null,
+                      "name": "c1",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": null,
+                      "description": null,
+                      "name": "~c1",
+                      "return_type": "void"
+                    }
+                  }
+                ],
+                "name": "c1"
+              }
+            },
+            {
+              "Entity": {
+                "description": null,
+                "entities": [
+                  {
+                    "Function": {
+                      "arguments": null,
+                      "description": null,
+                      "name": "c2",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": null,
+                      "description": null,
+                      "name": "~c2",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": [
+                        {
+                          "atype": "unsigned int",
+                          "name": "no1",
+                          "value": null
+                        },
+                        {
+                          "atype": "unsigned int",
+                          "name": "no2",
+                          "value": null
+                        },
+                        {
+                          "atype": "unsigned int",
+                          "name": "no3",
+                          "value": null
+                        }
+                      ],
+                      "description": {
+                        "description": [
+                          "#TL_TESTCASE(c2::AddThreeNumbers)",
+                          "unsigned int no1 = 5;",
+                          "unsigned int no2 = 10;",
+                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: no2, no3: 5) => 20]",
+                          "#!TL_TESTCASE"
+                        ]
+                      },
+                      "name": "add_three_numbers",
+                      "return_type": "unsigned int"
+                    }
+                  }
+                ],
+                "name": "c2"
+              }
+            }
+          ],
+          "name": "ns1"
+        }
+      },
+      {
+        "Entity": {
+          "description": null,
+          "entities": [
+            {
+              "Entity": {
+                "description": null,
+                "entities": [
+                  {
+                    "Function": {
+                      "arguments": null,
+                      "description": null,
+                      "name": "c3",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": null,
+                      "description": null,
+                      "name": "~c3",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": null,
+                      "description": null,
+                      "name": "return5",
+                      "return_type": "unsigned int"
+                    }
+                  }
+                ],
+                "name": "c3"
+              }
+            }
+          ],
+          "name": "ns2"
+        }
+      }
+    ]
+  },
+  "analysis::analysis::python::extract_entities::extract_entities_python": {
+    "file": "tests/analysis.rs",
+    "module_path": "analysis::analysis::python::extract_entities",
+    "test_function": "extract_entities_python",
+    "recorded_value": [
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": null,
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": null,
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "description": [
+              "#TL_TESTCASE(check_if_sum_works)",
+              "int test_no = 2;",
+              "#TL_EQ[TL_FCT(no1: test_no, no2: 5) => 7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));",
+              "#!TL_TESTCASE"
+            ]
+          },
+          "name": "test_int_no1",
+          "return_type": null
+        }
+      },
+      {
+        "Entity": {
+          "description": null,
+          "entities": [
+            {
+              "Function": {
+                "arguments": [
+                  {
+                    "atype": null,
+                    "name": "float1",
+                    "value": null
+                  },
+                  {
+                    "atype": null,
+                    "name": "float2",
+                    "value": null
+                  }
+                ],
+                "description": {
+                  "description": [
+                    "#TL_TESTCASE(check_if_sum_works)",
+                    "#TL_EQ[TL_FCT(float1: 4.2, float2: 3.2) => 7.4]",
+                    "#!TL_TESTCASE"
+                  ]
+                },
+                "name": "test_float",
+                "return_type": null
+              }
+            },
+            {
+              "Function": {
+                "arguments": null,
+                "description": null,
+                "name": "test_nodoc",
+                "return_type": null
+              }
+            },
+            {
+              "Function": {
+                "arguments": [
+                  {
+                    "atype": null,
+                    "name": "str1",
+                    "value": null
+                  },
+                  {
+                    "atype": null,
+                    "name": "str2",
+                    "value": null
+                  }
+                ],
+                "description": {
+                  "description": [
+                    "#TL_TESTCASE(check_if_str_concat_works)",
+                    "#TL_EQ[TL_FCT(str1: 'bla', str2: 'blub') => 'blablub']",
+                    "#!TL_TESTCASE"
+                  ]
+                },
+                "name": "test_str",
+                "return_type": null
+              }
+            }
+          ],
+          "name": "class1"
+        }
+      }
+    ]
+  }
+}

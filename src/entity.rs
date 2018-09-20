@@ -1,4 +1,7 @@
 use error::*;
+use serde::ser::{Serialize, Serializer, SerializeStruct};
+use serde::de::Deserialize;
+use snapshot::Snapable;
 
 macro_rules! implement_conversion {
     ($t:ident) => {
@@ -13,8 +16,39 @@ macro_rules! implement_conversion {
     };
 }
 
+/// Reprensents a entity description.
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Description {
+    pub description: Vec<String>,
+}
+
+impl Description {
+    /// Creates a new Description instance.
+    pub fn new() -> Self {
+        Self {
+            description: Vec::new(),
+        }
+    }
+
+    /// Sets and formats the description.
+    pub fn set_description(&mut self, description: &str) {
+        self.description = description
+            .split('\n')
+            .map(|fd| {
+                String::from(
+                    fd.trim_left()
+                        .trim_left_matches('*')
+                        .trim_left_matches('/')
+                        .trim_left(),
+                )
+            })
+            .filter(|ref c| !c.is_empty() && c.as_str() != "**")
+            .collect();
+    }
+}
+
 /// Reprensents a parsed function argument.
-#[derive(Default, Debug, Clone, PartialEq)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Argument {
     pub name: String,
     pub atype: Option<String>,
@@ -62,12 +96,12 @@ impl Argument {
 }
 
 /// Reprensents a parsed function type.
-#[derive(Default, Clone, Debug, PartialEq)]
+#[derive(Default, Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Function {
     pub name: String,
     pub return_type: Option<String>,
     pub arguments: Option<Vec<Argument>>,
-    pub description: Option<Vec<String>>,
+    pub description: Option<Description>,
 }
 
 impl Function {
@@ -86,7 +120,7 @@ impl Function {
     /// assert!(function.description.is_none());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
-        Function {
+        Self {
             name: name.into(),
             return_type: None,
             arguments: None,
@@ -146,20 +180,13 @@ impl Function {
     /// assert!(function.description.is_some());
     /// ```
     pub fn set_description(&mut self, description: &str) {
-        self.description = Some(
-            description
-                .split('\n')
-                .map(|fd| {
-                    String::from(
-                        fd.trim_left()
-                            .trim_left_matches('*')
-                            .trim_left_matches('/')
-                            .trim_left(),
-                    )
-                })
-                .filter(|ref c| !c.is_empty() && c.as_str() != "**")
-                .collect(),
-        )
+        if self.description.is_none() {
+            self.description = Some(Description::new());
+        }
+
+        if let Some(desc) = &mut self.description {
+            desc.set_description(description);
+        }
     }
 
     /// Sets arguments for the Function.
@@ -173,7 +200,7 @@ impl Function {
 }
 
 /// Reprensents a parsed enum argument.
-#[derive(Default, Debug, Clone, PartialEq)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Enum {
     pub name: String,
     pub etype: Option<String>,
@@ -195,7 +222,7 @@ impl Enum {
     /// assert!(enumeration.arguments.is_none());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
-        Enum {
+        Self {
             name: name.into(),
             etype: None,
             arguments: None,
@@ -253,7 +280,7 @@ impl Enum {
 }
 
 /// The different types an Entitiy can have.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum EntityType {
     /// The index of a new entity hierarchy.
     Entity(Entity),
@@ -282,10 +309,11 @@ where
 
 /// The representation of an Entity as a possbile generic node on the
 /// abstract syntax tree. An Entity has to be kind of a EntityType.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Entity {
     pub name: String,
     pub entities: Option<Vec<EntityType>>,
+    pub description: Option<Description>,
 }
 
 impl Entity {
@@ -302,9 +330,10 @@ impl Entity {
     /// assert!(class.entities.is_none());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
-        Entity {
+        Self {
             name: name.into(),
             entities: None,
+            description: None,
         }
     }
 
@@ -352,5 +381,16 @@ impl Entity {
         }
 
         None
+    }
+
+    /// Sets the description for the Entity.
+    pub fn set_description(&mut self, description: &str) {
+        if self.description.is_none() {
+            self.description = Some(Description::new());
+        }
+
+        if let Some(desc) = &mut self.description {
+            desc.set_description(description);
+        }
     }
 }

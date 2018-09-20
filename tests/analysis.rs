@@ -1,10 +1,5 @@
-#[macro_use]
-extern crate lazy_static;
+extern crate snapshot;
 extern crate thinlinelib;
-
-mod analysis_c;
-mod analysis_cpp;
-mod analysis_python;
 
 #[cfg(test)]
 mod analysis {
@@ -82,13 +77,14 @@ mod analysis {
 
             #[cfg(test)]
             mod extract_entities {
+                use snapshot::snapshot;
                 use std::path::Path;
                 use thinlinelib::analysis::Analysis;
+                use thinlinelib::entity::EntityType;
                 use thinlinelib::language_type::C;
-                use analysis_c::ANALYSIS1_RESULT;
 
-                #[test]
-                fn extract_entities() {
+                #[snapshot]
+                fn extract_entities_c() -> Vec<EntityType> {
                     let analysis: Analysis<C> = Analysis::new();
                     let c_test_src_path = Path::new("tests").join("analysis_c");
                     assert!(
@@ -105,7 +101,7 @@ mod analysis {
 
                     let entities = project_files[0].entities();
                     assert_eq!(entities.len(), 1);
-                    assert_eq!(entities[0].entities, *ANALYSIS1_RESULT);
+                    entities[0].clone().entities.unwrap()
                 }
             }
         }
@@ -184,13 +180,14 @@ mod analysis {
 
             #[cfg(test)]
             mod extract_entities {
-                use analysis_cpp::ANALYSIS1_RESULT;
+                use snapshot::snapshot;
                 use std::path::Path;
                 use thinlinelib::analysis::Analysis;
+                use thinlinelib::entity::EntityType;
                 use thinlinelib::language_type::Cpp;
 
-                #[test]
-                fn extract_entities() {
+                #[snapshot]
+                fn extract_entities_cpp() -> Vec<EntityType> {
                     let analysis: Analysis<Cpp> = Analysis::new();
                     let cpp_test_src_path = Path::new("tests").join("analysis_cpp");
                     assert!(
@@ -207,7 +204,7 @@ mod analysis {
 
                     let entities = project_files[0].entities();
                     assert_eq!(entities.len(), 1);
-                    assert_eq!(entities[0].entities, *ANALYSIS1_RESULT);
+                    entities[0].clone().entities.unwrap()
                 }
             }
         }
@@ -288,13 +285,14 @@ mod analysis {
 
         #[cfg(test)]
         mod extract_entities {
-            use analysis_python::ANALYSIS1_RESULT;
+            use snapshot::snapshot;
             use std::path::Path;
             use thinlinelib::analysis::Analysis;
+            use thinlinelib::entity::EntityType;
             use thinlinelib::language_type::Python;
 
-            #[test]
-            fn extract_entities() {
+            #[snapshot]
+            fn extract_entities_python() -> Vec<EntityType> {
                 let analysis: Analysis<Python> = Analysis::new();
                 let py_test_src_path = Path::new("tests").join("analysis_python");
                 assert!(
@@ -310,7 +308,7 @@ mod analysis {
 
                 let entities = project_files[0].entities();
                 assert_eq!(entities.len(), 1);
-                assert_eq!(entities[0].entities, *ANALYSIS1_RESULT);
+                entities[0].clone().entities.unwrap()
             }
         }
     }
