@@ -49,14 +49,18 @@ before_script:
 script:
   - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then rvm get head || true; fi
   - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CLANG_VERSION="$CLANG_VERSION clippy"; fi
-  - RUST_BACKTRACE=1 cargo test --verbose --features $CLANG_VERSION -- --nocapture
+  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then RUST_BACKTRACE=1 cargo test --verbose --features $CLANG_VERSION -- --nocapture; fi
   - cargo doc --no-deps
 
 after_success: |
-  if [[ "$TRAVIS_RUST_VERSION" == "stable" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    travis-cargo doc-upload
-    RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
-    cargo tarpaulin --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    if [[ "$TRAVIS_RUST_VERSION" == "stable" ]]; then
+      travis-cargo doc-upload
+    fi
+    if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then
+      RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin
+      cargo tarpaulin --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
+    fi
   fi
 
 notifications:
