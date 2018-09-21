@@ -83,7 +83,6 @@ mod analysis {
                 use thinlinelib::entity::EntityType;
                 use thinlinelib::language_type::C;
 
-                #[snapshot]
                 fn extract_entities_c() -> Vec<EntityType> {
                     let analysis: Analysis<C> = Analysis::new();
                     let c_test_src_path = Path::new("tests").join("testdata").join("analysis");
@@ -102,6 +101,18 @@ mod analysis {
                     let entities = project_files[0].entities();
                     assert_eq!(entities.len(), 1);
                     entities[0].clone().entities.unwrap()
+                }
+
+                #[cfg(target_os = "linux")]
+                #[snapshot]
+                fn extract_entities_linux_c() -> Vec<EntityType> {
+                    extract_entities_c()
+                }
+
+                #[cfg(target_os = "windows")]
+                #[snapshot]
+                fn extract_entities_windows_c() -> Vec<EntityType> {
+                    extract_entities_c()
                 }
             }
         }
@@ -186,7 +197,6 @@ mod analysis {
                 use thinlinelib::entity::EntityType;
                 use thinlinelib::language_type::Cpp;
 
-                #[snapshot]
                 fn extract_entities_cpp() -> Vec<EntityType> {
                     let analysis: Analysis<Cpp> = Analysis::new();
                     let cpp_test_src_path = Path::new("tests").join("testdata").join("analysis");
@@ -205,6 +215,18 @@ mod analysis {
                     let entities = project_files[0].entities();
                     assert_eq!(entities.len(), 1);
                     entities[0].clone().entities.unwrap()
+                }
+
+                #[cfg(target_os = "linux")]
+                #[snapshot]
+                fn extract_entities_linux_cpp() -> Vec<EntityType> {
+                    extract_entities_cpp()
+                }
+
+                #[cfg(target_os = "windows")]
+                #[snapshot]
+                fn extract_entities_windows_cpp() -> Vec<EntityType> {
+                    extract_entities_cpp()
                 }
             }
         }
@@ -291,7 +313,6 @@ mod analysis {
             use thinlinelib::entity::EntityType;
             use thinlinelib::language_type::Python;
 
-            #[snapshot]
             fn extract_entities_python() -> Vec<EntityType> {
                 let analysis: Analysis<Python> = Analysis::new();
                 let py_test_src_path = Path::new("tests").join("testdata").join("analysis");
@@ -309,6 +330,18 @@ mod analysis {
                 let entities = project_files[0].entities();
                 assert_eq!(entities.len(), 1);
                 entities[0].clone().entities.unwrap()
+            }
+
+            #[cfg(target_os = "linux")]
+            #[snapshot]
+            fn extract_entities_linux_python() -> Vec<EntityType> {
+                extract_entities_python()
+            }
+
+            #[cfg(target_os = "windows")]
+            #[snapshot]
+            fn extract_entities_windows_python() -> Vec<EntityType> {
+                extract_entities_python()
             }
         }
     }
