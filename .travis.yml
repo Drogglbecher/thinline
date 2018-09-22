@@ -49,7 +49,7 @@ before_script:
 script:
   - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then rvm get head || true; fi
   - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CLANG_VERSION="$CLANG_VERSION clippy"; fi
-  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then RUST_BACKTRACE=1 cargo test --verbose --features $CLANG_VERSION -- --nocapture; fi
+  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then RUST_BACKTRACE=1 cargo test --verbose --features $CLANG_VERSION -- --nocapture; fi
   - cargo doc --no-deps
 
 after_success: |
