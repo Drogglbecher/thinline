@@ -12,4 +12,8 @@ install:
   - set PATH=%PATH%;C:\LLVM\bin
   - set LIBCLANG_PATH=C:\LLVM\bin
 
-build: true
+build: false
+
+test_script:
+  - set RUST_BACKTRACE=1
+  - cargo build --verbose
