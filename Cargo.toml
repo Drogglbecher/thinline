@@ -26,7 +26,7 @@ gte_clang_6_0 = []
 clang = "0"
 clang-sys = "0"
 clap = { version = "2", features = ["yaml"] }
-clippy = { version = "*", optional = true }
+clippy = { version = "0", optional = true }
 error-chain = "0"
 glob = "0"
 lazy_static = "0"

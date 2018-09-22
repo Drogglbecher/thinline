@@ -1,6 +1,6 @@
-use analysis::Analysis;
+use analysis::{Analysis, Argument, Enum, Function};
 use clang;
-use entity::{Argument, Entity, EntityType, Enum, Function};
+use entity::{Entity, EntityType};
 use error::*;
 use python_parser::ast::{CompoundStatement, Expression, Statement};
 use python_parser::{file_input, make_strspan};
