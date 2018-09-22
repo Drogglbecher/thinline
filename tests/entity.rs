@@ -1,5 +1,14 @@
 extern crate thinlinelib;
 
+pub static MULTILINE_COMMENT: &str = "
+**this
+is
+a
+
+multiline
+**
+//comment";
+
 #[cfg(test)]
 mod entity {
 
@@ -28,6 +37,7 @@ mod entity {
     #[cfg(test)]
     mod function {
         use thinlinelib::entity::{Argument, Function};
+        use MULTILINE_COMMENT;
 
         #[test]
         fn new() {
@@ -59,16 +69,7 @@ mod entity {
             let mut fct = Function::new("fct");
 
             {
-                fct.set_description(
-                    "
-                    **this
-                    is
-                    a
-
-                    multiline
-                    **
-                    //comment",
-                );
+                fct.set_description(MULTILINE_COMMENT);
 
                 assert!(fct.description.is_some());
                 let fct_desc = fct.description.unwrap().description;
@@ -166,6 +167,7 @@ mod entity {
     #[cfg(test)]
     mod entity {
         use thinlinelib::entity::{Entity, EntityType, Enum, Function};
+        use MULTILINE_COMMENT;
 
         #[test]
         fn new() {
@@ -228,6 +230,29 @@ mod entity {
                 assert_eq!(functions.len(), 2);
                 assert_eq!(functions[0].name, "fct1");
                 assert_eq!(functions[1].name, "fct2");
+            }
+        }
+
+        #[test]
+        fn set_description() {
+            let mut entity = Entity::new("ent");
+
+            {
+                assert!(entity.description.is_none());
+            }
+
+            {
+                entity.set_description(MULTILINE_COMMENT);
+
+                assert!(entity.description.is_some());
+                let entity_desc = entity.description.unwrap().description;
+
+                assert_eq!(entity_desc.len(), 5);
+                assert_eq!(entity_desc[0], "this");
+                assert_eq!(entity_desc[1], "is");
+                assert_eq!(entity_desc[2], "a");
+                assert_eq!(entity_desc[3], "multiline");
+                assert_eq!(entity_desc[4], "comment");
             }
         }
     }
