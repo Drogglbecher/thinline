@@ -1,13 +1,13 @@
 [package]
 name = "thinline"
-version = "0.1.1"
+version = "0.2.1"
 authors = ["Sebastian Spiess <spiess.sebastian@web.de>"]
 
 repository = "https://github.com/Drogglbecher/thinline"
 readme = "README.md"
 license = "Apache-2.0"
 
-description = "A parser and builder for function-unittests written in comment sections for C-language family."
+description = "A parser and builder for function-unittests written in comment sections for C-language family & python."
 
 [lib]
 name = "thinlinelib"
