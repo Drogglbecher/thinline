@@ -107,9 +107,6 @@ impl TestClass {
 ////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
-pub struct Synthesis {}
-
-#[derive(Default, Debug)]
 pub struct TestFile<T> {
     pub pf_type: PhantomData<T>,
     pub entities: Vec<Entity>,
@@ -121,3 +118,8 @@ where
     T: LanguageType,
 {
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+#[derive(Default, Debug)]
+pub struct Synthesis {}

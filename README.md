@@ -11,7 +11,8 @@
 
 ## Description
 
-_Thinline_ is a project for handling and executing unittests written in function comment sections for C/C++. **It's currently under development and has an early alpha state.**
+_Thinline_ is a project for handling and executing unittests written in function comment sections for C/C++.
+**It's currently under development, analysis works partially but the synthesis part won't work right now.**
 
 ## Installation
 
