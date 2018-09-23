@@ -1,4 +1,5 @@
 ---
+language: c
 test_env: google_test
 analysis_dirs:
   - src

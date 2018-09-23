@@ -13,8 +13,18 @@ pub mod error;
 use clap::App;
 use std::process::exit;
 use thinlinelib::error::*;
-use thinlinelib::language_type::{Cpp, Python, C};
+use thinlinelib::language_type::{C, Cpp, Python};
 use thinlinelib::Thinline;
+
+macro_rules! run {
+    ($t:ident, $s: ident, $c: ident) => {
+        // Parses the project config.
+        $t.parse_project_config($s,$c)?;
+
+        // Analyze the project at the given source directory.
+        $t.analyze_project($s)?;
+    };
+}
 
 fn main() {
     if let Err(error) = run() {
@@ -28,9 +38,6 @@ fn run() -> Result<()> {
     let app = App::from_yaml(yaml).version(crate_version!());
     let matches = app.get_matches();
 
-    // Creates a new Thinline instance
-    let mut thinline: Thinline<Cpp> = Thinline::new();
-
     // Reads the source directory where file traversing should start.
     let source_directory = matches.value_of("SOURCE-DIR").ok_or_else(
         || "CLI parameter 'source_directory' missing.",
@@ -41,14 +48,26 @@ fn run() -> Result<()> {
         || "CLI parameter 'project_config' missing.",
     )?;
 
-    // Parses the project config.
-    thinline.parse_project_config(
-        source_directory,
-        thinline_cfg_name,
+    let language = matches.value_of("language").ok_or_else(
+        || "CLI parameter 'language' missing.",
     )?;
 
-    // Analyze the project at the given source directory.
-    thinline.analyze_project(source_directory)?;
+    // Creates a new Thinline instance
+    match language {
+        "c" => {
+            let mut thinline: Thinline<C> = Thinline::new();
+            run!(thinline, source_directory, thinline_cfg_name);
+        }
+        "cpp" => {
+            let mut thinline: Thinline<Cpp> = Thinline::new();
+            run!(thinline, source_directory, thinline_cfg_name);
+        }
+        "python" => {
+            let mut thinline: Thinline<Python> = Thinline::new();
+            run!(thinline, source_directory, thinline_cfg_name);
+        }
+        _ => {}
+    };
 
     Ok(())
 }

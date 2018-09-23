@@ -12,6 +12,16 @@ args:
       help: The directory where the sources for test-extraction are located
       required: true
       index: 1
+  - language:
+      help: Executes the build script steps given in the project thinline setting file.
+      short: l
+      required: true
+      long: language
+      takes_value: true
+      possible_values:
+        - c
+        - cpp
+        - python
   - build:
       help: Executes the build script steps given in the project thinline setting file.
       short: b
@@ -22,7 +32,7 @@ args:
       short: d
       long: dry-run
   - project_config:
-      help: The name of the yaml file where the C/C++ project parameters for
+      help: The name of the yaml file where the project parameters for
             thinline are stored. This file has to be at <SOURCE-DIR>.
       long: project-config
       short: p

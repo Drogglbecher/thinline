@@ -22,10 +22,7 @@ _Thinline_ is a project for handling and executing unittests written in function
 To use _thinline_ you need a valid [Rust](https://www.rust-lang.org/en-US/install.html) installation and its package
 manager [cargo](https://crates.io/install). Depending on your OS you can install them via the package manager you
 like the most. Besides this you can use [rustup](https://rustup.rs/) if you want but keep in mind that this can
-conflict with already existing installations of rust, so uninstall them first. It is also necessary to have a `g++`
-installed to build your unittest later on (when running _thinline_ with `--dry-run` you don't need this since the
-testfiles are only created). When you want to execute the examples out of the box you should make sure you have
-`cmake` and `make` and [google test](https://github.com/google/googletest).
+conflict with already existing installations of rust, so uninstall them first.
 
 Besides this _thinline_ uses the [rust clang implementation](https://github.com/KyleMayes/clang-rs), so please make
 sure to also fulfill its [requirements](https://github.com/KyleMayes/clang-sys#dependencies).
@@ -40,21 +37,25 @@ cargo install
 
 ## CLI-Usage
 
-The usage of the CLI-tool is basically simple. When [preparation](#preparation-and-configuration) is done
-`thinline --help` prints the usage:
+The usage of the CLI-tool is basically simple, `thinline --help` prints the usage:
 
 ```
 USAGE:
-    thinline [FLAGS] [OPTIONS] <SOURCE-DIR>
+    thinline [FLAGS] [OPTIONS] <SOURCE-DIR> --language <language>
+
 FLAGS:
     -b, --build      Executes the build script steps given in the project thinline setting file.
     -d, --dry-run    Creates only the test files in the projects .thinline folder without exexcuting them.
     -h, --help       Prints help information
     -V, --version    Prints version information
     -v               Set the verbosity level (`v` -> DEBUG, `vv` -> TRACE)
+
 OPTIONS:
-    -p, --project-config <YAML_FILE>    The name of the yaml file where the C/C++ project parameters for thinline are
-                                        stored. This file has to be at <SOURCE-DIR>. [default: .thinline.yml]
+    -l, --language <language>           Executes the build script steps given in the project thinline setting file.
+                                        [possible values: c, cpp, python]
+    -p, --project-config <YAML_FILE>    The name of the yaml file where the project parameters for thinline are stored.
+                                        This file has to be at <SOURCE-DIR>. [default: .thinline.yml]
+
 ARGS:
     <SOURCE-DIR>    The directory where the sources for test-extraction are located
 ```
