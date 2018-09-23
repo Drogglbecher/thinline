@@ -1,6 +1,8 @@
 use analysis::{Description, Enum, Function};
 use synthesis::{TestClass, TestFunction};
 
+////////////////////////////////////////////////////////////////////////////////
+
 macro_rules! implement_conversion {
     ($t:ident) => {
         impl EntityConversion for $t {
@@ -49,6 +51,8 @@ where
 {
     T::convert(entity_type)
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /// The representation of an Entity as a possbile generic node on the
 /// abstract syntax tree. An Entity has to be kind of a EntityType.

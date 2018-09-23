@@ -2,6 +2,8 @@ use error::*;
 use std::fs::read_to_string;
 use yaml_rust::{Yaml, YamlLoader};
 
+////////////////////////////////////////////////////////////////////////////////
+
 trait Conversion {
     /// Consumes an Option<Vec<&'a str>> and returns it's elements as String.
     fn to_string_vec(self) -> Option<Vec<String>>;
@@ -12,6 +14,8 @@ impl<'a> Conversion for Option<Vec<&'a str>> {
         self.map(|e| e.iter().map(|f| String::from(*f)).collect())
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 trait ValueParser {
     /// Reads a string at the given config path.
@@ -74,11 +78,15 @@ impl ValueParser for Yaml {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 #[derive(Default, Debug)]
 pub struct BuildScript {
     pub windows: Option<Vec<String>>,
     pub linux: Option<Vec<String>>,
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
 /// The parsed project parameters.
@@ -127,6 +135,8 @@ impl ProjectParameters {
         Err(Error::from("Unable to parse project parameters."))
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 #[cfg(test)]
 mod value_parser {

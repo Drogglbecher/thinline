@@ -29,6 +29,7 @@ env:
   matrix:
     - LLVM_VERSION=5.0 CLANG_VERSION=clang_5_0
     - LLVM_VERSION=6.0 CLANG_VERSION=clang_6_0
+    - LLVM_VERSION=7.0 CLANG_VERSION=clang_7_0
 
 cache:
   apt: true
@@ -49,7 +50,7 @@ before_script:
 script:
   - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then rvm get head || true; fi
   - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CLANG_VERSION="$CLANG_VERSION clippy"; fi
-  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then RUST_BACKTRACE=1 cargo test --verbose --features $CLANG_VERSION -- --nocapture; fi
+  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then RUST_BACKTRACE=1 cargo test --verbose --features $CLANG_VERSION -- --nocapture; fi
   - cargo doc --no-deps
 
 after_success: |

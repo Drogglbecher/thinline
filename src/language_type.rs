@@ -7,6 +7,8 @@ use python_parser::{file_input, make_strspan};
 use std::fs::File;
 use std::io::Read;
 
+////////////////////////////////////////////////////////////////////////////////
+
 lazy_static! {
     static ref CLANG: Option<clang::Clang> = {
         match clang::Clang::new() {
@@ -16,13 +18,14 @@ lazy_static! {
     };
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 pub trait LanguageType: Default {
     fn file_types() -> &'static [&'static str];
     fn extract_entities<T: LanguageType>(analysis: &Analysis<T>) -> Result<()>;
 }
 
-/// The file extensions which should be checked for C project analysis.
-static C_FILE_EXTENSIONS: &[&str] = &["c", "h"];
+////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Clone, Debug)]
 struct CFamily;
@@ -94,6 +97,11 @@ impl CFamily {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+/// The file extensions which should be checked for C project analysis.
+static C_FILE_EXTENSIONS: &[&str] = &["c", "h"];
+
 #[derive(Default, Clone, Debug)]
 pub struct C;
 
@@ -149,6 +157,8 @@ impl LanguageType for C {
         Ok(())
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /// The file extensions which should be checked for C++ project analysis.
 static CPP_FILE_EXTENSIONS: &[&str] = &["cpp", "hpp"];
@@ -223,6 +233,8 @@ impl LanguageType for Cpp {
         Ok(())
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /// The file extensions which should be checked for Python project analysis.
 static PYTHON_FILE_EXTENSIONS: &[&str] = &["py"];
@@ -311,6 +323,8 @@ impl LanguageType for Python {
         Ok(())
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 #[cfg(test)]
 mod c {

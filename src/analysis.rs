@@ -6,6 +6,8 @@ use std::cell::{Ref, RefCell, RefMut};
 use std::marker::PhantomData;
 use std::path::PathBuf;
 
+////////////////////////////////////////////////////////////////////////////////
+
 /// Represents a entity description.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Description {
@@ -34,6 +36,8 @@ impl Description {
             .collect();
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /// Represents a parsed function argument.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -82,6 +86,8 @@ impl Argument {
         self.value = Some(String::from(value));
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /// Represents a parsed function type.
 #[derive(Default, Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -187,6 +193,8 @@ impl Function {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 /// Represents a parsed enum argument.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Enum {
@@ -267,6 +275,7 @@ impl Enum {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Clone, Debug)]
 pub struct ProjectFile<T> {
@@ -361,6 +370,8 @@ where
         self.entities_mut().push(entity);
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
 pub struct Analysis<T>

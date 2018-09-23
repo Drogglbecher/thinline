@@ -2,6 +2,8 @@ use entity::Entity;
 use language_type::LanguageType;
 use std::marker::PhantomData;
 
+////////////////////////////////////////////////////////////////////////////////
+
 static STUB_ID_SET_UP_CONTEXT: &str = "#TL_SET_UP_CONTEXT";
 static STUB_ID_TEAR_DOWN_CONTEXT: &str = "#TL_TEAR_DOWN_CONTEXT";
 static STUB_ID_CONSTRUCTOR_CONTEXT: &str = "#TL_CONSTRUCTOR_CONTEXT";
@@ -27,11 +29,6 @@ impl StubContextConversion for StubContext {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct TestFunction {
-    pub name: String,
-}
-
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum StubContextType {
     SetUpContext(StubContext),
     TearDownContext(StubContext),
@@ -39,6 +36,15 @@ pub enum StubContextType {
     DestructorContext(StubContext),
     ClassContext(StubContext),
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct TestFunction {
+    pub name: String,
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 /// The representation of a TestClas containing different
 /// contexts for con-/destructor, setUp, tearDown methods
@@ -97,6 +103,8 @@ impl TestClass {
         None
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
 pub struct Synthesis {}
