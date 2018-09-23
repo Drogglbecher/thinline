@@ -45,14 +45,14 @@ USAGE:
 
 FLAGS:
     -b, --build      Executes the build script steps given in the project thinline setting file.
-    -d, --dry-run    Creates only the test files in the projects .thinline folder without exexcuting them.
+    -d, --dry-run    Creates only the test files in the target projects `.thinline` folder without exexcuting them.
     -h, --help       Prints help information
     -V, --version    Prints version information
     -v               Set the verbosity level (`v` -> DEBUG, `vv` -> TRACE)
 
 OPTIONS:
-    -l, --language <language>           Executes the build script steps given in the project thinline setting file.
-                                        [possible values: c, cpp, python]
+    -l, --language <language>           Specifies the language of the target project. [possible values: c,
+                                        cpp, python]
     -p, --project-config <YAML_FILE>    The name of the yaml file where the project parameters for thinline are stored.
                                         This file has to be at <SOURCE-DIR>. [default: .thinline.yml]
 
