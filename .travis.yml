@@ -29,7 +29,6 @@ env:
   matrix:
     - LLVM_VERSION=5.0 CLANG_VERSION=clang_5_0
     - LLVM_VERSION=6.0 CLANG_VERSION=clang_6_0
-    - LLVM_VERSION=7.0 CLANG_VERSION=clang_7_0
 
 cache:
   apt: true
