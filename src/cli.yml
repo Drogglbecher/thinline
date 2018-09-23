@@ -13,7 +13,7 @@ args:
       required: true
       index: 1
   - language:
-      help: Executes the build script steps given in the project thinline setting file.
+      help: Specifies the language of the target project.
       short: l
       required: true
       long: language
@@ -27,13 +27,13 @@ args:
       short: b
       long: build
   - dry_run:
-      help: Creates only the test files in the projects .thinline folder without
+      help: Creates only the test files in the target projects `.thinline` folder without
             exexcuting them.
       short: d
       long: dry-run
   - project_config:
-      help: The name of the yaml file where the project parameters for
-            thinline are stored. This file has to be at <SOURCE-DIR>.
+      help: The name of the yaml file where the project parameters for thinline are stored.
+            This file has to be at <SOURCE-DIR>.
       long: project-config
       short: p
       default_value: .thinline.yml
