@@ -46,7 +46,7 @@ pub struct TestFunction {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/// The representation of a TestClas containing different
+/// The representation of a TestClass containing different
 /// contexts for con-/destructor, setUp, tearDown methods
 /// and so on and a vector of test functions.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -76,6 +76,10 @@ impl TestClass {
     }
 
     /// Adds a StubContext to the TestClass instance.
+    ///
+    /// With setting stub contexts to certain values, it is ensured, that these
+    /// contexts (e.g. test class constructor or setUp function) are replaced
+    /// with the values to generate specific test classes.
     ///
     /// # Example
     ///

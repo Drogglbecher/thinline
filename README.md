@@ -6,12 +6,13 @@
     <a href="https://ci.appveyor.com/project/Drogglbecher/thinline"><img alt="Appveyor Status" src="https://ci.appveyor.com/api/projects/status/r3ldomvr2plv336t/branch/master?svg=true"></a>
     <a href="https://coveralls.io/github/Drogglbecher/thinline?branch=master"><img alt="Test Coverage" src="https://coveralls.io/repos/github/Drogglbecher/thinline/badge.svg?branch=master"></a>
     <a href="https://drogglbecher.github.io/thinline"><img alt="Documentation" src="https://img.shields.io/badge/master_doc-thinline-blue.svg"></a>
+    <a href="https://crates.io/crates/thinline"><img alt="Crates.io" src="https://img.shields.io/crates/v/thinline.svg"></a>
     <a href="https://github.com/Drogglbecher/thinline/blob/master/LICENSE"><img alt="License Apache 2" src="https://img.shields.io/badge/license-Apache%202-blue.svg"></a>
 </p>
 
 ## Description
 
-_Thinline_ is a project for handling and executing unittests written in function comment sections for C/C++.
+_Thinline_ is a project for handling and executing unittests written in function comment sections for C/C++ & Python.
 **It's currently under development, analysis works partially but the synthesis part won't work right now.**
 
 ## Installation
@@ -39,7 +40,8 @@ cargo install
 
 ## CLI-Usage
 
-The usage of the CLI-tool is basically simple. When [preparation](#preparation-and-configuration) is done `thinline --help` prints the usage:
+The usage of the CLI-tool is basically simple. When [preparation](#preparation-and-configuration) is done
+`thinline --help` prints the usage:
 
 ```
 USAGE:
