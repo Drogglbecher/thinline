@@ -6,12 +6,16 @@ use yaml_rust::{Yaml, YamlLoader};
 
 trait Conversion {
     /// Consumes an Option<Vec<&'a str>> and returns it's elements as String.
-    fn to_string_vec(self) -> Option<Vec<String>>;
+    fn to_string_vec(self) -> Vec<String>;
 }
 
 impl<'a> Conversion for Option<Vec<&'a str>> {
-    fn to_string_vec(self) -> Option<Vec<String>> {
-        self.map(|e| e.iter().map(|f| String::from(*f)).collect())
+    fn to_string_vec(self) -> Vec<String> {
+        if let Some(vec) = self {
+            vec.iter().map(|f| String::from(*f)).collect()
+        } else {
+            vec![]
+        }
     }
 }
 
@@ -82,8 +86,8 @@ impl ValueParser for Yaml {
 
 #[derive(Default, Debug)]
 pub struct BuildScript {
-    pub windows: Option<Vec<String>>,
-    pub linux: Option<Vec<String>>,
+    pub windows: Vec<String>,
+    pub linux: Vec<String>,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -101,13 +105,13 @@ pub struct ProjectParameters {
     pub build_script: BuildScript,
 
     /// Paths to libraries which should be linked.
-    pub lib_paths: Option<Vec<String>>,
+    pub lib_paths: Vec<String>,
 
     /// The source directories to extract the test data.
-    pub source_dirs: Option<Vec<String>>,
+    pub source_dirs: Vec<String>,
 
     /// The include directories necessary to build the tests.
-    pub include_dirs: Option<Vec<String>>,
+    pub include_dirs: Vec<String>,
 }
 
 impl ProjectParameters {
@@ -117,12 +121,16 @@ impl ProjectParameters {
             if let Some(yml_param) = yml_params.get(0) {
                 let mut params = ProjectParameters::default();
 
-                params.language = String::from(yml_param.get_str(&["language"]).ok_or_else(
-                    || "Unable to get parameters for mandatory 'language'.",
-                )?);
-                params.test_env = String::from(yml_param.get_str(&["test_env"]).ok_or_else(
-                    || "Unable to get parameters for mandatory 'test_env'.",
-                )?);
+                params.language = String::from(
+                    yml_param
+                        .get_str(&["language"])
+                        .ok_or_else(|| "Unable to get parameters for mandatory 'language'.")?,
+                );
+                params.test_env = String::from(
+                    yml_param
+                        .get_str(&["test_env"])
+                        .ok_or_else(|| "Unable to get parameters for mandatory 'test_env'.")?,
+                );
 
                 params.source_dirs = yml_param.get_str_vec(&["analysis_dirs"]).to_string_vec();
                 params.include_dirs = yml_param.get_str_vec(&["include_dirs"]).to_string_vec();
@@ -153,11 +161,12 @@ mod value_parser {
 
     #[test]
     fn parse_yaml_config_str_succeed() {
-        let yml_path = Path::new("tests").join("testdata").join("config").join(
-            "config1.yml",
-        );
-        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
-            .unwrap();
+        let yml_path = Path::new("tests")
+            .join("testdata")
+            .join("config")
+            .join("config1.yml");
+        let yml_params =
+            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
         let yml_param = yml_params.get(0);
 
         let test_env = yml_param.unwrap().get_str(&["test_env"]);
@@ -169,11 +178,12 @@ mod value_parser {
 
     #[test]
     fn parse_yaml_config_str_failed() {
-        let yml_path = Path::new("tests").join("testdata").join("config").join(
-            "config1.yml",
-        );
-        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
-            .unwrap();
+        let yml_path = Path::new("tests")
+            .join("testdata")
+            .join("config")
+            .join("config1.yml");
+        let yml_params =
+            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
         let yml_param = yml_params.get(0);
 
         {
@@ -186,11 +196,12 @@ mod value_parser {
             assert!(test_env.is_none());
         }
 
-        let yml_path = Path::new("tests").join("testdata").join("config").join(
-            "config4.yml",
-        );
-        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
-            .unwrap();
+        let yml_path = Path::new("tests")
+            .join("testdata")
+            .join("config")
+            .join("config4.yml");
+        let yml_params =
+            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
         let yml_param = yml_params.get(0);
 
         {
@@ -201,11 +212,12 @@ mod value_parser {
 
     #[test]
     fn parse_yaml_config_str_vec_failed() {
-        let yml_path = Path::new("tests").join("testdata").join("config").join(
-            "config1.yml",
-        );
-        let yml_params = YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str())
-            .unwrap();
+        let yml_path = Path::new("tests")
+            .join("testdata")
+            .join("config")
+            .join("config1.yml");
+        let yml_params =
+            YamlLoader::load_from_str(read_to_string(yml_path).unwrap().as_str()).unwrap();
         let yml_param = yml_params.get(0);
 
         {

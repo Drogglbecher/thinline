@@ -13,13 +13,13 @@ pub mod error;
 use clap::App;
 use std::process::exit;
 use thinlinelib::error::*;
-use thinlinelib::language_type::{C, Cpp, Python};
+use thinlinelib::language_type::{Cpp, Python, C};
 use thinlinelib::Thinline;
 
 macro_rules! run {
-    ($t:ident, $s: ident, $c: ident) => {
+    ($t:ident, $s:ident, $c:ident) => {
         // Parses the project config.
-        $t.parse_project_config($s,$c)?;
+        $t.parse_project_config($s, $c)?;
 
         // Analyze the project at the given source directory.
         $t.analyze_project($s)?;
@@ -39,18 +39,18 @@ fn run() -> Result<()> {
     let matches = app.get_matches();
 
     // Reads the source directory where file traversing should start.
-    let source_directory = matches.value_of("SOURCE-DIR").ok_or_else(
-        || "CLI parameter 'source_directory' missing.",
-    )?;
+    let source_directory = matches
+        .value_of("SOURCE-DIR")
+        .ok_or_else(|| "CLI parameter 'source_directory' missing.")?;
 
     // Reads the project config.
-    let thinline_cfg_name = matches.value_of("project_config").ok_or_else(
-        || "CLI parameter 'project_config' missing.",
-    )?;
+    let thinline_cfg_name = matches
+        .value_of("project_config")
+        .ok_or_else(|| "CLI parameter 'project_config' missing.")?;
 
-    let language = matches.value_of("language").ok_or_else(
-        || "CLI parameter 'language' missing.",
-    )?;
+    let language = matches
+        .value_of("language")
+        .ok_or_else(|| "CLI parameter 'language' missing.")?;
 
     // Creates a new Thinline instance
     match language {

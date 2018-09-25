@@ -61,7 +61,7 @@
       },
       {
         "Function": {
-          "arguments": null,
+          "arguments": [],
           "description": {
             "description": [
               "#TL_TESTCASE(Source1::EmptyFct)",
@@ -161,7 +161,7 @@
       },
       {
         "Function": {
-          "arguments": null,
+          "arguments": [],
           "description": {
             "description": [
               "#TL_TESTCASE(Source1::EmptyFct)",
@@ -195,168 +195,6 @@
           },
           "name": "main",
           "return_type": "int"
-        }
-      }
-    ]
-  },
-  "analysis::analysis::cpp::test_collect_sources::extract_entities::extract_entities_windows_cpp": {
-    "file": "tests\\analysis.rs",
-    "module_path": "analysis::analysis::cpp::test_collect_sources::extract_entities",
-    "test_function": "extract_entities_windows_cpp",
-    "recorded_value": [
-      {
-        "Entity": {
-          "description": null,
-          "entities": [
-            {
-              "Entity": {
-                "description": null,
-                "entities": [
-                  {
-                    "Function": {
-                      "arguments": [
-                        {
-                          "atype": "unsigned int",
-                          "name": "no1",
-                          "value": null
-                        },
-                        {
-                          "atype": "unsigned int",
-                          "name": "no2",
-                          "value": null
-                        }
-                      ],
-                      "description": {
-                        "description": [
-                          "#TL_TESTCASE(c1::AddTwoNumbers)",
-                          "unsigned int no1 = 5;",
-                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]",
-                          "#TL_LT[this->class_inst->TL_FCT(no1: no1, no2: 10) => 30]",
-                          "#!TL_TESTCASE"
-                        ]
-                      },
-                      "name": "add_two_numbers",
-                      "return_type": "unsigned int"
-                    }
-                  },
-                  {
-                    "Function": {
-                      "arguments": null,
-                      "description": null,
-                      "name": "c1",
-                      "return_type": "void"
-                    }
-                  },
-                  {
-                    "Function": {
-                      "arguments": null,
-                      "description": null,
-                      "name": "~c1",
-                      "return_type": "void"
-                    }
-                  }
-                ],
-                "name": "c1"
-              }
-            },
-            {
-              "Entity": {
-                "description": null,
-                "entities": [
-                  {
-                    "Function": {
-                      "arguments": null,
-                      "description": null,
-                      "name": "c2",
-                      "return_type": "void"
-                    }
-                  },
-                  {
-                    "Function": {
-                      "arguments": null,
-                      "description": null,
-                      "name": "~c2",
-                      "return_type": "void"
-                    }
-                  },
-                  {
-                    "Function": {
-                      "arguments": [
-                        {
-                          "atype": "unsigned int",
-                          "name": "no1",
-                          "value": null
-                        },
-                        {
-                          "atype": "unsigned int",
-                          "name": "no2",
-                          "value": null
-                        },
-                        {
-                          "atype": "unsigned int",
-                          "name": "no3",
-                          "value": null
-                        }
-                      ],
-                      "description": {
-                        "description": [
-                          "#TL_TESTCASE(c2::AddThreeNumbers)",
-                          "unsigned int no1 = 5;",
-                          "unsigned int no2 = 10;",
-                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: no2, no3: 5) => 20]",
-                          "#!TL_TESTCASE"
-                        ]
-                      },
-                      "name": "add_three_numbers",
-                      "return_type": "unsigned int"
-                    }
-                  }
-                ],
-                "name": "c2"
-              }
-            }
-          ],
-          "name": "ns1"
-        }
-      },
-      {
-        "Entity": {
-          "description": null,
-          "entities": [
-            {
-              "Entity": {
-                "description": null,
-                "entities": [
-                  {
-                    "Function": {
-                      "arguments": null,
-                      "description": null,
-                      "name": "c3",
-                      "return_type": "void"
-                    }
-                  },
-                  {
-                    "Function": {
-                      "arguments": null,
-                      "description": null,
-                      "name": "~c3",
-                      "return_type": "void"
-                    }
-                  },
-                  {
-                    "Function": {
-                      "arguments": null,
-                      "description": null,
-                      "name": "return5",
-                      "return_type": "unsigned int"
-                    }
-                  }
-                ],
-                "name": "c3"
-              }
-            }
-          ],
-          "name": "ns2"
         }
       }
     ]
@@ -403,7 +241,7 @@
                   },
                   {
                     "Function": {
-                      "arguments": null,
+                      "arguments": [],
                       "description": null,
                       "name": "c1",
                       "return_type": "void"
@@ -411,7 +249,7 @@
                   },
                   {
                     "Function": {
-                      "arguments": null,
+                      "arguments": [],
                       "description": null,
                       "name": "~c1",
                       "return_type": "void"
@@ -427,7 +265,7 @@
                 "entities": [
                   {
                     "Function": {
-                      "arguments": null,
+                      "arguments": [],
                       "description": null,
                       "name": "c2",
                       "return_type": "void"
@@ -435,7 +273,7 @@
                   },
                   {
                     "Function": {
-                      "arguments": null,
+                      "arguments": [],
                       "description": null,
                       "name": "~c2",
                       "return_type": "void"
@@ -491,7 +329,7 @@
                 "entities": [
                   {
                     "Function": {
-                      "arguments": null,
+                      "arguments": [],
                       "description": null,
                       "name": "c3",
                       "return_type": "void"
@@ -499,7 +337,7 @@
                   },
                   {
                     "Function": {
-                      "arguments": null,
+                      "arguments": [],
                       "description": null,
                       "name": "~c3",
                       "return_type": "void"
@@ -507,7 +345,169 @@
                   },
                   {
                     "Function": {
-                      "arguments": null,
+                      "arguments": [],
+                      "description": null,
+                      "name": "return5",
+                      "return_type": "unsigned int"
+                    }
+                  }
+                ],
+                "name": "c3"
+              }
+            }
+          ],
+          "name": "ns2"
+        }
+      }
+    ]
+  },
+  "analysis::analysis::cpp::test_collect_sources::extract_entities::extract_entities_windows_cpp": {
+    "file": "tests\\analysis.rs",
+    "module_path": "analysis::analysis::cpp::test_collect_sources::extract_entities",
+    "test_function": "extract_entities_windows_cpp",
+    "recorded_value": [
+      {
+        "Entity": {
+          "description": null,
+          "entities": [
+            {
+              "Entity": {
+                "description": null,
+                "entities": [
+                  {
+                    "Function": {
+                      "arguments": [
+                        {
+                          "atype": "unsigned int",
+                          "name": "no1",
+                          "value": null
+                        },
+                        {
+                          "atype": "unsigned int",
+                          "name": "no2",
+                          "value": null
+                        }
+                      ],
+                      "description": {
+                        "description": [
+                          "#TL_TESTCASE(c1::AddTwoNumbers)",
+                          "unsigned int no1 = 5;",
+                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]",
+                          "#TL_LT[this->class_inst->TL_FCT(no1: no1, no2: 10) => 30]",
+                          "#!TL_TESTCASE"
+                        ]
+                      },
+                      "name": "add_two_numbers",
+                      "return_type": "unsigned int"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": [],
+                      "description": null,
+                      "name": "c1",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": [],
+                      "description": null,
+                      "name": "~c1",
+                      "return_type": "void"
+                    }
+                  }
+                ],
+                "name": "c1"
+              }
+            },
+            {
+              "Entity": {
+                "description": null,
+                "entities": [
+                  {
+                    "Function": {
+                      "arguments": [],
+                      "description": null,
+                      "name": "c2",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": [],
+                      "description": null,
+                      "name": "~c2",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": [
+                        {
+                          "atype": "unsigned int",
+                          "name": "no1",
+                          "value": null
+                        },
+                        {
+                          "atype": "unsigned int",
+                          "name": "no2",
+                          "value": null
+                        },
+                        {
+                          "atype": "unsigned int",
+                          "name": "no3",
+                          "value": null
+                        }
+                      ],
+                      "description": {
+                        "description": [
+                          "#TL_TESTCASE(c2::AddThreeNumbers)",
+                          "unsigned int no1 = 5;",
+                          "unsigned int no2 = 10;",
+                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: no2, no3: 5) => 20]",
+                          "#!TL_TESTCASE"
+                        ]
+                      },
+                      "name": "add_three_numbers",
+                      "return_type": "unsigned int"
+                    }
+                  }
+                ],
+                "name": "c2"
+              }
+            }
+          ],
+          "name": "ns1"
+        }
+      },
+      {
+        "Entity": {
+          "description": null,
+          "entities": [
+            {
+              "Entity": {
+                "description": null,
+                "entities": [
+                  {
+                    "Function": {
+                      "arguments": [],
+                      "description": null,
+                      "name": "c3",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": [],
+                      "description": null,
+                      "name": "~c3",
+                      "return_type": "void"
+                    }
+                  },
+                  {
+                    "Function": {
+                      "arguments": [],
                       "description": null,
                       "name": "return5",
                       "return_type": "unsigned int"
@@ -586,7 +586,7 @@
             },
             {
               "Function": {
-                "arguments": null,
+                "arguments": [],
                 "description": null,
                 "name": "test_nodoc",
                 "return_type": null
@@ -686,7 +686,7 @@
             },
             {
               "Function": {
-                "arguments": null,
+                "arguments": [],
                 "description": null,
                 "name": "test_nodoc",
                 "return_type": null

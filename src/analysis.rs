@@ -17,7 +17,9 @@ pub struct Description {
 impl Description {
     /// Creates a new Description instance.
     pub fn new() -> Self {
-        Self { description: Vec::new() }
+        Self {
+            description: Vec::new(),
+        }
     }
 
     /// Sets and formats the description.
@@ -94,7 +96,7 @@ impl Argument {
 pub struct Function {
     pub name: String,
     pub return_type: Option<String>,
-    pub arguments: Option<Vec<Argument>>,
+    pub arguments: Vec<Argument>,
     pub description: Option<Description>,
 }
 
@@ -110,14 +112,14 @@ impl Function {
     ///
     /// assert_eq!(function.name, String::from("testFunction"));
     /// assert!(function.return_type.is_none());
-    /// assert!(function.arguments.is_none());
+    /// assert!(function.arguments.is_empty());
     /// assert!(function.description.is_none());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
         Self {
             name: name.into(),
             return_type: None,
-            arguments: None,
+            arguments: Vec::new(),
             description: None,
         }
     }
@@ -185,11 +187,7 @@ impl Function {
 
     /// Sets arguments for the Function.
     pub fn set_arguments(&mut self, arguments: &[Argument]) {
-        if arguments.is_empty() {
-            self.arguments = None;
-        } else {
-            self.arguments = Some(arguments.into());
-        }
+        self.arguments = arguments.into();
     }
 }
 
@@ -200,7 +198,7 @@ impl Function {
 pub struct Enum {
     pub name: String,
     pub etype: Option<String>,
-    pub arguments: Option<Vec<Argument>>,
+    pub arguments: Vec<Argument>,
 }
 
 impl Enum {
@@ -215,13 +213,13 @@ impl Enum {
     ///
     /// assert_eq!(enumeration.name, String::from("testEnum"));
     /// assert!(enumeration.etype.is_none());
-    /// assert!(enumeration.arguments.is_none());
+    /// assert!(enumeration.arguments.is_empty());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
         Self {
             name: name.into(),
             etype: None,
-            arguments: None,
+            arguments: Vec::new(),
         }
     }
 
@@ -236,15 +234,10 @@ impl Enum {
     /// let args = vec![Argument::new("Zero", Some("0")), Argument::new("Two", Some("2"))];
     /// enumeration.set_arguments(&args);
     ///
-    /// assert!(enumeration.arguments.is_some());
-    /// assert_eq!(enumeration.arguments.unwrap().len(), 2);
+    /// assert_eq!(enumeration.arguments.len(), 2);
     /// ```
     pub fn set_arguments(&mut self, arguments: &[Argument]) {
-        if arguments.is_empty() {
-            self.arguments = None;
-        } else {
-            self.arguments = Some(arguments.into());
-        }
+        self.arguments = arguments.into();
     }
 
     /// Adds an Argument to the Enum argument list.
@@ -260,18 +253,11 @@ impl Enum {
     /// let mut enumeration = Enum::new("enum");
     /// enumeration.push_argument(argument);
     ///
-    /// assert!(enumeration.arguments.is_some());
-    /// assert_eq!(enumeration.arguments.unwrap().len(), 1);
+    /// assert_eq!(enumeration.arguments.len(), 1);
     ///
     /// ```
     pub fn push_argument(&mut self, argument: Argument) {
-        if self.arguments.is_none() {
-            self.arguments = Some(Vec::new());
-        }
-
-        if let Some(arguments) = &mut self.arguments {
-            arguments.push(argument);
-        }
+        self.arguments.push(argument);
     }
 }
 
@@ -430,15 +416,15 @@ where
         self.project_files.borrow_mut()
     }
 
-    /// Collect all the sources within the given project dir.
+    /// Collects all the sources within the given project dir.
     pub fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[String]) -> Result<()> {
         // Check the given project directory
         if !project_dir.exists() || !project_dir.is_dir() {
             return Err(Error::from(format!(
                 "The given project dir '{}' does not exist.",
-                project_dir.to_str().ok_or_else(
-                    || "Unable to stringify project dir path.",
-                )?
+                project_dir
+                    .to_str()
+                    .ok_or_else(|| "Unable to stringify project dir path.")?
             )));
         }
 
@@ -453,8 +439,7 @@ where
                         .join(String::from("*.") + ext)
                         .to_str()
                         .unwrap_or("."),
-                )?
-                {
+                )? {
                     self.project_files_mut().push(ProjectFile::new(entry?));
                 }
             }

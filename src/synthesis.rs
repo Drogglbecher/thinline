@@ -19,11 +19,11 @@ pub trait StubContextConversion {
 impl StubContextConversion for StubContext {
     fn convert(stub_contex_type: &StubContextType) -> Option<&StubContext> {
         match stub_contex_type {
-            StubContextType::SetUpContext(stub_context) |
-            StubContextType::TearDownContext(stub_context) |
-            StubContextType::ConstructorContext(stub_context) |
-            StubContextType::DestructorContext(stub_context) |
-            StubContextType::ClassContext(stub_context) => Some(stub_context),
+            StubContextType::SetUpContext(stub_context)
+            | StubContextType::TearDownContext(stub_context)
+            | StubContextType::ConstructorContext(stub_context)
+            | StubContextType::DestructorContext(stub_context)
+            | StubContextType::ClassContext(stub_context) => Some(stub_context),
         }
     }
 }
@@ -51,8 +51,8 @@ pub struct TestFunction {
 /// and so on and a vector of test functions.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct TestClass {
-    pub stub_context: Option<Vec<StubContextType>>,
-    pub test_functions: Option<Vec<TestFunction>>,
+    pub stub_context: Vec<StubContextType>,
+    pub test_functions: Vec<TestFunction>,
 }
 
 impl TestClass {
@@ -65,13 +65,13 @@ impl TestClass {
     ///
     /// let mut test_class = TestClass::new();
     ///
-    /// assert!(test_class.stub_context.is_none());
-    /// assert!(test_class.test_functions.is_none());
+    /// assert!(test_class.stub_context.is_empty());
+    /// assert!(test_class.test_functions.is_empty());
     /// ```
     pub fn new() -> Self {
         Self {
-            stub_context: None,
-            test_functions: None,
+            stub_context: Vec::new(),
+            test_functions: Vec::new(),
         }
     }
 
@@ -90,18 +90,12 @@ impl TestClass {
     /// let stub_context_type = StubContextType::SetUpContext(String::from("setup = new Setup();"));
     /// test_class.add_stub_context(stub_context_type);
     ///
-    /// assert!(test_class.stub_context.is_some());
+    /// assert_eq!(test_class.stub_context.len(), 1);
     /// ```
     pub fn add_stub_context(&mut self, context: StubContextType) -> Option<&StubContext> {
-        if self.stub_context.is_none() {
-            self.stub_context = Some(Vec::new());
-        }
-
-        if let Some(stub_context) = &mut self.stub_context {
-            stub_context.push(context);
-            if let Some(stub_context) = stub_context.last() {
-                return StubContext::convert(stub_context);
-            }
+        self.stub_context.push(context);
+        if let Some(stub_context) = self.stub_context.last() {
+            return StubContext::convert(stub_context);
         }
 
         None

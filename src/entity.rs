@@ -59,7 +59,7 @@ where
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Entity {
     pub name: String,
-    pub entities: Option<Vec<EntityType>>,
+    pub entities: Vec<EntityType>,
     pub description: Option<Description>,
 }
 
@@ -74,12 +74,12 @@ impl Entity {
     /// let class = Entity::new("testClass");
     ///
     /// assert_eq!(class.name, "testClass");
-    /// assert!(class.entities.is_none());
+    /// assert!(class.entities.is_empty());
     /// ```
     pub fn new<S: Into<String>>(name: S) -> Self {
         Self {
             name: name.into(),
-            entities: None,
+            entities: Vec::new(),
             description: None,
         }
     }
@@ -95,39 +95,29 @@ impl Entity {
     /// let entity_type = EntityType::Entity(Entity::new("inner_entity"));
     /// entity.add_entity::<Entity>(entity_type);
     ///
-    /// assert!(entity.entities.is_some());
+    /// assert_eq!(entity.entities.len(), 1);
     /// ```
     pub fn add_entity<T>(&mut self, entity: EntityType) -> Option<&mut T>
     where
         T: EntityConversion,
     {
-        if self.entities.is_none() {
-            self.entities = Some(Vec::new());
-        }
-
-        if let Some(entities) = &mut self.entities {
-            entities.push(entity);
-            if let Some(entity) = entities.last_mut() {
-                return convert(entity);
-            }
+        self.entities.push(entity);
+        if let Some(entity) = self.entities.last_mut() {
+            return convert(entity);
         }
 
         None
     }
 
     /// Returns the functions of an entity.
-    pub fn functions(&self) -> Option<Vec<&Function>> {
-        if let Some(entities) = &self.entities {
-            let mut entity_vec: Vec<&Function> = Vec::new();
-            for entity in entities {
-                if let EntityType::Function(fct) = entity {
-                    entity_vec.push(&fct);
-                }
+    pub fn functions(&self) -> Vec<&Function> {
+        let mut entity_vec: Vec<&Function> = Vec::new();
+        for entity in &self.entities {
+            if let EntityType::Function(fct) = entity {
+                entity_vec.push(&fct);
             }
-            return Some(entity_vec);
         }
-
-        None
+        return entity_vec;
     }
 
     /// Sets the description for the Entity.

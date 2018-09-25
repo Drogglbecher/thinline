@@ -46,7 +46,7 @@ mod analysis {
 
             assert_eq!(function.name, String::from("fct"));
             assert!(function.return_type.is_none());
-            assert!(function.arguments.is_none());
+            assert!(function.arguments.is_empty());
             assert!(function.description.is_none());
         }
 
@@ -90,7 +90,7 @@ mod analysis {
 
             {
                 fct.set_arguments(&vec![]);
-                assert!(fct.arguments.is_none());
+                assert!(fct.arguments.is_empty());
             }
 
             {
@@ -98,12 +98,9 @@ mod analysis {
                 let arg2 = Argument::new("arg2", Some("std::uint32"));
                 fct.set_arguments(&vec![arg1, arg2]);
 
-                assert!(fct.arguments.is_some());
-                let fct_args = fct.arguments.unwrap();
-
-                assert_eq!(fct_args.len(), 2);
-                assert_eq!(fct_args[0].name, "arg1");
-                assert_eq!(fct_args[1].name, "arg2");
+                assert_eq!(fct.arguments.len(), 2);
+                assert_eq!(fct.arguments[0].name, "arg1");
+                assert_eq!(fct.arguments[1].name, "arg2");
             }
         }
     }
@@ -117,7 +114,7 @@ mod analysis {
             let enumeration = Enum::new("enum");
 
             assert_eq!(enumeration.name, String::from("enum"));
-            assert!(enumeration.arguments.is_none());
+            assert!(enumeration.arguments.is_empty());
             assert!(enumeration.etype.is_none());
         }
 
@@ -127,7 +124,7 @@ mod analysis {
 
             {
                 enumeration.set_arguments(&vec![]);
-                assert!(enumeration.arguments.is_none());
+                assert!(enumeration.arguments.is_empty());
             }
 
             {
@@ -137,31 +134,22 @@ mod analysis {
                 ];
                 enumeration.set_arguments(&args);
 
-                assert!(enumeration.arguments.is_some());
-                let enum_args = enumeration.arguments.unwrap();
-
-                assert_eq!(enum_args.len(), 2);
-                assert_eq!(enum_args[0].name, "Zero");
-                assert_eq!(enum_args[1].name, "Two");
+                assert_eq!(enumeration.arguments.len(), 2);
+                assert_eq!(enumeration.arguments[0].name, "Zero");
+                assert_eq!(enumeration.arguments[1].name, "Two");
             }
         }
 
         #[test]
         fn push_argument() {
             let mut enumeration = Enum::new("enum");
-            assert!(enumeration.arguments.is_none());
+            assert!(enumeration.arguments.is_empty());
 
             enumeration.push_argument(Argument::new("arg", Some("uint32")));
-
-            assert!(enumeration.arguments.is_some());
-            let mut enum_args = enumeration.arguments.clone().unwrap();
-
-            assert_eq!(enum_args.len(), 1);
+            assert_eq!(enumeration.arguments.len(), 1);
 
             enumeration.push_argument(Argument::new("new_arg", Some("uint64")));
-            enum_args = enumeration.arguments.unwrap();
-
-            assert_eq!(enum_args.len(), 2);
+            assert_eq!(enumeration.arguments.len(), 2);
         }
     }
 
@@ -261,7 +249,7 @@ mod analysis {
 
                     let entities = project_files[0].entities();
                     assert_eq!(entities.len(), 1);
-                    entities[0].clone().entities.unwrap()
+                    entities[0].clone().entities
                 }
 
                 #[cfg(target_os = "linux")]
@@ -375,7 +363,7 @@ mod analysis {
 
                     let entities = project_files[0].entities();
                     assert_eq!(entities.len(), 1);
-                    entities[0].clone().entities.unwrap()
+                    entities[0].clone().entities
                 }
 
                 #[cfg(target_os = "linux")]
@@ -490,7 +478,7 @@ mod analysis {
 
                 let entities = project_files[0].entities();
                 assert_eq!(entities.len(), 1);
-                entities[0].clone().entities.unwrap()
+                entities[0].clone().entities
             }
 
             #[cfg(target_os = "linux")]

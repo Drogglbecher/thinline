@@ -55,9 +55,7 @@ impl CFamily {
 
             // Set return type.
             if let Some(return_type) = entity.get_type() {
-                function.set_return_type(
-                    return_type.get_display_name().as_str(),
-                )?;
+                function.set_return_type(return_type.get_display_name().as_str())?;
             }
 
             // Set arguments vector.
@@ -173,17 +171,16 @@ impl Cpp {
         // Search for functions outside the system headers
         if !entity.is_in_system_header() {
             match &entity_kind {
-                clang::EntityKind::Constructor |
-                clang::EntityKind::Destructor |
-                clang::EntityKind::Method |
-                clang::EntityKind::FunctionDecl => {
+                clang::EntityKind::Constructor
+                | clang::EntityKind::Destructor
+                | clang::EntityKind::Method
+                | clang::EntityKind::FunctionDecl => {
                     return CFamily::analyse_clang_function_entity(entity);
                 }
                 clang::EntityKind::EnumDecl => {
                     return CFamily::analyse_clang_enum_entity(entity);
                 }
-                clang::EntityKind::ClassDecl |
-                clang::EntityKind::Namespace => {
+                clang::EntityKind::ClassDecl | clang::EntityKind::Namespace => {
                     return CFamily::analyse_clang_generic_entity(entity);
                 }
                 _ => {}

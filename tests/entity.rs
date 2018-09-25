@@ -11,8 +11,8 @@ multiline
 
 #[cfg(test)]
 mod entity {
-    use thinlinelib::entity::{Entity, EntityType};
     use thinlinelib::analysis::{Enum, Function};
+    use thinlinelib::entity::{Entity, EntityType};
     use MULTILINE_COMMENT;
 
     #[test]
@@ -20,30 +20,26 @@ mod entity {
         let entity = Entity::new("ent");
 
         assert_eq!(entity.name, String::from("ent"));
-        assert!(entity.entities.is_none());
+        assert!(entity.entities.is_empty());
     }
 
     #[test]
     fn add_entity() {
         {
             let mut entity = Entity::new("ent");
-            assert!(entity.entities.is_none());
+            assert!(entity.entities.is_empty());
 
             let entity_type = EntityType::Entity(Entity::new("inner_entity"));
             assert!(entity.add_entity::<Entity>(entity_type).is_some());
 
             let fct = EntityType::Function(Function::new("fct"));
             assert!(entity.add_entity::<Function>(fct).is_some());
-
-            assert!(entity.entities.is_some());
-
-            let inner_entities = entity.entities.unwrap();
-            assert_eq!(inner_entities.len(), 2);
+            assert_eq!(entity.entities.len(), 2);
         }
 
         {
             let mut entity = Entity::new("ent");
-            assert!(entity.entities.is_none());
+            assert!(entity.entities.is_empty());
 
             let enumeration = EntityType::Enum(Enum::new("enumeration"));
             let ret = entity.add_entity::<Enum>(enumeration);
@@ -58,7 +54,7 @@ mod entity {
         let mut entity = Entity::new("ent");
 
         {
-            assert!(entity.functions().is_none());
+            assert!(entity.functions().is_empty());
         }
 
         {
@@ -68,11 +64,7 @@ mod entity {
             let fct2 = EntityType::Function(Function::new("fct2"));
             assert!(entity.add_entity::<Function>(fct2).is_some());
 
-            let functions_option = entity.functions();
-
-            assert!(functions_option.is_some());
-            let functions = functions_option.unwrap();
-
+            let functions = entity.functions();
             assert_eq!(functions.len(), 2);
             assert_eq!(functions[0].name, "fct1");
             assert_eq!(functions[1].name, "fct2");
