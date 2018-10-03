@@ -97,7 +97,7 @@
     ]
   },
   "analysis::analysis::c::test_collect_sources::extract_entities::extract_entities_windows_c": {
-    "file": "tests/analysis.rs",
+    "file": "tests\\analysis.rs",
     "module_path": "analysis::analysis::c::test_collect_sources::extract_entities",
     "test_function": "extract_entities_windows_c",
     "recorded_value": [
@@ -376,7 +376,7 @@
     ]
   },
   "analysis::analysis::cpp::test_collect_sources::extract_entities::extract_entities_windows_cpp": {
-    "file": "tests/analysis.rs",
+    "file": "tests\\analysis.rs",
     "module_path": "analysis::analysis::cpp::test_collect_sources::extract_entities",
     "test_function": "extract_entities_windows_cpp",
     "recorded_value": [
@@ -655,7 +655,7 @@
     ]
   },
   "analysis::analysis::python::extract_entities::extract_entities_windows_python": {
-    "file": "tests/analysis.rs",
+    "file": "tests\\analysis.rs",
     "module_path": "analysis::analysis::python::extract_entities",
     "test_function": "extract_entities_windows_python",
     "recorded_value": [
