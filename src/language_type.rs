@@ -86,9 +86,14 @@ impl CFamily {
 
     fn analyse_clang_generic_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
-            let entity = Entity::new(entity_name);
+            let mut ent = Entity::new(entity_name);
 
-            return Ok(Some(EntityType::Entity(entity)));
+            // Set description.
+            if let Some(description) = entity.get_comment() {
+                ent.set_description(description.as_str());
+            }
+
+            return Ok(Some(EntityType::Entity(ent)));
         }
 
         Ok(None)
@@ -192,7 +197,10 @@ impl Cpp {
         Ok(None)
     }
 
-    fn analyse_clang_entity_tree(parent: &mut Entity, clang_entity: &clang::Entity) -> Fallible<()> {
+    fn analyse_clang_entity_tree(
+        parent: &mut Entity,
+        clang_entity: &clang::Entity,
+    ) -> Fallible<()> {
         // Iterate through the child entities of the current entity
         for child in clang_entity.get_children() {
             if let Ok(Some(entity)) = Self::analyse_clang_entity(&child) {
