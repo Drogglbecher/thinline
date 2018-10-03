@@ -4,11 +4,11 @@ use std::marker::PhantomData;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static STUB_ID_SET_UP_CONTEXT: &str = "#TL_SET_UP_CONTEXT";
-static STUB_ID_TEAR_DOWN_CONTEXT: &str = "#TL_TEAR_DOWN_CONTEXT";
-static STUB_ID_CONSTRUCTOR_CONTEXT: &str = "#TL_CONSTRUCTOR_CONTEXT";
-static STUB_ID_DESTRUCTOR_CONTEXT: &str = "#TL_DESTRUCTOR_CONTEXT";
-static STUB_ID_CLASS_CONTEXT: &str = "#TL_CLASS_CONTEXT";
+static STUB_ID_SET_UP_CONTEXT: &str = "#SET_UP";
+static STUB_ID_TEAR_DOWN_CONTEXT: &str = "#TEAR_DOWN";
+static STUB_ID_CONSTRUCTOR_CONTEXT: &str = "#CONSTRUCTOR";
+static STUB_ID_DESTRUCTOR_CONTEXT: &str = "#DESTRUCTOR";
+static STUB_ID_CLASS_CONTEXT: &str = "#CLASS_CONTEXT";
 
 type StubContext = String;
 
@@ -111,11 +111,7 @@ pub struct TestFile<T> {
 }
 
 /// Represents a test file.
-impl<T> TestFile<T>
-where
-    T: LanguageType,
-{
-}
+impl<T> TestFile<T> where T: LanguageType {}
 
 ////////////////////////////////////////////////////////////////////////////////
 

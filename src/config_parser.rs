@@ -121,16 +121,14 @@ impl ProjectParameters {
             if let Some(yml_param) = yml_params.get(0) {
                 let mut params = ProjectParameters::default();
 
-                params.language = String::from(
-                    yml_param
-                        .get_str(&["language"])
-                        .ok_or_else(|| err_msg("Unable to get parameters for mandatory 'language'."))?,
-                );
-                params.test_env = String::from(
-                    yml_param
-                        .get_str(&["test_env"])
-                        .ok_or_else(|| err_msg("Unable to get parameters for mandatory 'test_env'."))?,
-                );
+                params.language =
+                    String::from(yml_param.get_str(&["language"]).ok_or_else(|| {
+                        err_msg("Unable to get parameters for mandatory 'language'.")
+                    })?);
+                params.test_env =
+                    String::from(yml_param.get_str(&["test_env"]).ok_or_else(|| {
+                        err_msg("Unable to get parameters for mandatory 'test_env'.")
+                    })?);
 
                 params.source_dirs = yml_param.get_str_vec(&["analysis_dirs"]).to_string_vec();
                 params.include_dirs = yml_param.get_str_vec(&["include_dirs"]).to_string_vec();

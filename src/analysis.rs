@@ -28,15 +28,22 @@ impl Description {
     pub fn set_description(&mut self, description: &str) {
         self.description = description
             .split('\n')
-            .map(|fd| {
+            .map(|desc| {
                 String::from(
-                    fd.trim_left()
+                    desc.trim_left()
                         .trim_left_matches('*')
                         .trim_left_matches('/')
                         .trim_left(),
                 )
             })
-            .filter(|ref c| !c.is_empty() && c.as_str() != "**")
+            .filter(|ref desc| !desc.is_empty() && desc.as_str() != "**")
+            .map(|desc| {
+                if desc.chars().next() == Some('#') {
+                    desc.replace(" ", "")
+                } else {
+                    desc
+                }
+            })
             .collect();
     }
 }

@@ -20,12 +20,11 @@
           ],
           "description": {
             "description": [
-              "#TL_TESTCASE(Source1::CheckIfSumWorks)",
+              "#TESTCASE(Source1::CheckIfSumWorks)",
               "int test_no = 2;",
-              "#TL_EQ[TL_FCT(no1: test_no, no2: 5) => 7]",
-              "#TL_EQ[TL_FCT(no1: 5, no2: 2) => 7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));",
-              "#!TL_TESTCASE"
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "#EQ[TL_FCT(no1:5,no2:2)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
             ]
           },
           "name": "test_int_no1",
@@ -48,11 +47,10 @@
           ],
           "description": {
             "description": [
-              "#TL_TESTCASE(Source1::TestPtr)",
+              "#TESTCASE(Source1::TestPtr)",
               "int test_no = 2;",
               "int test_no2 = 5;",
-              "#TL_EQ[TL_FCT(no1: &test_no, no2: &test_no2) => 7]",
-              "#!TL_TESTCASE"
+              "#EQ[TL_FCT(no1:&test_no,no2:&test_no2)=>7]"
             ]
           },
           "name": "test_ptr",
@@ -64,10 +62,9 @@
           "arguments": [],
           "description": {
             "description": [
-              "#TL_TESTCASE(Source1::EmptyFct)",
-              "#TL_EQ[TL_FCT() => 7]",
-              "#TL_NE[TL_FCT() => 4]",
-              "#!TL_TESTCASE"
+              "#TESTCASE(Source1::EmptyFct)",
+              "#EQ[TL_FCT()=>7]",
+              "#NE[TL_FCT()=>4]"
             ]
           },
           "name": "test_empty_fct",
@@ -100,7 +97,7 @@
     ]
   },
   "analysis::analysis::c::test_collect_sources::extract_entities::extract_entities_windows_c": {
-    "file": "tests\\analysis.rs",
+    "file": "tests/analysis.rs",
     "module_path": "analysis::analysis::c::test_collect_sources::extract_entities",
     "test_function": "extract_entities_windows_c",
     "recorded_value": [
@@ -120,12 +117,11 @@
           ],
           "description": {
             "description": [
-              "#TL_TESTCASE(Source1::CheckIfSumWorks)",
+              "#TESTCASE(Source1::CheckIfSumWorks)",
               "int test_no = 2;",
-              "#TL_EQ[TL_FCT(no1: test_no, no2: 5) => 7]",
-              "#TL_EQ[TL_FCT(no1: 5, no2: 2) => 7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));",
-              "#!TL_TESTCASE"
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "#EQ[TL_FCT(no1:5,no2:2)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
             ]
           },
           "name": "test_int_no1",
@@ -148,11 +144,10 @@
           ],
           "description": {
             "description": [
-              "#TL_TESTCASE(Source1::TestPtr)",
+              "#TESTCASE(Source1::TestPtr)",
               "int test_no = 2;",
               "int test_no2 = 5;",
-              "#TL_EQ[TL_FCT(no1: &test_no, no2: &test_no2) => 7]",
-              "#!TL_TESTCASE"
+              "#EQ[TL_FCT(no1:&test_no,no2:&test_no2)=>7]"
             ]
           },
           "name": "test_ptr",
@@ -164,10 +159,9 @@
           "arguments": [],
           "description": {
             "description": [
-              "#TL_TESTCASE(Source1::EmptyFct)",
-              "#TL_EQ[TL_FCT() => 7]",
-              "#TL_NE[TL_FCT() => 4]",
-              "#!TL_TESTCASE"
+              "#TESTCASE(Source1::EmptyFct)",
+              "#EQ[TL_FCT()=>7]",
+              "#NE[TL_FCT()=>4]"
             ]
           },
           "name": "test_empty_fct",
@@ -210,7 +204,18 @@
           "entities": [
             {
               "Entity": {
-                "description": null,
+                "description": {
+                  "description": [
+                    "#TESTCLASS(c1)",
+                    "#SET_UP_CONTEXT:",
+                    "this->class_inst = new c1();",
+                    "#TEAR_DOWN_CONTEXT:",
+                    "delete this->class_inst;",
+                    "this->class_inst = nullptr;",
+                    "#CLASS_CONTEXT:",
+                    "c1 * class_inst;"
+                  ]
+                },
                 "entities": [
                   {
                     "Function": {
@@ -228,11 +233,10 @@
                       ],
                       "description": {
                         "description": [
-                          "#TL_TESTCASE(c1::AddTwoNumbers)",
+                          "#TESTCASE(c1::AddTwoNumbers)",
                           "unsigned int no1 = 5;",
-                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]",
-                          "#TL_LT[this->class_inst->TL_FCT(no1: no1, no2: 10) => 30]",
-                          "#!TL_TESTCASE"
+                          "#EQ[this->class_inst->TL_FCT(no1:no1,no2:10)=>15]",
+                          "#LT[this->class_inst->TL_FCT(no1:no1,no2:10)=>30]"
                         ]
                       },
                       "name": "add_two_numbers",
@@ -261,7 +265,18 @@
             },
             {
               "Entity": {
-                "description": null,
+                "description": {
+                  "description": [
+                    "#TESTCLASS(c2)",
+                    "#SET_UP_CONTEXT:",
+                    "this->class_inst = new c2();",
+                    "#TEAR_DOWN_CONTEXT:",
+                    "delete this->class_inst;",
+                    "this->class_inst = nullptr;",
+                    "#CLASS_CONTEXT:",
+                    "c2 * class_inst;"
+                  ]
+                },
                 "entities": [
                   {
                     "Function": {
@@ -300,11 +315,10 @@
                       ],
                       "description": {
                         "description": [
-                          "#TL_TESTCASE(c2::AddThreeNumbers)",
+                          "#TESTCASE(c2::AddThreeNumbers)",
                           "unsigned int no1 = 5;",
                           "unsigned int no2 = 10;",
-                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: no2, no3: 5) => 20]",
-                          "#!TL_TESTCASE"
+                          "#EQ[this->class_inst->TL_FCT(no1:no1,no2:no2,no3:5)=>20]"
                         ]
                       },
                       "name": "add_three_numbers",
@@ -362,7 +376,7 @@
     ]
   },
   "analysis::analysis::cpp::test_collect_sources::extract_entities::extract_entities_windows_cpp": {
-    "file": "tests\\analysis.rs",
+    "file": "tests/analysis.rs",
     "module_path": "analysis::analysis::cpp::test_collect_sources::extract_entities",
     "test_function": "extract_entities_windows_cpp",
     "recorded_value": [
@@ -372,7 +386,18 @@
           "entities": [
             {
               "Entity": {
-                "description": null,
+                "description": {
+                  "description": [
+                    "#TESTCLASS(c1)",
+                    "#SET_UP_CONTEXT:",
+                    "this->class_inst = new c1();",
+                    "#TEAR_DOWN_CONTEXT:",
+                    "delete this->class_inst;",
+                    "this->class_inst = nullptr;",
+                    "#CLASS_CONTEXT:",
+                    "c1 * class_inst;"
+                  ]
+                },
                 "entities": [
                   {
                     "Function": {
@@ -390,11 +415,10 @@
                       ],
                       "description": {
                         "description": [
-                          "#TL_TESTCASE(c1::AddTwoNumbers)",
+                          "#TESTCASE(c1::AddTwoNumbers)",
                           "unsigned int no1 = 5;",
-                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]",
-                          "#TL_LT[this->class_inst->TL_FCT(no1: no1, no2: 10) => 30]",
-                          "#!TL_TESTCASE"
+                          "#EQ[this->class_inst->TL_FCT(no1:no1,no2:10)=>15]",
+                          "#LT[this->class_inst->TL_FCT(no1:no1,no2:10)=>30]"
                         ]
                       },
                       "name": "add_two_numbers",
@@ -423,7 +447,18 @@
             },
             {
               "Entity": {
-                "description": null,
+                "description": {
+                  "description": [
+                    "#TESTCLASS(c2)",
+                    "#SET_UP_CONTEXT:",
+                    "this->class_inst = new c2();",
+                    "#TEAR_DOWN_CONTEXT:",
+                    "delete this->class_inst;",
+                    "this->class_inst = nullptr;",
+                    "#CLASS_CONTEXT:",
+                    "c2 * class_inst;"
+                  ]
+                },
                 "entities": [
                   {
                     "Function": {
@@ -462,11 +497,10 @@
                       ],
                       "description": {
                         "description": [
-                          "#TL_TESTCASE(c2::AddThreeNumbers)",
+                          "#TESTCASE(c2::AddThreeNumbers)",
                           "unsigned int no1 = 5;",
                           "unsigned int no2 = 10;",
-                          "#TL_EQ[this->class_inst->TL_FCT(no1: no1, no2: no2, no3: 5) => 20]",
-                          "#!TL_TESTCASE"
+                          "#EQ[this->class_inst->TL_FCT(no1:no1,no2:no2,no3:5)=>20]"
                         ]
                       },
                       "name": "add_three_numbers",
@@ -544,11 +578,10 @@
           ],
           "description": {
             "description": [
-              "#TL_TESTCASE(check_if_sum_works)",
+              "#TESTCASE(check_if_sum_works)",
               "int test_no = 2;",
-              "#TL_EQ[TL_FCT(no1: test_no, no2: 5) => 7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));",
-              "#!TL_TESTCASE"
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
             ]
           },
           "name": "test_int_no1",
@@ -575,9 +608,8 @@
                 ],
                 "description": {
                   "description": [
-                    "#TL_TESTCASE(check_if_sum_works)",
-                    "#TL_EQ[TL_FCT(float1: 4.2, float2: 3.2) => 7.4]",
-                    "#!TL_TESTCASE"
+                    "#TESTCASE(check_if_sum_works)",
+                    "#EQ[TL_FCT(float1:4.2,float2:3.2)=>7.4]"
                   ]
                 },
                 "name": "test_float",
@@ -608,9 +640,8 @@
                 ],
                 "description": {
                   "description": [
-                    "#TL_TESTCASE(check_if_str_concat_works)",
-                    "#TL_EQ[TL_FCT(str1: 'bla', str2: 'blub') => 'blablub']",
-                    "#!TL_TESTCASE"
+                    "#TESTCASE(check_if_str_concat_works)",
+                    "#EQ[TL_FCT(str1:'bla',str2:'blub')=>'blablub']"
                   ]
                 },
                 "name": "test_str",
@@ -624,7 +655,7 @@
     ]
   },
   "analysis::analysis::python::extract_entities::extract_entities_windows_python": {
-    "file": "tests\\analysis.rs",
+    "file": "tests/analysis.rs",
     "module_path": "analysis::analysis::python::extract_entities",
     "test_function": "extract_entities_windows_python",
     "recorded_value": [
@@ -644,11 +675,10 @@
           ],
           "description": {
             "description": [
-              "#TL_TESTCASE(check_if_sum_works)",
+              "#TESTCASE(check_if_sum_works)",
               "int test_no = 2;",
-              "#TL_EQ[TL_FCT(no1: test_no, no2: 5) => 7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));",
-              "#!TL_TESTCASE"
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
             ]
           },
           "name": "test_int_no1",
@@ -675,9 +705,8 @@
                 ],
                 "description": {
                   "description": [
-                    "#TL_TESTCASE(check_if_sum_works)",
-                    "#TL_EQ[TL_FCT(float1: 4.2, float2: 3.2) => 7.4]",
-                    "#!TL_TESTCASE"
+                    "#TESTCASE(check_if_sum_works)",
+                    "#EQ[TL_FCT(float1:4.2,float2:3.2)=>7.4]"
                   ]
                 },
                 "name": "test_float",
@@ -708,9 +737,8 @@
                 ],
                 "description": {
                   "description": [
-                    "#TL_TESTCASE(check_if_str_concat_works)",
-                    "#TL_EQ[TL_FCT(str1: 'bla', str2: 'blub') => 'blablub']",
-                    "#!TL_TESTCASE"
+                    "#TESTCASE(check_if_str_concat_works)",
+                    "#EQ[TL_FCT(str1:'bla',str2:'blub')=>'blablub']"
                   ]
                 },
                 "name": "test_str",
