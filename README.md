@@ -27,6 +27,13 @@ conflict with already existing installations of rust, so uninstall them first.
 Besides this _thinline_ uses the [rust clang implementation](https://github.com/KyleMayes/clang-rs), so please make
 sure to also fulfill its [requirements](https://github.com/KyleMayes/clang-sys#dependencies).
 
+### crates.io
+_Thinline_ is available on [crates.io](https://crates.io/), the official rust crate registry.
+
+```
+cargo install thinline
+```
+
 ### Manual installation
 
 Just clone this repo and then this simple installation command should be enough:
