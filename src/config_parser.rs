@@ -1,4 +1,4 @@
-use error::*;
+use failure::{err_msg, Fallible};
 use std::fs::read_to_string;
 use yaml_rust::{Yaml, YamlLoader};
 
@@ -116,7 +116,7 @@ pub struct ProjectParameters {
 
 impl ProjectParameters {
     /// Parses the project parameters from the given yaml file.
-    pub fn parse(yml: &str) -> Result<ProjectParameters> {
+    pub fn parse(yml: &str) -> Fallible<ProjectParameters> {
         if let Ok(yml_params) = YamlLoader::load_from_str(read_to_string(yml)?.as_str()) {
             if let Some(yml_param) = yml_params.get(0) {
                 let mut params = ProjectParameters::default();
@@ -124,12 +124,12 @@ impl ProjectParameters {
                 params.language = String::from(
                     yml_param
                         .get_str(&["language"])
-                        .ok_or_else(|| "Unable to get parameters for mandatory 'language'.")?,
+                        .ok_or_else(|| err_msg("Unable to get parameters for mandatory 'language'."))?,
                 );
                 params.test_env = String::from(
                     yml_param
                         .get_str(&["test_env"])
-                        .ok_or_else(|| "Unable to get parameters for mandatory 'test_env'.")?,
+                        .ok_or_else(|| err_msg("Unable to get parameters for mandatory 'test_env'."))?,
                 );
 
                 params.source_dirs = yml_param.get_str_vec(&["analysis_dirs"]).to_string_vec();
@@ -146,7 +146,7 @@ impl ProjectParameters {
             }
         }
 
-        Err(Error::from("Unable to parse project parameters."))
+        Err(format_err!("Unable to parse project parameters."))
     }
 }
 

@@ -1,20 +1,16 @@
 extern crate clang;
 #[macro_use]
 extern crate clap;
-#[macro_use]
-extern crate error_chain;
+extern crate failure;
 extern crate glob;
-#[macro_use]
-extern crate log;
 extern crate thinlinelib;
 
-pub mod error;
-
 use clap::App;
-use std::process::exit;
-use thinlinelib::error::*;
-use thinlinelib::language_type::{Cpp, Python, C};
-use thinlinelib::Thinline;
+use failure::{err_msg, Fallible};
+use thinlinelib::{
+    language_type::{Cpp, Python, C},
+    Thinline,
+};
 
 macro_rules! run {
     ($t:ident, $s:ident, $c:ident) => {
@@ -26,14 +22,7 @@ macro_rules! run {
     };
 }
 
-fn main() {
-    if let Err(error) = run() {
-        error!("{}", error);
-        exit(1);
-    }
-}
-
-fn run() -> Result<()> {
+fn main() -> Fallible<()> {
     let yaml = load_yaml!("cli.yml");
     let app = App::from_yaml(yaml).version(crate_version!());
     let matches = app.get_matches();
@@ -41,16 +30,16 @@ fn run() -> Result<()> {
     // Reads the source directory where file traversing should start.
     let source_directory = matches
         .value_of("SOURCE-DIR")
-        .ok_or_else(|| "CLI parameter 'source_directory' missing.")?;
+        .ok_or_else(|| err_msg("CLI parameter 'source_directory' missing."))?;
 
     // Reads the project config.
     let thinline_cfg_name = matches
         .value_of("project_config")
-        .ok_or_else(|| "CLI parameter 'project_config' missing.")?;
+        .ok_or_else(|| err_msg("CLI parameter 'project_config' missing."))?;
 
     let language = matches
         .value_of("language")
-        .ok_or_else(|| "CLI parameter 'language' missing.")?;
+        .ok_or_else(|| err_msg("CLI parameter 'language' missing."))?;
 
     // Creates a new Thinline instance
     match language {
