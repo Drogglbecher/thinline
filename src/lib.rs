@@ -3,7 +3,7 @@
 
 extern crate clang;
 #[macro_use]
-extern crate error_chain;
+extern crate failure;
 extern crate glob;
 #[macro_use]
 extern crate lazy_static;
@@ -20,13 +20,12 @@ extern crate yaml_rust;
 pub mod analysis;
 pub mod config_parser;
 pub mod entity;
-pub mod error;
 pub mod language_type;
 pub mod synthesis;
 
 use analysis::{Analysis, ProjectFile};
 use config_parser::ProjectParameters;
-use error::*;
+use failure::{err_msg, Fallible};
 use language_type::LanguageType;
 use std::path::PathBuf;
 use synthesis::*;
@@ -61,22 +60,22 @@ where
         &mut self,
         project_dir: P,
         config_name: &str,
-    ) -> Result<()> {
+    ) -> Fallible<()> {
         let project_config = project_dir.into().join(config_name);
 
         if !project_config.exists() || !project_config.is_file() {
-            return Err(Error::from(format!(
+            return Err(format_err!(
                 "The given project config file '{}' does not exist or is a directory.",
                 project_config
                     .to_str()
-                    .ok_or_else(|| "Unable to stringify project config file.")?
-            )));
+                    .ok_or_else(|| err_msg("Unable to stringify project config file."))?
+            ));
         }
 
         self.project_parameters = ProjectParameters::parse(
             project_config
                 .to_str()
-                .ok_or_else(|| "Unable to stringify project config file.")?,
+                .ok_or_else(|| err_msg("Unable to stringify project config file."))?,
         )?;
 
         println!("{:?}", self.project_parameters);
@@ -85,7 +84,7 @@ where
     }
 
     /// Analyzes the project which should be tested.
-    pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_path: P) -> Result<()> {
+    pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_path: P) -> Fallible<()> {
         self.analysis = Analysis::new();
         let project_path_p = project_path.into();
 
@@ -101,7 +100,7 @@ where
                 // Project path is a file and has the right extension.
                 if T::file_types().contains(
                     &ext.to_str()
-                        .ok_or_else(|| "Unable to stringify file extension.")?,
+                        .ok_or_else(|| err_msg("Unable to stringify file extension."))?,
                 ) {
                     // Push it to the project file vectory for analyzing purposes.
                     self.analysis

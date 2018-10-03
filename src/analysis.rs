@@ -1,10 +1,12 @@
 use entity::Entity;
-use error::*;
+use failure::{err_msg, Fallible};
 use glob::glob;
 use language_type::LanguageType;
-use std::cell::{Ref, RefCell, RefMut};
-use std::marker::PhantomData;
-use std::path::PathBuf;
+use std::{
+    cell::{Ref, RefCell, RefMut},
+    marker::PhantomData,
+    path::PathBuf,
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -140,7 +142,7 @@ impl Function {
     ///
     /// assert_eq!(function.return_type, None);
     /// ```
-    pub fn set_return_type(&mut self, ftype: &str) -> Result<()> {
+    pub fn set_return_type(&mut self, ftype: &str) -> Fallible<()> {
         if ftype.is_empty() {
             self.return_type = None;
         } else {
@@ -148,7 +150,7 @@ impl Function {
             self.return_type = Some(String::from(
                 ftype_vec
                     .get(0)
-                    .ok_or_else(|| "Function type can not be parsed from signature.")?
+                    .ok_or_else(|| err_msg("Function type can not be parsed from signature."))?
                     .trim_right(),
             ));
         }
@@ -417,15 +419,15 @@ where
     }
 
     /// Collects all the sources within the given project dir.
-    pub fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[String]) -> Result<()> {
+    pub fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[String]) -> Fallible<()> {
         // Check the given project directory
         if !project_dir.exists() || !project_dir.is_dir() {
-            return Err(Error::from(format!(
+            return Err(format_err!(
                 "The given project dir '{}' does not exist.",
                 project_dir
                     .to_str()
-                    .ok_or_else(|| "Unable to stringify project dir path.")?
-            )));
+                    .ok_or_else(|| err_msg("Unable to stringify project dir path."))?
+            ));
         }
 
         // Traverse through the files within the specified source directories
@@ -449,7 +451,7 @@ where
     }
 
     /// Extracts function signatures and comments of thinlines parsed files.
-    pub fn extract_entities(&self) -> Result<()> {
+    pub fn extract_entities(&self) -> Fallible<()> {
         T::extract_entities(&self)
     }
 }

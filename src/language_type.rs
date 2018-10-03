@@ -1,7 +1,7 @@
 use analysis::{Analysis, Argument, Enum, Function};
 use clang;
 use entity::{Entity, EntityType};
-use error::*;
+use failure::{err_msg, Fallible};
 use python_parser::ast::{CompoundStatement, Expression, Statement};
 use python_parser::{file_input, make_strspan};
 use std::fs::File;
@@ -22,7 +22,7 @@ lazy_static! {
 
 pub trait LanguageType: Default {
     fn file_types() -> &'static [&'static str];
-    fn extract_entities<T: LanguageType>(analysis: &Analysis<T>) -> Result<()>;
+    fn extract_entities<T: LanguageType>(analysis: &Analysis<T>) -> Fallible<()>;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ pub trait LanguageType: Default {
 struct CFamily;
 
 impl CFamily {
-    fn format_arguments(arguments: &[clang::Entity]) -> Result<Vec<Argument>> {
+    fn format_arguments(arguments: &[clang::Entity]) -> Fallible<Vec<Argument>> {
         let mut args = Vec::new();
 
         for argument in arguments {
@@ -40,7 +40,7 @@ impl CFamily {
                 Some(
                     argument
                         .get_type()
-                        .ok_or_else(|| "Argument type can not be parsed from signature.")?
+                        .ok_or_else(|| err_msg("Argument type can not be parsed from signature."))?
                         .get_display_name(),
                 ),
             ));
@@ -49,7 +49,7 @@ impl CFamily {
         Ok(args)
     }
 
-    fn analyse_clang_function_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+    fn analyse_clang_function_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let mut function = Function::new(entity_name);
 
@@ -74,7 +74,7 @@ impl CFamily {
         Ok(None)
     }
 
-    fn analyse_clang_enum_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+    fn analyse_clang_enum_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let enumeration = Enum::new(entity_name);
 
@@ -84,7 +84,7 @@ impl CFamily {
         Ok(None)
     }
 
-    fn analyse_clang_generic_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+    fn analyse_clang_generic_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let entity = Entity::new(entity_name);
 
@@ -104,7 +104,7 @@ static C_FILE_EXTENSIONS: &[&str] = &["c", "h"];
 pub struct C;
 
 impl C {
-    fn analyse_clang_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+    fn analyse_clang_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         let entity_kind = entity.get_kind();
 
         // Search for functions outside the system headers
@@ -131,7 +131,7 @@ impl LanguageType for C {
         C_FILE_EXTENSIONS
     }
 
-    fn extract_entities<C: LanguageType>(analysis: &Analysis<C>) -> Result<()> {
+    fn extract_entities<C: LanguageType>(analysis: &Analysis<C>) -> Fallible<()> {
         if let Some(ref clang) = *CLANG {
             let clang_index = clang::Index::new(&clang, false, false);
             for project_file in analysis.project_files().iter() {
@@ -165,7 +165,7 @@ static CPP_FILE_EXTENSIONS: &[&str] = &["cpp", "hpp"];
 pub struct Cpp;
 
 impl Cpp {
-    fn analyse_clang_entity(entity: &clang::Entity) -> Result<Option<EntityType>> {
+    fn analyse_clang_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         let entity_kind = entity.get_kind();
 
         // Search for functions outside the system headers
@@ -192,7 +192,7 @@ impl Cpp {
         Ok(None)
     }
 
-    fn analyse_clang_entity_tree(parent: &mut Entity, clang_entity: &clang::Entity) -> Result<()> {
+    fn analyse_clang_entity_tree(parent: &mut Entity, clang_entity: &clang::Entity) -> Fallible<()> {
         // Iterate through the child entities of the current entity
         for child in clang_entity.get_children() {
             if let Ok(Some(entity)) = Self::analyse_clang_entity(&child) {
@@ -211,7 +211,7 @@ impl LanguageType for Cpp {
         CPP_FILE_EXTENSIONS
     }
 
-    fn extract_entities<Cpp: LanguageType>(analysis: &Analysis<Cpp>) -> Result<()> {
+    fn extract_entities<Cpp: LanguageType>(analysis: &Analysis<Cpp>) -> Fallible<()> {
         if let Some(ref clang) = *CLANG {
             let clang_index = clang::Index::new(&clang, false, false);
             for project_file in analysis.project_files().iter() {
@@ -252,7 +252,7 @@ impl Python {
         }
     }
 
-    fn analyse_statement(entity: &mut Entity, statement: &Statement) -> Result<()> {
+    fn analyse_statement(entity: &mut Entity, statement: &Statement) -> Fallible<()> {
         if let Statement::Compound(ent_box) = statement {
             match Box::leak((*ent_box).clone()) {
                 // Statement is a statement definition
@@ -296,7 +296,7 @@ impl LanguageType for Python {
         PYTHON_FILE_EXTENSIONS
     }
 
-    fn extract_entities<Python: LanguageType>(analysis: &Analysis<Python>) -> Result<()> {
+    fn extract_entities<Python: LanguageType>(analysis: &Analysis<Python>) -> Fallible<()> {
         for project_file in analysis.project_files().iter() {
             // Parse file to string
             let mut file = File::open(&project_file.path)?;
