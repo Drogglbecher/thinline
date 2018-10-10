@@ -3,9 +3,7 @@ use failure::{err_msg, Fallible};
 use glob::glob;
 use language_type::LanguageType;
 use std::{
-    cell::{Ref, RefCell, RefMut},
-    marker::PhantomData,
-    path::PathBuf,
+    cell::{Ref, RefCell, RefMut}, marker::PhantomData, path::PathBuf,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +23,7 @@ impl Description {
     }
 
     /// Sets and formats the description.
-    pub fn set_description(&mut self, description: &str) {
+    pub fn set(&mut self, description: &str) {
         self.description = description
             .split('\n')
             .map(|desc| {
@@ -190,7 +188,7 @@ impl Function {
         }
 
         if let Some(desc) = &mut self.description {
-            desc.set_description(description);
+            desc.set(description);
         }
     }
 
@@ -248,26 +246,6 @@ impl Enum {
     pub fn set_arguments(&mut self, arguments: &[Argument]) {
         self.arguments = arguments.into();
     }
-
-    /// Adds an Argument to the Enum argument list.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use thinlinelib::analysis::{Argument, Enum};
-    ///
-    /// let mut argument = Argument::new("arg", Some("std::string"));
-    /// argument.set_value("FirstArg");
-    ///
-    /// let mut enumeration = Enum::new("enum");
-    /// enumeration.push_argument(argument);
-    ///
-    /// assert_eq!(enumeration.arguments.len(), 1);
-    ///
-    /// ```
-    pub fn push_argument(&mut self, argument: Argument) {
-        self.arguments.push(argument);
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -316,7 +294,7 @@ where
     /// use thinlinelib::language_type::C;
     ///
     /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
-    /// project_file.add_entity(Entity::new("testEntity"));
+    /// project_file.entities_mut().push(Entity::new("testEntity"));
     ///
     /// assert_eq!(project_file.entities().len(), 1);
     /// ```
@@ -334,7 +312,7 @@ where
     /// use thinlinelib::language_type::C;
     ///
     /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
-    /// project_file.add_entity(Entity::new("testEntity"));
+    /// project_file.entities_mut().push(Entity::new("testEntity"));
     ///
     /// let mut entities = project_file.entities_mut();
     /// assert_eq!(entities.len(), 1);
@@ -344,25 +322,6 @@ where
     /// ```
     pub fn entities_mut(&self) -> RefMut<Vec<Entity>> {
         self.entities.borrow_mut()
-    }
-
-    /// Adds an Entity to the entities list.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// use thinlinelib::analysis::ProjectFile;
-    /// use thinlinelib::entity::Entity;
-    /// use thinlinelib::language_type::C;
-    ///
-    /// let project_file: ProjectFile<C> = ProjectFile::new("test/project_file");
-    /// assert_eq!(project_file.entities().len(), 0);
-    ///
-    /// project_file.add_entity(Entity::new("testEntity"));
-    /// assert_eq!(project_file.entities().len(), 1);
-    /// ```
-    pub fn add_entity(&self, entity: Entity) {
-        self.entities_mut().push(entity);
     }
 }
 

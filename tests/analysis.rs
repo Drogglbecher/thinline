@@ -145,10 +145,14 @@ mod analysis {
             let mut enumeration = Enum::new("enum");
             assert!(enumeration.arguments.is_empty());
 
-            enumeration.push_argument(Argument::new("arg", Some("uint32")));
+            enumeration
+                .arguments
+                .push(Argument::new("arg", Some("uint32")));
             assert_eq!(enumeration.arguments.len(), 1);
 
-            enumeration.push_argument(Argument::new("new_arg", Some("uint64")));
+            enumeration
+                .arguments
+                .push(Argument::new("new_arg", Some("uint64")));
             assert_eq!(enumeration.arguments.len(), 2);
         }
     }

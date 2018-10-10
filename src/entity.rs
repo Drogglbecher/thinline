@@ -127,7 +127,7 @@ impl Entity {
         }
 
         if let Some(desc) = &mut self.description {
-            desc.set_description(description);
+            desc.set(description);
         }
     }
 }
