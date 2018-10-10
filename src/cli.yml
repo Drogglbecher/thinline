@@ -22,6 +22,7 @@ args:
         - c
         - cpp
         - python
+      value_name: LANGUAGE
   - build:
       help: Executes the build script steps given in the project thinline setting file.
       short: b
@@ -38,7 +39,11 @@ args:
       short: p
       default_value: .thinline.yml
       value_name: YAML_FILE
+  - quiet:
+      help: Does not print any console logs.
+      short: q
+      long: quiet
   - verbose:
-      help: Set the verbosity level (`v` -> INFO, `vv` -> DEBUG, `vvv` -> TRACE)
+      help: Set the verbosity level (`v` -> DEBUG, `vv` -> TRACE).
       short: v
       multiple: true

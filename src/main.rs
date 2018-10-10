@@ -28,14 +28,17 @@ fn main() -> Fallible<()> {
     let app = App::from_yaml(yaml).version(crate_version!());
     let matches = app.get_matches();
 
-    // Sets up logging depending on verbosity level
-    match matches.occurrences_of("verbose") {
-        0 => set_var("RUST_LOG", "thinlinelib=warn"),
-        1 => set_var("RUST_LOG", "thinlinelib=info"),
-        2 => set_var("RUST_LOG", "thinlinelib=debug"),
-        _ => set_var("RUST_LOG", "thinlinelib=trace"),
-    };
-    env_logger::init();
+    // Sets up logging depending on verbosity level and quiet flag
+    let quiet = matches.is_present("quiet");
+
+    if !quiet {
+        match matches.occurrences_of("verbose") {
+            0 => set_var("RUST_LOG", "thinlinelib=info"),
+            1 => set_var("RUST_LOG", "thinlinelib=debug"),
+            _ => set_var("RUST_LOG", "thinlinelib=trace"),
+        };
+        env_logger::init();
+    }
 
     // Reads the source directory where file traversing should start.
     let source_directory = matches

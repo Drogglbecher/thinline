@@ -49,17 +49,18 @@ The usage of the CLI-tool is basically simple, `thinline --help` prints the usag
 
 ```
 USAGE:
-    thinline [FLAGS] [OPTIONS] <SOURCE-DIR> --language <language>
+    thinline [FLAGS] [OPTIONS] <SOURCE-DIR> --language <LANGUAGE>
 
 FLAGS:
     -b, --build      Executes the build script steps given in the project thinline setting file.
     -d, --dry-run    Creates only the test files in the target projects `.thinline` folder without exexcuting them.
     -h, --help       Prints help information
+    -q, --quiet      Does not print any console logs.
     -V, --version    Prints version information
-    -v               Set the verbosity level (`v` -> INFO, `vv` -> DEBUG, `vvv` -> TRACE)
+    -v               Set the verbosity level (`v` -> DEBUG, `vv` -> TRACE).
 
 OPTIONS:
-    -l, --language <language>           Specifies the language of the target project. [possible values: c,
+    -l, --language <LANGUAGE>           Specifies the language of the target project. [possible values: c,
                                         cpp, python]
     -p, --project-config <YAML_FILE>    The name of the yaml file where the project parameters for thinline are stored.
                                         This file has to be at <SOURCE-DIR>. [default: .thinline.yml]
