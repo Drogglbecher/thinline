@@ -80,15 +80,20 @@ where
                 .ok_or_else(|| err_msg("Unable to stringify project config file."))?,
         )?;
 
-        debug!("{:?}", self.project_parameters);
+        debug!("{:#?}", self.project_parameters);
 
         Ok(())
     }
 
     /// Analyzes the project which should be tested.
     pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_path: P) -> Fallible<()> {
-        self.analysis = Analysis::new();
         let project_path_p = project_path.into();
+
+        if let Some(project_path_s) = project_path_p.to_str() {
+            info!("Starting project analysis at '{}'\n", project_path_s);
+        }
+
+        self.analysis = Analysis::new();
 
         if project_path_p.is_dir() {
             // Project path is a directory, thus it is neccessay to traverse to the project

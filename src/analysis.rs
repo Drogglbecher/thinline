@@ -3,7 +3,8 @@ use failure::{err_msg, Fallible};
 use glob::glob;
 use language_type::LanguageType;
 use std::{
-    cell::{Ref, RefCell, RefMut}, marker::PhantomData, path::PathBuf,
+    cell::{Ref, RefCell, RefMut}, fmt::{Display, Formatter, Result}, marker::PhantomData,
+    path::PathBuf,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,12 +173,11 @@ impl Function {
     ///
     /// let mut function = Function::new("testFunction");
     /// function.set_description("
-    /// #TL_TESTCASE(check_if_sum_works)
+    /// # TESTCASE(check_if_sum_works)
     ///    int test_no = 2;
-    ///    #TL_EQ[TL_FCT(no1: test_no, no2: 5) => 7]
-    ///    #TL_EQ[TL_FCT(no1: 5, no2: 2) => 7]
+    ///    #EQ[TL_FCT(no1: test_no, no2: 5) => 7]
+    ///    #EQ[TL_FCT(no1: 5, no2: 2) => 7]
     ///    EXPECT_EQ(11, test_int_no1(9, 2));
-    /// #!TL_TESTCASE
     /// ");
     ///
     /// assert!(function.description.is_some());
@@ -325,6 +325,19 @@ where
     }
 }
 
+impl<T> Display for ProjectFile<T>
+where
+    T: LanguageType,
+{
+    /// Formats a ProjectFile to be displayed by std output.
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        if let Some(path) = self.path.to_str() {
+            return write!(f, "{}", path);
+        }
+        write!(f, "Unable to stringify filename")
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
@@ -360,12 +373,12 @@ where
         }
     }
 
-    /// Returns a reference to the collected project files for anaylsis.
+    /// Returns a reference to the collected project files for analysis.
     pub fn project_files(&self) -> Ref<Vec<ProjectFile<T>>> {
         self.project_files.borrow()
     }
 
-    /// Returns a mutable reference to the collected project files for anaylsis.
+    /// Returns a mutable reference to the collected project files for analysis.
     ///
     /// # Example
     ///

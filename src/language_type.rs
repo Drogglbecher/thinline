@@ -49,6 +49,7 @@ impl CFamily {
         Ok(args)
     }
 
+    /// Analyzes a clang function entity and returns the connected EntityType::Function
     fn analyse_clang_function_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let mut function = Function::new(entity_name);
@@ -74,6 +75,7 @@ impl CFamily {
         Ok(None)
     }
 
+    /// Analyzes a clang enumeration entity and returns the connected EntityType::Enum
     fn analyse_clang_enum_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let enumeration = Enum::new(entity_name);
@@ -84,6 +86,7 @@ impl CFamily {
         Ok(None)
     }
 
+    /// Analyzes a generic clang entity and returns the connected EntityType::Entity
     fn analyse_clang_generic_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let mut ent = Entity::new(entity_name);
@@ -140,6 +143,7 @@ impl LanguageType for C {
         if let Some(ref clang) = *CLANG {
             let clang_index = clang::Index::new(&clang, false, false);
             for project_file in analysis.project_files().iter() {
+                info!("Analyzing '{}'", project_file);
                 if let EntityType::Entity(mut index) = EntityType::Entity(Entity::new("")) {
                     let parsed_path = &clang_index.parser(&project_file.path).parse()?;
                     let clang_entity = parsed_path.get_entity();
@@ -223,6 +227,7 @@ impl LanguageType for Cpp {
         if let Some(ref clang) = *CLANG {
             let clang_index = clang::Index::new(&clang, false, false);
             for project_file in analysis.project_files().iter() {
+                info!("Analyzing '{}'", project_file);
                 if let EntityType::Entity(mut index) = EntityType::Entity(Entity::new("")) {
                     let parsed_path = &clang_index.parser(&project_file.path).parse()?;
                     let clang_entity = parsed_path.get_entity();
@@ -306,6 +311,8 @@ impl LanguageType for Python {
 
     fn extract_entities<Python: LanguageType>(analysis: &Analysis<Python>) -> Fallible<()> {
         for project_file in analysis.project_files().iter() {
+            info!("Analyzing '{}'", project_file);
+
             // Parse file to string
             let mut file = File::open(&project_file.path)?;
             let mut content = String::new();
