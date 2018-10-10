@@ -151,7 +151,7 @@ impl LanguageType for C {
                         }
                     }
 
-                    println!("{:#?}", index);
+                    debug!("{:#?}", index);
                     project_file.entities_mut().push(index);
                 }
             }
@@ -229,7 +229,7 @@ impl LanguageType for Cpp {
 
                     Self::analyse_clang_entity_tree(&mut index, &clang_entity)?;
 
-                    println!("{:#?}", index);
+                    debug!("{:#?}", index);
                     project_file.entities_mut().push(index);
                 }
             }
@@ -320,7 +320,7 @@ impl LanguageType for Python {
                     }
                     Err(_) => bail!("Unable to create python AST."),
                 }
-                println!("{:#?}", index);
+                debug!("{:#?}", index);
                 project_file.entities_mut().push(index);
             }
         }

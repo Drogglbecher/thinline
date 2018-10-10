@@ -39,6 +39,6 @@ args:
       default_value: .thinline.yml
       value_name: YAML_FILE
   - verbose:
-      help: Set the verbosity level (`v` -> DEBUG, `vv` -> TRACE)
+      help: Set the verbosity level (`v` -> INFO, `vv` -> DEBUG, `vvv` -> TRACE)
       short: v
       multiple: true

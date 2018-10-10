@@ -1,15 +1,16 @@
 extern crate clang;
 #[macro_use]
 extern crate clap;
+extern crate env_logger;
 extern crate failure;
 extern crate glob;
 extern crate thinlinelib;
 
 use clap::App;
 use failure::{err_msg, Fallible};
+use std::env::set_var;
 use thinlinelib::{
-    language_type::{Cpp, Python, C},
-    Thinline,
+    language_type::{Cpp, Python, C}, Thinline,
 };
 
 macro_rules! run {
@@ -26,6 +27,15 @@ fn main() -> Fallible<()> {
     let yaml = load_yaml!("cli.yml");
     let app = App::from_yaml(yaml).version(crate_version!());
     let matches = app.get_matches();
+
+    // Sets up logging depending on verbosity level
+    match matches.occurrences_of("verbose") {
+        0 => set_var("RUST_LOG", "thinlinelib=warn"),
+        1 => set_var("RUST_LOG", "thinlinelib=info"),
+        2 => set_var("RUST_LOG", "thinlinelib=debug"),
+        _ => set_var("RUST_LOG", "thinlinelib=trace"),
+    };
+    env_logger::init();
 
     // Reads the source directory where file traversing should start.
     let source_directory = matches

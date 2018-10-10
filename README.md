@@ -28,6 +28,7 @@ Besides this _thinline_ uses the [rust clang implementation](https://github.com/
 sure to also fulfill its [requirements](https://github.com/KyleMayes/clang-sys#dependencies).
 
 ### crates.io
+
 _Thinline_ is available on [crates.io](https://crates.io/), the official rust crate registry.
 
 ```
@@ -55,7 +56,7 @@ FLAGS:
     -d, --dry-run    Creates only the test files in the target projects `.thinline` folder without exexcuting them.
     -h, --help       Prints help information
     -V, --version    Prints version information
-    -v               Set the verbosity level (`v` -> DEBUG, `vv` -> TRACE)
+    -v               Set the verbosity level (`v` -> INFO, `vv` -> DEBUG, `vvv` -> TRACE)
 
 OPTIONS:
     -l, --language <language>           Specifies the language of the target project. [possible values: c,

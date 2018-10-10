@@ -7,6 +7,8 @@ extern crate failure;
 extern crate glob;
 #[macro_use]
 extern crate lazy_static;
+#[macro_use]
+extern crate log;
 extern crate python_parser;
 extern crate regex;
 #[macro_use]
@@ -78,7 +80,7 @@ where
                 .ok_or_else(|| err_msg("Unable to stringify project config file."))?,
         )?;
 
-        println!("{:?}", self.project_parameters);
+        debug!("{:?}", self.project_parameters);
 
         Ok(())
     }
