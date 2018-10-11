@@ -1,5 +1,5 @@
 use failure::{err_msg, Fallible};
-use run_script::ScriptOptions;
+use run_script::{self, ScriptOptions};
 use std::{env, fs::read_to_string};
 use yaml_rust::{Yaml, YamlLoader};
 
