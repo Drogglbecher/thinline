@@ -110,6 +110,7 @@ impl ValueParser for Yaml {
 ////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
+/// The parsed build actions depending on the used OS.
 pub struct BuildScript {
     /// Indicator whether the output is logged within thinline output or not.
     pub log: bool,

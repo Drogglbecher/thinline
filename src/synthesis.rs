@@ -1,6 +1,6 @@
 use entity::Entity;
 use language_type::LanguageType;
-use std::marker::PhantomData;
+use std::{marker::PhantomData, path::PathBuf};
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -63,7 +63,7 @@ impl TestClass {
     /// ```
     /// use thinlinelib::synthesis::{TestClass};
     ///
-    /// let mut test_class = TestClass::new();
+    /// let test_class = TestClass::new();
     ///
     /// assert!(test_class.stub_context.is_empty());
     /// assert!(test_class.test_functions.is_empty());
@@ -106,12 +106,37 @@ impl TestClass {
 
 #[derive(Default, Debug)]
 pub struct TestFile<T> {
-    pub pf_type: PhantomData<T>,
+    pub path: PathBuf,
     pub entities: Vec<Entity>,
+    pub pf_type: PhantomData<T>,
 }
 
 /// Represents a test file.
-impl<T> TestFile<T> where T: LanguageType {}
+impl<T> TestFile<T>
+where
+    T: LanguageType,
+{
+    /// Creates a new TestFile instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use std::path::PathBuf;
+    /// use thinlinelib::synthesis::TestFile;
+    /// use thinlinelib::language_type::C;
+    ///
+    /// let test_file: TestFile<C> = TestFile::new("test_file");
+    ///
+    /// assert!(test_file.entities.is_empty());
+    /// ```
+    pub fn new<S: Into<PathBuf>>(path: S) -> Self {
+        Self {
+            path: path.into(),
+            entities: Vec::new(),
+            pf_type: PhantomData,
+        }
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 

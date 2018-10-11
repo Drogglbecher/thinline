@@ -72,7 +72,7 @@ impl Argument {
     /// assert_eq!(argument.atype.unwrap(), "int");
     /// ```
     pub fn new<S: Into<String>>(name: S, atype: Option<S>) -> Self {
-        Argument {
+        Self {
             name: name.into(),
             atype: atype.map(S::into),
             value: None,
@@ -250,14 +250,14 @@ impl Enum {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/// Represents a parsed project file.
 #[derive(Default, Clone, Debug)]
 pub struct ProjectFile<T> {
-    pub pf_type: PhantomData<T>,
     pub path: PathBuf,
     pub entities: RefCell<Vec<Entity>>,
+    pub pf_type: PhantomData<T>,
 }
 
-/// Represents a parsed project file.
 impl<T> ProjectFile<T>
 where
     T: LanguageType,
@@ -277,10 +277,10 @@ where
     /// assert_eq!(project_file.entities().len(), 0);
     /// ```
     pub fn new<S: Into<PathBuf>>(path: S) -> Self {
-        ProjectFile {
-            pf_type: PhantomData,
+        Self {
             path: path.into(),
             entities: RefCell::new(Vec::new()),
+            pf_type: PhantomData,
         }
     }
 
@@ -367,7 +367,7 @@ where
     /// assert_eq!(analysis.project_files().len(), 0);
     /// ```
     pub fn new() -> Self {
-        Analysis {
+        Self {
             file_types: T::file_types(),
             project_files: RefCell::new(Vec::new()),
         }
