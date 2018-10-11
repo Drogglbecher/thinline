@@ -11,6 +11,7 @@ extern crate lazy_static;
 extern crate log;
 extern crate python_parser;
 extern crate regex;
+extern crate run_script;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde;
@@ -90,7 +91,7 @@ where
         let project_path_p = project_path.into();
 
         if let Some(project_path_s) = project_path_p.to_str() {
-            info!("Starting project analysis at '{}'\n", project_path_s);
+            info!("Starting project analysis at '{}'", project_path_s);
         }
 
         self.analysis = Analysis::new();

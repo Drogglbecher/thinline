@@ -4,26 +4,39 @@ extern crate clap;
 extern crate env_logger;
 extern crate failure;
 extern crate glob;
+#[macro_use]
+extern crate log;
 extern crate thinlinelib;
 
 use clap::App;
 use failure::{err_msg, Fallible};
-use std::env::set_var;
+use std::{env::set_var, process::exit};
 use thinlinelib::{
     language_type::{Cpp, Python, C}, Thinline,
 };
 
-macro_rules! run {
-    ($t:ident, $s:ident, $c:ident) => {
+macro_rules! analyze {
+    ($t:ident, $s:ident, $c:ident, $b:ident) => {
         // Parses the project config.
         $t.parse_project_config($s, $c)?;
 
         // Analyze the project at the given source directory.
         $t.analyze_project($s)?;
+
+        if $b {
+            $t.project_parameters.build_script.run($s)?;
+        }
     };
 }
 
-fn main() -> Fallible<()> {
+fn main() {
+    if let Err(res) = run() {
+        error!("{}", res);
+        exit(1);
+    }
+}
+
+fn run() -> Fallible<()> {
     let yaml = load_yaml!("cli.yml");
     let app = App::from_yaml(yaml).version(crate_version!());
     let matches = app.get_matches();
@@ -33,9 +46,9 @@ fn main() -> Fallible<()> {
 
     if !quiet {
         match matches.occurrences_of("verbose") {
-            0 => set_var("RUST_LOG", "thinlinelib=info"),
-            1 => set_var("RUST_LOG", "thinlinelib=debug"),
-            _ => set_var("RUST_LOG", "thinlinelib=trace"),
+            0 => set_var("RUST_LOG", "thinline=warn,thinlinelib=info"),
+            1 => set_var("RUST_LOG", "thinline=warn,thinlinelib=debug"),
+            _ => set_var("RUST_LOG", "thinline=warn,thinlinelib=trace"),
         };
         env_logger::init();
     }
@@ -54,19 +67,21 @@ fn main() -> Fallible<()> {
         .value_of("language")
         .ok_or_else(|| err_msg("CLI parameter 'language' missing."))?;
 
+    let build = matches.is_present("build");
+
     // Creates a new Thinline instance
     match language {
         "c" => {
             let mut thinline: Thinline<C> = Thinline::new();
-            run!(thinline, source_directory, thinline_cfg_name);
+            analyze!(thinline, source_directory, thinline_cfg_name, build);
         }
         "cpp" => {
             let mut thinline: Thinline<Cpp> = Thinline::new();
-            run!(thinline, source_directory, thinline_cfg_name);
+            analyze!(thinline, source_directory, thinline_cfg_name, build);
         }
         "python" => {
             let mut thinline: Thinline<Python> = Thinline::new();
-            run!(thinline, source_directory, thinline_cfg_name);
+            analyze!(thinline, source_directory, thinline_cfg_name, build);
         }
         _ => {}
     };
