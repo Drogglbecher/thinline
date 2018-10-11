@@ -24,7 +24,7 @@ mod project_parameters {
             assert_eq!(parameters.test_env, "ctest");
 
             assert!(parameters.build_script.windows.is_empty());
-            assert_eq!(parameters.build_script.linux.len(), 4);
+            assert_eq!(parameters.build_script.linux.len(), 2);
 
             assert_eq!(
                 parameters.include_dirs,

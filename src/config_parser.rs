@@ -1,6 +1,6 @@
 use failure::{err_msg, Fallible};
 use run_script::{self, ScriptOptions};
-use std::{env, fs::read_to_string};
+use std::{env, fs::read_to_string, path::PathBuf};
 use yaml_rust::{Yaml, YamlLoader};
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -131,14 +131,14 @@ impl BuildScript {
     /// not at thinline directory. The yaml param `log` at `build_script`
     /// section indicates whether the build outpus is print within the
     /// thinline output (true) or the child process (false).
-    pub fn run(&self, dir: &str) -> Fallible<()> {
+    pub fn run<P: Into<PathBuf>>(&self, dir: P) -> Fallible<()> {
         info!("Building target");
 
         // Save current working dir
         let current_working_dir = env::current_dir()?;
 
         // Change to project dir
-        env::set_current_dir(&dir)?;
+        env::set_current_dir(&dir.into())?;
 
         // Build script options
         let mut options = ScriptOptions::new();
@@ -220,6 +220,7 @@ impl ProjectParameters {
 
                 params.source_dirs = yml_param.get_str_vec(&["analysis_dirs"]).to_string_vec();
                 params.include_dirs = yml_param.get_str_vec(&["include_dirs"]).to_string_vec();
+
                 params.build_script.log = yml_param.get_bool(&["build_script", "log"], true);
                 params.build_script.linux = yml_param
                     .get_str_vec(&["build_script", "linux"])
@@ -227,6 +228,7 @@ impl ProjectParameters {
                 params.build_script.windows = yml_param
                     .get_str_vec(&["build_script", "windows"])
                     .to_string_vec();
+
                 params.lib_paths = yml_param.get_str_vec(&["libs"]).to_string_vec();
 
                 return Ok(params);

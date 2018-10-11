@@ -1,0 +1,9 @@
+---
+language: python
+test_env: py_test
+analysis_dirs:
+  - .
+build_script:
+  log: true
+  linux:
+    - echo 'test'

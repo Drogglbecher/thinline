@@ -7,10 +7,13 @@ analysis_dirs:
 include_dirs:
   - include
 build_script:
+  log: true
   linux:
+    - rm -rf build
     - mkdir build
-    - cmake -Bbuild -H.
-    - make -C build
+    - cd build
+    - cmake ..
+    - make
 libs:
   - build/libc_example.so
 tlg:
