@@ -5,6 +5,7 @@ include_dirs:
   - include
   - src
 build_script:
+  log: true
   linux:
     - mkdir build
     - cd build
