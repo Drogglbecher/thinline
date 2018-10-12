@@ -1,5 +1,16 @@
 #include <header1.hpp>
 
+/**
+ * \brief Function that returns a number.
+ *
+ * # TESTCASE(static_fct)
+ * unsigned int no1 = 5;
+ * # EQ[TL_FCT(no1: no1) => 5]
+ */
+static unsigned int static_fct(unsigned int no1) {
+    return no1;
+}
+
 using namespace ns1;
 using namespace ns2;
 
