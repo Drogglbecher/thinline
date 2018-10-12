@@ -9,7 +9,7 @@ use std::{
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/// Represents a entity description.
+/// Represents a parsed entity description.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Description {
     pub description: Vec<String>,
@@ -17,6 +17,16 @@ pub struct Description {
 
 impl Description {
     /// Creates a new Description instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::analysis::Description;
+    ///
+    /// let description = Description::new();
+    ///
+    /// assert!(description.description.is_empty());
+    /// ```
     pub fn new() -> Self {
         Self {
             description: Vec::new(),
@@ -24,6 +34,20 @@ impl Description {
     }
 
     /// Sets and formats the description.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::analysis::Description;
+    ///
+    /// let mut description = Description::new();
+    /// description.set("# TESTCASE(c1::AddTwoNumbers)
+    ///     unsigned int no1 = 5;
+    ///     # EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]
+    ///     # LT[this->class_inst->TL_FCT(no1: no1, no2: 10) => 30]");
+    ///
+    /// assert_eq!(description.description.len(), 4);
+    /// ```
     pub fn set(&mut self, description: &str) {
         self.description = description
             .split('\n')
@@ -340,6 +364,7 @@ where
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/// The analyzer which fulfills parsing and entity extraction tasks.
 #[derive(Default, Debug)]
 pub struct Analysis<T>
 where
