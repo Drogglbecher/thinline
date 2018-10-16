@@ -368,7 +368,7 @@ where
     T: LanguageType,
 {
     pub file_types: &'static [&'static str],
-    pub project_files: RefCell<Vec<ProjectFile<T>>>,
+    project_files: RefCell<Vec<ProjectFile<T>>>,
 }
 
 impl<T> Analysis<T>

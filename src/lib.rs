@@ -35,6 +35,8 @@ use project_parameters::ProjectParameters;
 use std::path::PathBuf;
 use synthesis::*;
 
+static DEFAULT_ENV_YML: &str = include_str!("../stubs/environment/env_stubs.yml");
+
 #[derive(Default, Debug)]
 /// Global structure representing the Thinline lib.
 pub struct Thinline<T>
@@ -121,6 +123,14 @@ where
         }
 
         self.analysis.extract_entities()?;
+
+        Ok(())
+    }
+
+    pub fn synthesize_tests(&mut self) -> Fallible<()> {
+        self.synthesis = Synthesis::new();
+
+        self.synthesis.parse_stubs(DEFAULT_ENV_YML)?;
 
         Ok(())
     }

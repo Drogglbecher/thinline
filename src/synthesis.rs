@@ -1,4 +1,5 @@
 use entity::Entity;
+use failure::Fallible;
 use language_type::LanguageType;
 use std::{marker::PhantomData, path::PathBuf};
 use stubs::Stubs;
@@ -146,7 +147,7 @@ pub struct Synthesis<T>
 where
     T: LanguageType,
 {
-    pub stubs: Stubs,
+    stubs: Stubs,
     pub test_files: Vec<TestFile<T>>,
 }
 
@@ -171,5 +172,15 @@ where
             stubs: Stubs::new(),
             test_files: Vec::new(),
         }
+    }
+
+    /// Parses all available stubs from the given yaml file.
+    pub fn parse_stubs(&mut self, yml: &str) -> Fallible<()> {
+        self.stubs.parse(yml)
+    }
+
+    /// Returns a reference to the syntesis stubs.
+    pub fn stubs(&self) -> &Stubs {
+        &self.stubs
     }
 }

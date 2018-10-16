@@ -1,5 +1,6 @@
 use failure::Fallible;
-use std::collections::HashMap;
+use std::{collections::HashMap, fs::read_to_string};
+use yaml_rust::YamlLoader;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +39,13 @@ impl Stubs {
     }
 
     /// Parses all available stub signatures from the given yaml file.
-    pub fn parse(self, yml: &str) -> Fallible<()> {
+    pub fn parse(&mut self, yml: &str) -> Fallible<()> {
+        if let Ok(yml_params) = YamlLoader::load_from_str(read_to_string(yml)?.as_str()) {
+            if let Some(yml_param) = yml_params.get(0) {
+                // TODO: Parsing
+            }
+        }
+
         Ok(())
     }
 }
