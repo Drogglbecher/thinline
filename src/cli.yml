@@ -29,7 +29,7 @@ args:
       long: build
   - dry_run:
       help: Creates only the test files in the target projects `.thinline` folder without
-            exexcuting them.
+            executing them.
       short: d
       long: dry-run
   - project_config:

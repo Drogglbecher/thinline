@@ -53,7 +53,7 @@ USAGE:
 
 FLAGS:
     -b, --build      Executes the build script steps given in the project thinline setting file.
-    -d, --dry-run    Creates only the test files in the target projects `.thinline` folder without exexcuting them.
+    -d, --dry-run    Creates only the test files in the target projects `.thinline` folder without executing them.
     -h, --help       Prints help information
     -q, --quiet      Does not print any console logs.
     -V, --version    Prints version information
