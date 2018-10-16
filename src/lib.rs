@@ -24,6 +24,7 @@ pub mod analysis;
 pub mod entity;
 pub mod language_type;
 pub mod project_parameters;
+pub mod stubs;
 pub mod synthesis;
 pub mod value_parser;
 
@@ -47,7 +48,7 @@ where
     pub analysis: Analysis<T>,
 
     /// The structure holding the synthesized testdata.
-    pub synthesis: Synthesis,
+    pub synthesis: Synthesis<T>,
 }
 
 impl<T> Thinline<T>

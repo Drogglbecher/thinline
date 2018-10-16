@@ -1,6 +1,7 @@
 use entity::Entity;
 use language_type::LanguageType;
 use std::{marker::PhantomData, path::PathBuf};
+use stubs::Stubs;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -141,4 +142,34 @@ where
 ////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
-pub struct Synthesis {}
+pub struct Synthesis<T>
+where
+    T: LanguageType,
+{
+    pub stubs: Stubs,
+    pub test_files: Vec<TestFile<T>>,
+}
+
+impl<T> Synthesis<T>
+where
+    T: LanguageType,
+{
+    /// Creates a new Synthesis instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use thinlinelib::synthesis::Synthesis;
+    /// use thinlinelib::language_type::C;
+    ///
+    /// let synthesis: Synthesis<C> = Synthesis::new();
+    ///
+    /// assert_eq!(synthesis.test_files.len(), 0);
+    /// ```
+    pub fn new() -> Self {
+        Self {
+            stubs: Stubs::new(),
+            test_files: Vec::new(),
+        }
+    }
+}
