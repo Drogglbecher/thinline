@@ -21,16 +21,16 @@ extern crate walkdir;
 extern crate yaml_rust;
 
 pub mod analysis;
-pub mod config_parser;
 pub mod entity;
 pub mod language_type;
+pub mod project_parameters;
 pub mod synthesis;
 pub mod value_parser;
 
 use analysis::{Analysis, ProjectFile};
-use config_parser::ProjectParameters;
 use failure::{err_msg, Fallible};
 use language_type::LanguageType;
+use project_parameters::ProjectParameters;
 use std::path::PathBuf;
 use synthesis::*;
 

@@ -7,7 +7,7 @@ mod project_parameters {
     #[cfg(test)]
     mod should_succeed {
         use std::path::Path;
-        use thinlinelib::config_parser::ProjectParameters;
+        use thinlinelib::project_parameters::ProjectParameters;
 
         #[test]
         fn when_yaml_is_valid() {
@@ -37,7 +37,7 @@ mod project_parameters {
 
     mod should_fail {
         use std::path::Path;
-        use thinlinelib::config_parser::ProjectParameters;
+        use thinlinelib::project_parameters::ProjectParameters;
 
         #[test]
         fn when_yaml_is_not_existing() {
