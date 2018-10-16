@@ -25,6 +25,7 @@ pub mod config_parser;
 pub mod entity;
 pub mod language_type;
 pub mod synthesis;
+pub mod value_parser;
 
 use analysis::{Analysis, ProjectFile};
 use config_parser::ProjectParameters;
