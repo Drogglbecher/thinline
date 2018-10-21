@@ -62,8 +62,31 @@ where
         Self::default()
     }
 
+    /// Starts the analysis of the target project.
+    pub fn analyze<P: Into<PathBuf>>(
+        &mut self,
+        source_dir: P,
+        thinline_cfg: &str,
+        build: bool,
+    ) -> Fallible<()> {
+        let source_dir_path = source_dir.into();
+
+        // Parses the project config
+        self.parse_project_config(&source_dir_path, thinline_cfg)?;
+
+        // Analyze the project at the given source directory
+        self.analyze_project(&source_dir_path)?;
+
+        // Builds target project when build flag is set
+        if build {
+            self.project_parameters.build_script.run(&source_dir_path)?;
+        }
+
+        Ok(())
+    }
+
     /// Parses configuration from the given config yaml.
-    pub fn parse_project_config<P: Into<PathBuf>>(
+    fn parse_project_config<P: Into<PathBuf>>(
         &mut self,
         project_dir: P,
         config_name: &str,
@@ -91,14 +114,12 @@ where
     }
 
     /// Analyzes the project which should be tested.
-    pub fn analyze_project<P: Into<PathBuf>>(&mut self, project_path: P) -> Fallible<()> {
+    fn analyze_project<P: Into<PathBuf>>(&self, project_path: P) -> Fallible<()> {
         let project_path_p = project_path.into();
 
         if let Some(project_path_s) = project_path_p.to_str() {
             info!("Starting project analysis at '{}'", project_path_s);
         }
-
-        self.analysis = Analysis::new();
 
         if project_path_p.is_dir() {
             // Project path is a directory, thus it is neccessay to traverse to the project

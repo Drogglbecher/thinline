@@ -34,7 +34,7 @@ args:
       long: dry-run
   - project_config:
       help: The name of the yaml file where the project parameters for thinline are stored.
-            This file has to be at <SOURCE-DIR>.
+            This path has to be specified relatively to <SOURCE-DIR>.
       long: project-config
       short: p
       default_value: .thinline.yml

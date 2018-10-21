@@ -12,22 +12,9 @@ use clap::App;
 use failure::{err_msg, Fallible};
 use std::{env::set_var, process::exit};
 use thinlinelib::{
-    language_type::{Cpp, Python, C}, Thinline,
+    language_type::{Cpp, Python, C},
+    Thinline,
 };
-
-macro_rules! analyze {
-    ($t:ident, $s:ident, $c:ident, $b:ident) => {
-        // Parses the project config.
-        $t.parse_project_config($s, $c)?;
-
-        // Analyze the project at the given source directory.
-        $t.analyze_project($s)?;
-
-        if $b {
-            $t.project_parameters.build_script.run($s)?;
-        }
-    };
-}
 
 fn main() {
     if let Err(res) = run() {
@@ -73,15 +60,15 @@ fn run() -> Fallible<()> {
     match language {
         "c" => {
             let mut thinline: Thinline<C> = Thinline::new();
-            analyze!(thinline, source_directory, thinline_cfg_name, build);
+            thinline.analyze(source_directory, thinline_cfg_name, build)?;
         }
         "cpp" => {
             let mut thinline: Thinline<Cpp> = Thinline::new();
-            analyze!(thinline, source_directory, thinline_cfg_name, build);
+            thinline.analyze(source_directory, thinline_cfg_name, build)?;
         }
         "python" => {
             let mut thinline: Thinline<Python> = Thinline::new();
-            analyze!(thinline, source_directory, thinline_cfg_name, build);
+            thinline.analyze(source_directory, thinline_cfg_name, build)?;
         }
         _ => {}
     };
