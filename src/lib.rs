@@ -44,13 +44,13 @@ where
     T: LanguageType,
 {
     /// The parsed project parameters.
-    pub project_parameters: ProjectParameters,
+    project_parameters: ProjectParameters,
 
     /// The structure holding the analysis_c data.
-    pub analysis: Analysis<T>,
+    analysis: Analysis<T>,
 
     /// The structure holding the synthesized testdata.
-    pub synthesis: Synthesis<T>,
+    synthesis: Synthesis<T>,
 }
 
 impl<T> Thinline<T>
@@ -148,9 +148,7 @@ where
         Ok(())
     }
 
-    pub fn synthesize_tests(&mut self) -> Fallible<()> {
-        self.synthesis = Synthesis::new();
-
+    pub fn synthesize(&mut self) -> Fallible<()> {
         self.synthesis.parse_stubs(DEFAULT_ENV_YML)?;
 
         Ok(())
