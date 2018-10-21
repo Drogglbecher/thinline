@@ -32,11 +32,15 @@ fn run() -> Fallible<()> {
     let quiet = matches.is_present("quiet");
 
     if !quiet {
-        match matches.occurrences_of("verbose") {
-            0 => set_var("RUST_LOG", "thinline=warn,thinlinelib=info"),
-            1 => set_var("RUST_LOG", "thinline=warn,thinlinelib=debug"),
-            _ => set_var("RUST_LOG", "thinline=warn,thinlinelib=trace"),
+        let lib_log_level = match matches.occurrences_of("verbose") {
+            0 => "info",
+            1 => "debug",
+            _ => "trace",
         };
+        set_var(
+            "RUST_LOG",
+            format!("thinline=warn,thinlinelib={}", lib_log_level),
+        );
         env_logger::init();
     }
 
