@@ -1,14 +1,24 @@
 use failure::Fallible;
 use std::{collections::HashMap, fs::read_to_string};
+use value_parser::ValueParser;
 use yaml_rust::YamlLoader;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 #[derive(Default, Debug)]
 /// A parsed stub.
-pub struct Stub;
+pub struct Stub {
+    content: String,
+}
 
 impl Stub {
+    /// Creates a `Stub` instance from a `&str`.
+    pub fn from_str(content: &str) -> Self {
+        Self {
+            content: String::from(content),
+        }
+    }
+
     pub fn format(&self, dict: HashMap<&str, &str>) -> Fallible<Option<String>> {
         Ok(Some(String::new()))
     }
@@ -42,7 +52,20 @@ impl Stubs {
     pub fn parse(&mut self, yml: &str) -> Fallible<()> {
         if let Ok(yml_params) = YamlLoader::load_from_str(read_to_string(yml)?.as_str()) {
             if let Some(yml_param) = yml_params.get(0) {
-                // TODO: Parsing
+                let mut stubs = Self::new();
+
+                if let Some(file) = yml_param.get_str(&["file"]) {
+                    stubs.file = Some(Stub::from_str(file));
+                }
+                if let Some(class) = yml_param.get_str(&["class"]) {
+                    stubs.class = Some(Stub::from_str(class));
+                }
+                if let Some(function) = yml_param.get_str(&["function"]) {
+                    stubs.function = Some(Stub::from_str(function));
+                }
+                if let Some(output_format) = yml_param.get_str(&["output_format"]) {
+                    stubs.output_format = Some(String::from(output_format));
+                }
             }
         }
 

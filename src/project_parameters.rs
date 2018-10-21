@@ -109,7 +109,7 @@ impl ProjectParameters {
     pub fn parse(yml: &str) -> Fallible<ProjectParameters> {
         if let Ok(yml_params) = YamlLoader::load_from_str(read_to_string(yml)?.as_str()) {
             if let Some(yml_param) = yml_params.get(0) {
-                let mut params = ProjectParameters::default();
+                let mut params = Self::new();
 
                 params.language =
                     String::from(yml_param.get_str(&["language"]).ok_or_else(|| {

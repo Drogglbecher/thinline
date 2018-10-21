@@ -35,7 +35,7 @@ use project_parameters::ProjectParameters;
 use std::path::PathBuf;
 use synthesis::*;
 
-static DEFAULT_ENV_YML: &str = include_str!("../stubs/environment/env_stubs.yml");
+static DEFAULT_ENV_YML: &str = "./stubs/environment/env_stubs.yml";
 
 #[derive(Default, Debug)]
 /// Global structure representing the Thinline lib.

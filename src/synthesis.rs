@@ -176,6 +176,7 @@ where
 
     /// Parses all available stubs from the given yaml file.
     pub fn parse_stubs(&mut self, yml: &str) -> Fallible<()> {
+        println!("{:?}", yml);
         self.stubs.parse(yml)
     }
 
