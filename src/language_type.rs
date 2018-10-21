@@ -2,10 +2,11 @@ use analysis::{Analysis, Argument, Enum, Function};
 use clang;
 use entity::{Entity, EntityType};
 use failure::{err_msg, Fallible};
-use python_parser::ast::{CompoundStatement, Expression, Statement};
-use python_parser::{file_input, make_strspan};
-use std::fs::File;
-use std::io::Read;
+use python_parser::{
+    ast::{CompoundStatement, Expression, Statement},
+    file_input, make_strspan,
+};
+use std::{fs::File, io::Read};
 
 ////////////////////////////////////////////////////////////////////////////////
 

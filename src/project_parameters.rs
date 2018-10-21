@@ -100,6 +100,11 @@ pub struct ProjectParameters {
 }
 
 impl ProjectParameters {
+    /// Creates a new ProjectParameters instance.
+    pub fn new() -> Self {
+        Self::default()
+    }
+
     /// Parses the project parameters from the given yaml file.
     pub fn parse(yml: &str) -> Fallible<ProjectParameters> {
         if let Ok(yml_params) = YamlLoader::load_from_str(read_to_string(yml)?.as_str()) {

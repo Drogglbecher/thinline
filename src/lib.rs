@@ -59,7 +59,11 @@ where
 {
     /// Creates an instance of the lib containing Thinlines functionality.
     pub fn new() -> Self {
-        Self::default()
+        Self {
+            project_parameters: ProjectParameters::new(),
+            analysis: Analysis::new(),
+            synthesis: Synthesis::new(),
+        }
     }
 
     /// Starts the analysis of the target project.
@@ -135,7 +139,7 @@ where
                     &ext.to_str()
                         .ok_or_else(|| err_msg("Unable to stringify file extension."))?,
                 ) {
-                    // Push it to the project file vectory for analyzing purposes.
+                    // Push it to the project file vector for analyzing purposes.
                     self.analysis
                         .project_files_mut()
                         .push(ProjectFile::new(&project_path_p));

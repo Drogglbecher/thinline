@@ -2,8 +2,12 @@ use entity::Entity;
 use failure::{err_msg, Fallible};
 use language_type::LanguageType;
 use std::{
-    cell::{Ref, RefCell, RefMut}, ffi::OsStr, fmt::{Display, Formatter, Result}, fs::read_link,
-    marker::PhantomData, path::PathBuf,
+    cell::{Ref, RefCell, RefMut},
+    ffi::OsStr,
+    fmt::{Display, Formatter, Result},
+    fs::read_link,
+    marker::PhantomData,
+    path::PathBuf,
 };
 use walkdir::WalkDir;
 
@@ -422,6 +426,8 @@ where
     /// Collects all the sources within the given project dir.
     /// Does also work for symlinked files.
     pub fn collect_sources(&self, project_dir: &PathBuf, search_dirs: &[String]) -> Fallible<()> {
+        debug!("Collecting analysis sources.");
+
         // Check the given project directory
         if !project_dir.exists() || !project_dir.is_dir() {
             return Err(format_err!(
@@ -439,13 +445,13 @@ where
                 for dir in WalkDir::new(project_dir.join(src_dir).to_str().unwrap_or(".")) {
                     let entry = dir?;
                     if !entry.path().is_dir() && entry.path().extension() == Some(OsStr::new(ext)) {
-                        if entry.path_is_symlink() {
-                            self.project_files_mut()
-                                .push(ProjectFile::new(read_link(entry.path())?));
+                        let file = if entry.path_is_symlink() {
+                            ProjectFile::new(read_link(entry.path())?)
                         } else {
-                            self.project_files_mut()
-                                .push(ProjectFile::new(entry.path()));
-                        }
+                            ProjectFile::new(entry.path())
+                        };
+                        debug!("Add target project file '{}' to analysis.", file);
+                        self.project_files_mut().push(file);
                     }
                 }
             }
