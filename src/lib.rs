@@ -44,7 +44,7 @@ where
     T: LanguageType,
 {
     /// The parsed project parameters.
-    project_parameters: ProjectParameters,
+    pub project_parameters: ProjectParameters,
 
     /// The structure holding the analysis_c data.
     analysis: Analysis<T>,
@@ -152,8 +152,12 @@ where
         Ok(())
     }
 
-    pub fn synthesize(&mut self) -> Fallible<()> {
-        self.synthesis.parse_stubs(DEFAULT_ENV_YML)?;
+    pub fn synthesize<P: Into<PathBuf>>(&mut self, base_path: P) -> Fallible<()> {
+        self.synthesis.parse_stubs(
+            DEFAULT_ENV_YML,
+            self.project_parameters.test_env.as_str(),
+            &base_path.into(),
+        )?;
 
         Ok(())
     }

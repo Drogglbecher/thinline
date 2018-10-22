@@ -1,5 +1,5 @@
 use failure::Fallible;
-use std::{collections::HashMap, fs::read_to_string};
+use std::{collections::HashMap, fs::read_to_string, path::PathBuf};
 use value_parser::ValueParser;
 use yaml_rust::YamlLoader;
 
@@ -21,6 +21,21 @@ impl Stub {
 
     pub fn format(&self, dict: HashMap<&str, &str>) -> Fallible<Option<String>> {
         Ok(Some(String::new()))
+    }
+}
+
+trait StubConversion {
+    /// Consumes an instance and returns it's elements as `Vec<String>`.
+    fn to_stub(self) -> Option<Stub>;
+}
+
+impl<'a> StubConversion for Option<&'a str> {
+    fn to_stub(self) -> Option<Stub> {
+        if let Some(string) = self {
+            return Some(Stub::from_str(string));
+        }
+
+        None
     }
 }
 
@@ -49,23 +64,26 @@ impl Stubs {
     }
 
     /// Parses all available stub signatures from the given yaml file.
-    pub fn parse(&mut self, yml: &str) -> Fallible<()> {
+    pub fn parse(&mut self, yml: &str, test_env: &str, base_path: &PathBuf) -> Fallible<()> {
         if let Ok(yml_params) = YamlLoader::load_from_str(read_to_string(yml)?.as_str()) {
             if let Some(yml_param) = yml_params.get(0) {
                 let mut stubs = Self::new();
 
-                if let Some(file) = yml_param.get_str(&["file"]) {
-                    stubs.file = Some(Stub::from_str(file));
-                }
-                if let Some(class) = yml_param.get_str(&["class"]) {
-                    stubs.class = Some(Stub::from_str(class));
-                }
-                if let Some(function) = yml_param.get_str(&["function"]) {
-                    stubs.function = Some(Stub::from_str(function));
-                }
-                if let Some(output_format) = yml_param.get_str(&["output_format"]) {
+                stubs.file = yml_param
+                    .get_str_or_file_content(&[test_env, "file"], base_path)
+                    .to_stub();
+                stubs.class = yml_param
+                    .get_str_or_file_content(&[test_env, "class"], base_path)
+                    .to_stub();
+                stubs.function = yml_param
+                    .get_str_or_file_content(&[test_env, "function"], base_path)
+                    .to_stub();
+
+                if let Some(output_format) = yml_param.get_str(&[test_env, "output_format"]) {
                     stubs.output_format = Some(String::from(output_format));
                 }
+
+                debug!("Parsed stubs: {:#?}", stubs);
             }
         }
 

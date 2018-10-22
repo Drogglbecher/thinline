@@ -1,7 +1,7 @@
 use failure::{err_msg, Fallible};
 use run_script::{self, ScriptOptions};
 use std::{env, fs::read_to_string, path::PathBuf};
-use value_parser::{Conversion, ValueParser};
+use value_parser::{ValueParser, VecStringConversion};
 use yaml_rust::YamlLoader;
 
 ////////////////////////////////////////////////////////////////////////////////

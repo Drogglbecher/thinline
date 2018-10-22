@@ -3,8 +3,7 @@ use clang;
 use entity::{Entity, EntityType};
 use failure::{err_msg, Fallible};
 use python_parser::{
-    ast::{CompoundStatement, Expression, Statement},
-    file_input, make_strspan,
+    ast::{CompoundStatement, Expression, Statement}, file_input, make_strspan,
 };
 use std::{fs::File, io::Read};
 

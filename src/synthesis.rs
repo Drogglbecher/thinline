@@ -175,9 +175,8 @@ where
     }
 
     /// Parses all available stubs from the given yaml file.
-    pub fn parse_stubs(&mut self, yml: &str) -> Fallible<()> {
-        println!("{:?}", yml);
-        self.stubs.parse(yml)
+    pub fn parse_stubs(&mut self, yml: &str, test_env: &str, base_path: &PathBuf) -> Fallible<()> {
+        self.stubs.parse(yml, test_env, base_path)
     }
 
     /// Returns a reference to the syntesis stubs.

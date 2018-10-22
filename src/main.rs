@@ -10,10 +10,9 @@ extern crate thinlinelib;
 
 use clap::App;
 use failure::{err_msg, Fallible};
-use std::{env::set_var, process::exit};
+use std::{env::set_var, path::Path, process::exit};
 use thinlinelib::{
-    language_type::{Cpp, Python, C},
-    Thinline,
+    language_type::{Cpp, Python, C}, Thinline,
 };
 
 fn main() {
@@ -69,6 +68,7 @@ fn run() -> Fallible<()> {
         "cpp" => {
             let mut thinline: Thinline<Cpp> = Thinline::new();
             thinline.analyze(source_directory, thinline_cfg_name, build)?;
+            thinline.synthesize(Path::new("stubs").join("environment"))?;
         }
         "python" => {
             let mut thinline: Thinline<Python> = Thinline::new();
