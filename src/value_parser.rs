@@ -31,7 +31,12 @@ pub trait ValueParser {
     fn get_str(&self, keys: &[&str]) -> Option<&str>;
 
     /// Reads a string or the content of the file at the given path.
-    fn get_str_or_file_content(&self, keys: &[&str], base_path: &PathBuf) -> Option<&str>;
+    fn get_str_or_file_content(
+        &self,
+        keys: &[&str],
+        base_path: &PathBuf,
+        file_ext: &str,
+    ) -> Option<&str>;
 
     /// Reads a string vector at the given config path.
     fn get_str_vec(&self, keys: &[&str]) -> Option<Vec<&str>>;
@@ -84,10 +89,15 @@ impl ValueParser for Yaml {
         None
     }
 
-    fn get_str_or_file_content(&self, keys: &[&str], base_path: &PathBuf) -> Option<&str> {
+    fn get_str_or_file_content(
+        &self,
+        keys: &[&str],
+        base_path: &PathBuf,
+        file_ext: &str,
+    ) -> Option<&str> {
         if let Some(param) = self.get_str(keys) {
             let path = Path::new(param);
-            if path.extension() == Some(OsStr::new("stub")) {
+            if path.extension() == Some(OsStr::new(file_ext)) {
                 if let Ok(file_str) = read_to_string(base_path.join(param)) {
                     return Some(Box::leak(file_str.into_boxed_str()));
                 }

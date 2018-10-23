@@ -5,6 +5,10 @@ use yaml_rust::YamlLoader;
 
 ////////////////////////////////////////////////////////////////////////////////
 
+static STUB_EXTENSION: &str = "stub";
+
+////////////////////////////////////////////////////////////////////////////////
+
 #[derive(Default, Debug)]
 /// A parsed stub.
 pub struct Stub {
@@ -70,13 +74,13 @@ impl Stubs {
                 let mut stubs = Self::new();
 
                 stubs.file = yml_param
-                    .get_str_or_file_content(&[test_env, "file"], base_path)
+                    .get_str_or_file_content(&[test_env, "file"], base_path, STUB_EXTENSION)
                     .to_stub();
                 stubs.class = yml_param
-                    .get_str_or_file_content(&[test_env, "class"], base_path)
+                    .get_str_or_file_content(&[test_env, "class"], base_path, STUB_EXTENSION)
                     .to_stub();
                 stubs.function = yml_param
-                    .get_str_or_file_content(&[test_env, "function"], base_path)
+                    .get_str_or_file_content(&[test_env, "function"], base_path, STUB_EXTENSION)
                     .to_stub();
 
                 if let Some(output_format) = yml_param.get_str(&[test_env, "output_format"]) {
