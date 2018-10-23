@@ -43,6 +43,9 @@ pub struct Thinline<T>
 where
     T: LanguageType,
 {
+    /// The target project directory.
+    pub project_dir: PathBuf,
+
     /// The parsed project parameters.
     pub project_parameters: ProjectParameters,
 
@@ -58,8 +61,9 @@ where
     T: LanguageType,
 {
     /// Creates an instance of the lib containing Thinlines functionality.
-    pub fn new() -> Self {
+    pub fn new<P: Into<PathBuf>>(project_dir: P) -> Self {
         Self {
+            project_dir: project_dir.into(),
             project_parameters: ProjectParameters::new(),
             analysis: Analysis::new(),
             synthesis: Synthesis::new(),
@@ -67,35 +71,24 @@ where
     }
 
     /// Starts the analysis of the target project.
-    pub fn analyze<P: Into<PathBuf>>(
-        &mut self,
-        source_dir: P,
-        thinline_cfg: &str,
-        build: bool,
-    ) -> Fallible<()> {
-        let source_dir_path = source_dir.into();
-
+    pub fn analyze(&mut self, thinline_cfg: &str, build: bool) -> Fallible<()> {
         // Parses the project config
-        self.parse_project_config(&source_dir_path, thinline_cfg)?;
+        self.parse_project_config(thinline_cfg)?;
 
         // Analyze the project at the given source directory
-        self.analyze_project(&source_dir_path)?;
+        self.analyze_project()?;
 
         // Builds target project when build flag is set
         if build {
-            self.project_parameters.build_script.run(&source_dir_path)?;
+            self.project_parameters.build_script.run(&self.project_dir)?;
         }
 
         Ok(())
     }
 
     /// Parses configuration from the given config yaml.
-    fn parse_project_config<P: Into<PathBuf>>(
-        &mut self,
-        project_dir: P,
-        config_name: &str,
-    ) -> Fallible<()> {
-        let project_config = project_dir.into().join(config_name);
+    fn parse_project_config(&mut self, config_name: &str) -> Fallible<()> {
+        let project_config = self.project_dir.join(config_name);
 
         if !project_config.exists() || !project_config.is_file() {
             return Err(format_err!(
@@ -118,22 +111,20 @@ where
     }
 
     /// Analyzes the project which should be tested.
-    fn analyze_project<P: Into<PathBuf>>(&self, project_path: P) -> Fallible<()> {
-        let project_path_p = project_path.into();
-
-        if let Some(project_path_s) = project_path_p.to_str() {
+    fn analyze_project(&self) -> Fallible<()> {
+        if let Some(project_path_s) = self.project_dir.to_str() {
             info!("Starting project analysis at '{}'", project_path_s);
         }
 
-        if project_path_p.is_dir() {
+        if self.project_dir.is_dir() {
             // Project path is a directory, thus it is neccessay to traverse to the project
             // and collect all the sources.
             self.analysis
-                .collect_sources(&project_path_p, &self.project_parameters.source_dirs)?;
+                .collect_sources(&self.project_dir, &self.project_parameters.source_dirs)?;
         }
 
-        if project_path_p.is_file() {
-            if let Some(ext) = project_path_p.extension() {
+        if self.project_dir.is_file() {
+            if let Some(ext) = self.project_dir.extension() {
                 // Project path is a file and has the right extension.
                 if T::file_types().contains(
                     &ext.to_str()
@@ -142,7 +133,7 @@ where
                     // Push it to the project file vector for analyzing purposes.
                     self.analysis
                         .project_files_mut()
-                        .push(ProjectFile::new(&project_path_p));
+                        .push(ProjectFile::new(&self.project_dir));
                 }
             }
         }

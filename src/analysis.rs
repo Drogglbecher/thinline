@@ -2,12 +2,8 @@ use entity::Entity;
 use failure::{err_msg, Fallible};
 use language_type::LanguageType;
 use std::{
-    cell::{Ref, RefCell, RefMut},
-    ffi::OsStr,
-    fmt::{Display, Formatter, Result},
-    fs::read_link,
-    marker::PhantomData,
-    path::PathBuf,
+    cell::{Ref, RefCell, RefMut}, ffi::OsStr, fmt::{Display, Formatter, Result}, fs::read_link,
+    marker::PhantomData, path::PathBuf,
 };
 use walkdir::WalkDir;
 

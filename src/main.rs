@@ -62,17 +62,17 @@ fn run() -> Fallible<()> {
     // Creates a new Thinline instance
     match language {
         "c" => {
-            let mut thinline: Thinline<C> = Thinline::new();
-            thinline.analyze(source_directory, thinline_cfg_name, build)?;
+            let mut thinline: Thinline<C> = Thinline::new(source_directory);
+            thinline.analyze(thinline_cfg_name, build)?;
         }
         "cpp" => {
-            let mut thinline: Thinline<Cpp> = Thinline::new();
-            thinline.analyze(source_directory, thinline_cfg_name, build)?;
+            let mut thinline: Thinline<Cpp> = Thinline::new(source_directory);
+            thinline.analyze(thinline_cfg_name, build)?;
             thinline.synthesize(Path::new("stubs").join("environment"))?;
         }
         "python" => {
-            let mut thinline: Thinline<Python> = Thinline::new();
-            thinline.analyze(source_directory, thinline_cfg_name, build)?;
+            let mut thinline: Thinline<Python> = Thinline::new(source_directory);
+            thinline.analyze(thinline_cfg_name, build)?;
         }
         _ => {}
     };
