@@ -28,14 +28,14 @@ impl BuildScript {
     /// not at thinline directory. The yaml param `log` at `build_script`
     /// section indicates whether the build outpus is print within the
     /// thinline output (true) or the child process (false).
-    pub fn run<P: Into<PathBuf>>(&self, dir: P) -> Fallible<()> {
+    pub fn run(&self, dir: &PathBuf) -> Fallible<()> {
         info!("Building target");
 
         // Save current working dir
         let current_working_dir = env::current_dir()?;
 
         // Change to project dir
-        env::set_current_dir(&dir.into())?;
+        env::set_current_dir(dir)?;
 
         // Build script options
         let mut options = ScriptOptions::new();

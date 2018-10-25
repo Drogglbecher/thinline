@@ -15,6 +15,8 @@ use thinlinelib::{
     language_type::{Cpp, Python, C}, Thinline,
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
 fn main() {
     if let Err(res) = run() {
         error!("{}", res);

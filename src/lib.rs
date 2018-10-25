@@ -2,6 +2,7 @@
 #![cfg_attr(feature = "clippy", plugin(clippy))]
 
 extern crate clang;
+extern crate directories;
 #[macro_use]
 extern crate failure;
 extern crate glob;
@@ -29,11 +30,14 @@ pub mod synthesis;
 pub mod value_parser;
 
 use analysis::{Analysis, ProjectFile};
+use directories::BaseDirs;
 use failure::{err_msg, Fallible};
 use language_type::LanguageType;
 use project_parameters::ProjectParameters;
 use std::path::PathBuf;
 use synthesis::*;
+
+////////////////////////////////////////////////////////////////////////////////
 
 static DEFAULT_ENV_YML: &str = "./stubs/environment/env_stubs.yml";
 
@@ -86,26 +90,55 @@ where
         Ok(())
     }
 
-    /// Parses configuration from the given config yaml.
-    fn parse_project_config(&mut self, config_name: &str) -> Fallible<()> {
-        let project_config = self.project_dir.join(config_name);
+    /// Traverses upwared through the `seed_dir`s parent directories until
+    /// `.thinline.yml` configuration exists in dir or home directory is reached.
+    fn find_thinline_config_dir<'a>(seed_dir: &'a PathBuf, config_name: &str) -> Option<PathBuf> {
+        if let Some(base_dirs) = BaseDirs::new() {
+            let home_dir = base_dirs.home_dir();
+            let mut project_config = seed_dir.clone();
 
-        if !project_config.exists() || !project_config.is_file() {
-            return Err(format_err!(
-                "The given project config file '{}' does not exist or is a directory.",
-                project_config
-                    .to_str()
-                    .ok_or_else(|| err_msg("Unable to stringify project config file."))?
-            ));
+            loop {
+                if project_config == home_dir || project_config.join(config_name).is_file() {
+                    trace!("Config dir: {:?}", project_config);
+                    break;
+                }
+
+                if let Some(parent) = project_config.clone().as_path().parent() {
+                    project_config = parent.to_path_buf();
+                } else {
+                    return None;
+                }
+            }
+
+            return Some(project_config.join(config_name));
         }
 
-        self.project_parameters = ProjectParameters::parse(
-            project_config
-                .to_str()
-                .ok_or_else(|| err_msg("Unable to stringify project config file."))?,
-        )?;
+        None
+    }
 
-        debug!("{:#?}", self.project_parameters);
+    /// Parses configuration from the given config yaml.
+    fn parse_project_config(&mut self, config_name: &str) -> Fallible<()> {
+        if let Some(project_config) = Self::find_thinline_config_dir(&self.project_dir, config_name)
+        {
+            if !project_config.exists() || !project_config.is_file() {
+                return Err(format_err!(
+                    "The given project config file '{}' does not exist or is a directory.",
+                    project_config
+                        .to_str()
+                        .ok_or_else(|| err_msg("Unable to stringify project config file."))?
+                ));
+            }
+
+            self.project_parameters = ProjectParameters::parse(
+                project_config
+                    .to_str()
+                    .ok_or_else(|| err_msg("Unable to stringify project config file."))?,
+            )?;
+
+            debug!("{:#?}", self.project_parameters);
+        } else {
+            return Err(format_err!("Unable to get project dir parent for"));
+        }
 
         Ok(())
     }
