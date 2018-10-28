@@ -16,7 +16,7 @@ macro_rules! implement_conversion {
     };
 }
 
-/// The different types an Entitiy can have.
+/// The different types an `Entitiy` can have.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum EntityType {
     /// The index of a new entity hierarchy.
@@ -54,8 +54,8 @@ where
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/// The representation of an Entity as a possbile generic node on the
-/// abstract syntax tree. An Entity has to be kind of a EntityType.
+/// The representation of an `Entity` as a possbile generic node on the
+/// abstract syntax tree. An `Entity` has to be kind of an `EntityType`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Entity {
     pub name: String,
@@ -64,7 +64,7 @@ pub struct Entity {
 }
 
 impl Entity {
-    /// Creates a new Entity instance.
+    /// Creates a new `Entity` instance.
     ///
     /// # Example
     ///
@@ -84,7 +84,7 @@ impl Entity {
         }
     }
 
-    /// Adds an Entity to the Entity instance.
+    /// Adds an `Entity` to the `Entity` instance.
     ///
     /// # Example
     ///
@@ -109,7 +109,7 @@ impl Entity {
         None
     }
 
-    /// Returns the functions of an entity.
+    /// Returns the functions of an `Entity`.
     pub fn functions(&self) -> Vec<&Function> {
         let mut entity_vec: Vec<&Function> = Vec::new();
         for entity in &self.entities {
@@ -120,7 +120,7 @@ impl Entity {
         return entity_vec;
     }
 
-    /// Sets the description for the Entity.
+    /// Sets the description for the `Entity`.
     pub fn set_description(&mut self, description: &str) {
         if self.description.is_none() {
             self.description = Some(Description::new());

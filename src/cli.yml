@@ -28,7 +28,7 @@ args:
       short: b
       long: build
   - dry_run:
-      help: Creates only the test files in the target projects `.thinline` folder without
+      help: Creates only the test files in the target projects `thinline` folder without
             executing them.
       short: d
       long: dry-run
@@ -37,7 +37,7 @@ args:
             This path has to be specified relatively to <SOURCE-DIR>.
       long: project-config
       short: p
-      default_value: .thinline.yml
+      default_value: thinline.yml
       value_name: YAML_FILE
   - quiet:
       help: Does not print any console logs.

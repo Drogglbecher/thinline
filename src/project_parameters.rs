@@ -20,7 +20,7 @@ pub struct BuildScript {
 }
 
 impl BuildScript {
-    /// Executes the build script depending on the target OS.
+    /// Executes the `BuildScript` depending on the target OS.
     ///
     /// On Windows the script is executed with `cmd`, on linux with `sh`.
     /// All build steps are concatenated with ` && `.
@@ -100,7 +100,7 @@ pub struct ProjectParameters {
 }
 
 impl ProjectParameters {
-    /// Creates a new ProjectParameters instance.
+    /// Creates a new `ProjectParameters` instance.
     pub fn new() -> Self {
         Self::default()
     }

@@ -42,7 +42,7 @@ use synthesis::*;
 static DEFAULT_ENV_YML: &str = "./stubs/environment/env_stubs.yml";
 
 #[derive(Default, Debug)]
-/// Global structure representing the Thinline lib.
+/// Global structure representing the `Thinline` lib.
 pub struct Thinline<T>
 where
     T: LanguageType,
@@ -64,7 +64,7 @@ impl<T> Thinline<T>
 where
     T: LanguageType,
 {
-    /// Creates an instance of the lib containing Thinlines functionality.
+    /// Creates an instance of the lib containing `Thinline`s functionality.
     pub fn new<P: Into<PathBuf>>(project_dir: P) -> Self {
         Self {
             project_dir: project_dir.into(),
@@ -84,14 +84,16 @@ where
 
         // Builds target project when build flag is set
         if build {
-            self.project_parameters.build_script.run(&self.project_dir)?;
+            self.project_parameters
+                .build_script
+                .run(&self.project_dir)?;
         }
 
         Ok(())
     }
 
     /// Traverses upwared through the `seed_dir`s parent directories until
-    /// `.thinline.yml` configuration exists in dir or home directory is reached.
+    /// `thinline.yml` configuration exists in dir or home directory is reached.
     fn find_thinline_config_dir<'a>(seed_dir: &'a PathBuf, config_name: &str) -> Option<PathBuf> {
         if let Some(base_dirs) = BaseDirs::new() {
             let home_dir = base_dirs.home_dir();
@@ -176,6 +178,7 @@ where
         Ok(())
     }
 
+    /// Starts the synthesis of the target projects test files.
     pub fn synthesize<P: Into<PathBuf>>(&mut self, base_path: P) -> Fallible<()> {
         self.synthesis.parse_stubs(
             DEFAULT_ENV_YML,

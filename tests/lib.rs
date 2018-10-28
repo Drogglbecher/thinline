@@ -4,7 +4,8 @@ extern crate thinlinelib;
 mod lib {
     use std::path::Path;
     use thinlinelib::{
-        language_type::{Cpp, Python, C}, Thinline,
+        language_type::{Cpp, Python, C},
+        Thinline,
     };
 
     #[test]
@@ -15,14 +16,14 @@ mod lib {
             {
                 let mut thinline: Thinline<C> =
                     Thinline::new(Path::new("examples").join("c_project"));
-                assert!(thinline.analyze(".thinline.yml", true).is_ok());
+                assert!(thinline.analyze("thinline.yml", true).is_ok());
             }
 
             // Should fail
             {
                 let mut thinline: Thinline<C> =
                     Thinline::new(Path::new("non_existing").join("path"));
-                assert!(thinline.analyze(".thinline.yml", true).is_err());
+                assert!(thinline.analyze("thinline.yml", true).is_err());
             }
         }
 
@@ -32,14 +33,14 @@ mod lib {
             {
                 let mut thinline: Thinline<Cpp> =
                     Thinline::new(Path::new("examples").join("cpp_project"));
-                assert!(thinline.analyze(".thinline.yml", true).is_ok());
+                assert!(thinline.analyze("thinline.yml", true).is_ok());
             }
 
             // Should fail
             {
                 let mut thinline: Thinline<Cpp> =
                     Thinline::new(Path::new("non_existing").join("path"));
-                assert!(thinline.analyze(".thinline.yml", true).is_err());
+                assert!(thinline.analyze("thinline.yml", true).is_err());
             }
         }
 
@@ -49,21 +50,21 @@ mod lib {
             {
                 let mut thinline: Thinline<Python> =
                     Thinline::new(Path::new("examples").join("python_project"));
-                assert!(thinline.analyze(".thinline.yml", true).is_ok());
+                assert!(thinline.analyze("thinline.yml", true).is_ok());
             }
 
             // Should succeed with file
             {
                 let mut thinline: Thinline<Python> =
                     Thinline::new(Path::new("examples").join("python_project").join("src1.py"));
-                assert!(thinline.analyze(".thinline.yml", false).is_ok());
+                assert!(thinline.analyze("thinline.yml", false).is_ok());
             }
 
             // Should fail
             {
                 let mut thinline: Thinline<Python> =
                     Thinline::new(Path::new("non_existing").join("path"));
-                assert!(thinline.analyze(".thinline.yml", true).is_err());
+                assert!(thinline.analyze("thinline.yml", true).is_err());
             }
         }
     }

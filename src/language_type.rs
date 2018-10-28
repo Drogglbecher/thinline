@@ -3,7 +3,8 @@ use clang;
 use entity::{Entity, EntityType};
 use failure::{err_msg, Fallible};
 use python_parser::{
-    ast::{CompoundStatement, Expression, Statement}, file_input, make_strspan,
+    ast::{CompoundStatement, Expression, Statement},
+    file_input, make_strspan,
 };
 use std::{fs::File, io::Read};
 
@@ -49,7 +50,7 @@ impl CFamily {
         Ok(args)
     }
 
-    /// Analyzes a clang function entity and returns the connected EntityType::Function
+    /// Analyzes a clang function entity and returns the connected `EntityType::Function`.
     fn analyse_clang_function_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let mut function = Function::new(entity_name);
@@ -75,7 +76,7 @@ impl CFamily {
         Ok(None)
     }
 
-    /// Analyzes a clang enumeration entity and returns the connected EntityType::Enum
+    /// Analyzes a clang enumeration entity and returns the connected `EntityType::Enum`.
     fn analyse_clang_enum_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let enumeration = Enum::new(entity_name);
@@ -86,7 +87,7 @@ impl CFamily {
         Ok(None)
     }
 
-    /// Analyzes a generic clang entity and returns the connected EntityType::Entity
+    /// Analyzes a generic clang entity and returns the connected `EntityType::Entity`.
     fn analyse_clang_generic_entity(entity: &clang::Entity) -> Fallible<Option<EntityType>> {
         if let Some(entity_name) = entity.get_name() {
             let mut ent = Entity::new(entity_name);

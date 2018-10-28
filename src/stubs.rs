@@ -23,6 +23,9 @@ impl Stub {
         }
     }
 
+    /// Formats a `Stub` with the given `HashMap`.
+    /// The keys within the stub context are replaced with the
+    /// connected values.
     pub fn format(&self, dict: HashMap<&str, &str>) -> Fallible<Option<String>> {
         Ok(Some(String::new()))
     }

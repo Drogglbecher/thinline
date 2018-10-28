@@ -48,7 +48,7 @@ pub struct TestFunction {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/// The representation of a TestClass containing different
+/// The representation of a `TestClass` containing different
 /// contexts for con-/destructor, setUp, tearDown methods
 /// and so on and a vector of test functions.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -58,7 +58,7 @@ pub struct TestClass {
 }
 
 impl TestClass {
-    /// Creates a new StubContext instance.
+    /// Creates a new `StubContext` instance.
     ///
     /// # Example
     ///
@@ -77,7 +77,7 @@ impl TestClass {
         }
     }
 
-    /// Adds a StubContext to the TestClass instance.
+    /// Adds a `StubContext` to the `TestClass` instance.
     ///
     /// With setting stub contexts to certain values, it is ensured, that these
     /// contexts (e.g. test class constructor or setUp function) are replaced
@@ -118,7 +118,7 @@ impl<T> TestFile<T>
 where
     T: LanguageType,
 {
-    /// Creates a new TestFile instance.
+    /// Creates a new `TestFile` instance.
     ///
     /// # Example
     ///
@@ -155,7 +155,7 @@ impl<T> Synthesis<T>
 where
     T: LanguageType,
 {
-    /// Creates a new Synthesis instance.
+    /// Creates a new `Synthesis` instance.
     ///
     /// # Example
     ///
@@ -174,12 +174,12 @@ where
         }
     }
 
-    /// Parses all available stubs from the given yaml file.
+    /// Parses all available `Stubs` from the given yaml file.
     pub fn parse_stubs(&mut self, yml: &str, test_env: &str, base_path: &PathBuf) -> Fallible<()> {
         self.stubs.parse(yml, test_env, base_path)
     }
 
-    /// Returns a reference to the syntesis stubs.
+    /// Returns a reference to the syntesis `Stubs`.
     pub fn stubs(&self) -> &Stubs {
         &self.stubs
     }
