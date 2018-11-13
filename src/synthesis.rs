@@ -179,7 +179,7 @@ where
         self.stubs.parse(yml, test_env, base_path)
     }
 
-    /// Returns a reference to the syntesis `Stubs`.
+    /// Returns a reference to the synthesis `Stubs`.
     pub fn stubs(&self) -> &Stubs {
         &self.stubs
     }
