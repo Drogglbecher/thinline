@@ -84,9 +84,7 @@ where
 
         // Builds target project when build flag is set
         if build {
-            self.project_parameters
-                .build_script
-                .run(&self.project_dir)?;
+            self.project_parameters.build_script.run(&self.project_dir)?;
         }
 
         Ok(())
@@ -185,6 +183,10 @@ where
             self.project_parameters.test_env.as_str(),
             &base_path.into(),
         )?;
+
+        for file in self.analysis.project_files().iter() {
+            self.synthesis.process_testfile(file)?;
+        }
 
         Ok(())
     }

@@ -1,4 +1,5 @@
-use entity::Entity;
+use analysis::ProjectFile;
+use entity::{Entity, EntityType};
 use failure::Fallible;
 use language_type::LanguageType;
 use std::{marker::PhantomData, path::PathBuf};
@@ -177,6 +178,35 @@ where
     /// Parses all available `Stubs` from the given yaml file.
     pub fn parse_stubs(&mut self, yml: &str, test_env: &str, base_path: &PathBuf) -> Fallible<()> {
         self.stubs.parse(yml, test_env, base_path)
+    }
+
+    fn process_entities(parent: &Entity, children: &[EntityType]) -> Fallible<()> {
+        for child in children {
+            match child {
+                EntityType::Function(function) => {
+                    if let Some(description) = &function.description {
+                        println!(
+                            "Description found for function {}: {:?}",
+                            function.name, description.description
+                        );
+                    }
+                }
+                EntityType::Entity(entity) => {
+                    Self::process_entities(entity, &entity.entities)?;
+                }
+                _ => {}
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn process_testfile(&self, project_file: &ProjectFile<T>) -> Fallible<()> {
+        for entity in project_file.entities().iter() {
+            Self::process_entities(&entity, &entity.entities)?;
+        }
+
+        Ok(())
     }
 
     /// Returns a reference to the synthesis `Stubs`.

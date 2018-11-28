@@ -1,6 +1,6 @@
 [package]
 name = "thinline"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["Sebastian Spiess <code@sebastian-spiess.de>"]
 
 repository = "https://github.com/Drogglbecher/thinline"

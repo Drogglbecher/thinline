@@ -6,7 +6,14 @@ use synthesis::{TestClass, TestFunction};
 macro_rules! implement_conversion {
     ($t:ident) => {
         impl EntityConversion for $t {
-            fn convert(entity_type: &mut EntityType) -> Option<&mut $t> {
+            fn convert(entity_type: &EntityType) -> Option<&$t> {
+                match entity_type {
+                    EntityType::$t(entity) => Some(entity),
+                    _ => None,
+                }
+            }
+
+            fn convert_mut(entity_type: &mut EntityType) -> Option<&mut $t> {
                 match entity_type {
                     EntityType::$t(entity) => Some(entity),
                     _ => None,
@@ -36,7 +43,8 @@ pub enum EntityType {
 }
 
 pub trait EntityConversion {
-    fn convert(entity_type: &mut EntityType) -> Option<&mut Self>;
+    fn convert(entity_type: &EntityType) -> Option<&Self>;
+    fn convert_mut(entity_type: &mut EntityType) -> Option<&mut Self>;
 }
 
 implement_conversion!(Entity);
@@ -44,13 +52,6 @@ implement_conversion!(Enum);
 implement_conversion!(Function);
 implement_conversion!(TestClass);
 implement_conversion!(TestFunction);
-
-fn convert<T>(entity_type: &mut EntityType) -> Option<&mut T>
-where
-    T: EntityConversion,
-{
-    T::convert(entity_type)
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -84,6 +85,22 @@ impl Entity {
         }
     }
 
+    /// Returns a reference to the Entity encapsulated within the EntityType.
+    pub fn ref_from_entity_type<T>(entity_type: &EntityType) -> Option<&T>
+    where
+        T: EntityConversion,
+    {
+        T::convert(entity_type)
+    }
+
+    /// Returns a mutable reference to the Entity encapsulated within the EntityType.
+    pub fn ref_mut_from_entity_type<T>(entity_type: &mut EntityType) -> Option<&mut T>
+    where
+        T: EntityConversion,
+    {
+        T::convert_mut(entity_type)
+    }
+
     /// Adds an `Entity` to the `Entity` instance.
     ///
     /// # Example
@@ -103,7 +120,7 @@ impl Entity {
     {
         self.entities.push(entity);
         if let Some(entity) = self.entities.last_mut() {
-            return convert(entity);
+            return Entity::ref_mut_from_entity_type(entity);
         }
 
         None
