@@ -1,0 +1,196 @@
+{
+  "analysis_python::cpp::extract_entities_linux_python": {
+    "file": "tests/analysis_python.rs",
+    "module_path": "analysis_python::cpp",
+    "test_function": "extract_entities_linux_python",
+    "recorded_value": [
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": null,
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": null,
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "#TESTCASE(check_if_sum_works)",
+              "int test_no = 2;",
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
+            ]
+          },
+          "name": "test_int_no1",
+          "return_type": null
+        }
+      },
+      {
+        "Entity": {
+          "description": null,
+          "entities": [
+            {
+              "Function": {
+                "arguments": [
+                  {
+                    "atype": null,
+                    "name": "float1",
+                    "value": null
+                  },
+                  {
+                    "atype": null,
+                    "name": "float2",
+                    "value": null
+                  }
+                ],
+                "description": {
+                  "lines": [
+                    "#TESTCASE(check_if_sum_works)",
+                    "#EQ[TL_FCT(float1:4.2,float2:3.2)=>7.4]"
+                  ]
+                },
+                "name": "test_float",
+                "return_type": null
+              }
+            },
+            {
+              "Function": {
+                "arguments": [],
+                "description": null,
+                "name": "test_nodoc",
+                "return_type": null
+              }
+            },
+            {
+              "Function": {
+                "arguments": [
+                  {
+                    "atype": null,
+                    "name": "str1",
+                    "value": null
+                  },
+                  {
+                    "atype": null,
+                    "name": "str2",
+                    "value": null
+                  }
+                ],
+                "description": {
+                  "lines": [
+                    "#TESTCASE(check_if_str_concat_works)",
+                    "#EQ[TL_FCT(str1:'bla',str2:'blub')=>'blablub']"
+                  ]
+                },
+                "name": "test_str",
+                "return_type": null
+              }
+            }
+          ],
+          "name": "class1"
+        }
+      }
+    ]
+  },
+  "analysis_python::cpp::extract_entities_windows_python": {
+    "file": "tests\\analysis_python.rs",
+    "module_path": "analysis_python::cpp",
+    "test_function": "extract_entities_windows_python",
+    "recorded_value": [
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": null,
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": null,
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "#TESTCASE(check_if_sum_works)",
+              "int test_no = 2;",
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
+            ]
+          },
+          "name": "test_int_no1",
+          "return_type": null
+        }
+      },
+      {
+        "Entity": {
+          "description": null,
+          "entities": [
+            {
+              "Function": {
+                "arguments": [
+                  {
+                    "atype": null,
+                    "name": "float1",
+                    "value": null
+                  },
+                  {
+                    "atype": null,
+                    "name": "float2",
+                    "value": null
+                  }
+                ],
+                "description": {
+                  "lines": [
+                    "#TESTCASE(check_if_sum_works)",
+                    "#EQ[TL_FCT(float1:4.2,float2:3.2)=>7.4]"
+                  ]
+                },
+                "name": "test_float",
+                "return_type": null
+              }
+            },
+            {
+              "Function": {
+                "arguments": [],
+                "description": null,
+                "name": "test_nodoc",
+                "return_type": null
+              }
+            },
+            {
+              "Function": {
+                "arguments": [
+                  {
+                    "atype": null,
+                    "name": "str1",
+                    "value": null
+                  },
+                  {
+                    "atype": null,
+                    "name": "str2",
+                    "value": null
+                  }
+                ],
+                "description": {
+                  "lines": [
+                    "#TESTCASE(check_if_str_concat_works)",
+                    "#EQ[TL_FCT(str1:'bla',str2:'blub')=>'blablub']"
+                  ]
+                },
+                "name": "test_str",
+                "return_type": null
+              }
+            }
+          ],
+          "name": "class1"
+        }
+      }
+    ]
+  }
+}

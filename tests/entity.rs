@@ -83,7 +83,7 @@ mod entity {
             entity.set_description(MULTILINE_COMMENT);
 
             assert!(entity.description.is_some());
-            let entity_desc = entity.description.unwrap().description;
+            let entity_desc = entity.description.unwrap().lines;
 
             assert_eq!(entity_desc.len(), 5);
             assert_eq!(entity_desc[0], "this");

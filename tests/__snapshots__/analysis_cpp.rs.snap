@@ -1,201 +1,7 @@
 {
-  "analysis::analysis::c::test_collect_sources::extract_entities::extract_entities_linux_c": {
-    "file": "tests/analysis.rs",
-    "module_path": "analysis::analysis::c::test_collect_sources::extract_entities",
-    "test_function": "extract_entities_linux_c",
-    "recorded_value": [
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": "int",
-              "name": "no1",
-              "value": null
-            },
-            {
-              "atype": "int",
-              "name": "no2",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "#TESTCASE(Source1::CheckIfSumWorks)",
-              "int test_no = 2;",
-              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
-              "#EQ[TL_FCT(no1:5,no2:2)=>7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));"
-            ]
-          },
-          "name": "test_int_no1",
-          "return_type": "int"
-        }
-      },
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": "const int *const",
-              "name": "no1",
-              "value": null
-            },
-            {
-              "atype": "const int *const",
-              "name": "no2",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "#TESTCASE(Source1::TestPtr)",
-              "int test_no = 2;",
-              "int test_no2 = 5;",
-              "#EQ[TL_FCT(no1:&test_no,no2:&test_no2)=>7]"
-            ]
-          },
-          "name": "test_ptr",
-          "return_type": "int"
-        }
-      },
-      {
-        "Function": {
-          "arguments": [],
-          "description": {
-            "description": [
-              "#TESTCASE(Source1::EmptyFct)",
-              "#EQ[TL_FCT()=>7]",
-              "#NE[TL_FCT()=>4]"
-            ]
-          },
-          "name": "test_empty_fct",
-          "return_type": "int"
-        }
-      },
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": "const int",
-              "name": "argc",
-              "value": null
-            },
-            {
-              "atype": "char *const []",
-              "name": "argv",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "This function has parameters, yeah"
-            ]
-          },
-          "name": "main",
-          "return_type": "int"
-        }
-      }
-    ]
-  },
-  "analysis::analysis::c::test_collect_sources::extract_entities::extract_entities_windows_c": {
-    "file": "tests\\analysis.rs",
-    "module_path": "analysis::analysis::c::test_collect_sources::extract_entities",
-    "test_function": "extract_entities_windows_c",
-    "recorded_value": [
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": "int",
-              "name": "no1",
-              "value": null
-            },
-            {
-              "atype": "int",
-              "name": "no2",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "#TESTCASE(Source1::CheckIfSumWorks)",
-              "int test_no = 2;",
-              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
-              "#EQ[TL_FCT(no1:5,no2:2)=>7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));"
-            ]
-          },
-          "name": "test_int_no1",
-          "return_type": "int"
-        }
-      },
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": "const int *const",
-              "name": "no1",
-              "value": null
-            },
-            {
-              "atype": "const int *const",
-              "name": "no2",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "#TESTCASE(Source1::TestPtr)",
-              "int test_no = 2;",
-              "int test_no2 = 5;",
-              "#EQ[TL_FCT(no1:&test_no,no2:&test_no2)=>7]"
-            ]
-          },
-          "name": "test_ptr",
-          "return_type": "int"
-        }
-      },
-      {
-        "Function": {
-          "arguments": [],
-          "description": {
-            "description": [
-              "#TESTCASE(Source1::EmptyFct)",
-              "#EQ[TL_FCT()=>7]",
-              "#NE[TL_FCT()=>4]"
-            ]
-          },
-          "name": "test_empty_fct",
-          "return_type": "int"
-        }
-      },
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": "const int",
-              "name": "argc",
-              "value": null
-            },
-            {
-              "atype": "char *const []",
-              "name": "argv",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "This function has parameters, yeah"
-            ]
-          },
-          "name": "main",
-          "return_type": "int"
-        }
-      }
-    ]
-  },
-  "analysis::analysis::cpp::test_collect_sources::extract_entities::extract_entities_linux_cpp": {
-    "file": "tests/analysis.rs",
-    "module_path": "analysis::analysis::cpp::test_collect_sources::extract_entities",
+  "analysis_cpp::cpp::extract_entities_linux_cpp": {
+    "file": "tests/analysis_cpp.rs",
+    "module_path": "analysis_cpp::cpp",
     "test_function": "extract_entities_linux_cpp",
     "recorded_value": [
       {
@@ -205,7 +11,7 @@
             {
               "Entity": {
                 "description": {
-                  "description": [
+                  "lines": [
                     "#TESTCLASS(c1)",
                     "#SET_UP_CONTEXT:",
                     "this->class_inst = new c1();",
@@ -232,7 +38,7 @@
                         }
                       ],
                       "description": {
-                        "description": [
+                        "lines": [
                           "#TESTCASE(c1::AddTwoNumbers)",
                           "unsigned int no1 = 5;",
                           "#EQ[this->class_inst->TL_FCT(no1:no1,no2:10)=>15]",
@@ -266,7 +72,7 @@
             {
               "Entity": {
                 "description": {
-                  "description": [
+                  "lines": [
                     "#TESTCLASS(c2)",
                     "#SET_UP_CONTEXT:",
                     "this->class_inst = new c2();",
@@ -314,7 +120,7 @@
                         }
                       ],
                       "description": {
-                        "description": [
+                        "lines": [
                           "#TESTCASE(c2::AddThreeNumbers)",
                           "unsigned int no1 = 5;",
                           "unsigned int no2 = 10;",
@@ -375,9 +181,9 @@
       }
     ]
   },
-  "analysis::analysis::cpp::test_collect_sources::extract_entities::extract_entities_windows_cpp": {
-    "file": "tests\\analysis.rs",
-    "module_path": "analysis::analysis::cpp::test_collect_sources::extract_entities",
+  "analysis_cpp::cpp::extract_entities_windows_cpp": {
+    "file": "tests\\analysis_cpp.rs",
+    "module_path": "analysis_cpp::cpp",
     "test_function": "extract_entities_windows_cpp",
     "recorded_value": [
       {
@@ -387,7 +193,7 @@
             {
               "Entity": {
                 "description": {
-                  "description": [
+                  "lines": [
                     "#TESTCLASS(c1)",
                     "#SET_UP_CONTEXT:",
                     "this->class_inst = new c1();",
@@ -414,7 +220,7 @@
                         }
                       ],
                       "description": {
-                        "description": [
+                        "lines": [
                           "#TESTCASE(c1::AddTwoNumbers)",
                           "unsigned int no1 = 5;",
                           "#EQ[this->class_inst->TL_FCT(no1:no1,no2:10)=>15]",
@@ -448,7 +254,7 @@
             {
               "Entity": {
                 "description": {
-                  "description": [
+                  "lines": [
                     "#TESTCLASS(c2)",
                     "#SET_UP_CONTEXT:",
                     "this->class_inst = new c2();",
@@ -496,7 +302,7 @@
                         }
                       ],
                       "description": {
-                        "description": [
+                        "lines": [
                           "#TESTCASE(c2::AddThreeNumbers)",
                           "unsigned int no1 = 5;",
                           "unsigned int no2 = 10;",
@@ -553,200 +359,6 @@
             }
           ],
           "name": "ns2"
-        }
-      }
-    ]
-  },
-  "analysis::analysis::python::extract_entities::extract_entities_linux_python": {
-    "file": "tests/analysis.rs",
-    "module_path": "analysis::analysis::python::extract_entities",
-    "test_function": "extract_entities_linux_python",
-    "recorded_value": [
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": null,
-              "name": "no1",
-              "value": null
-            },
-            {
-              "atype": null,
-              "name": "no2",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "#TESTCASE(check_if_sum_works)",
-              "int test_no = 2;",
-              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));"
-            ]
-          },
-          "name": "test_int_no1",
-          "return_type": null
-        }
-      },
-      {
-        "Entity": {
-          "description": null,
-          "entities": [
-            {
-              "Function": {
-                "arguments": [
-                  {
-                    "atype": null,
-                    "name": "float1",
-                    "value": null
-                  },
-                  {
-                    "atype": null,
-                    "name": "float2",
-                    "value": null
-                  }
-                ],
-                "description": {
-                  "description": [
-                    "#TESTCASE(check_if_sum_works)",
-                    "#EQ[TL_FCT(float1:4.2,float2:3.2)=>7.4]"
-                  ]
-                },
-                "name": "test_float",
-                "return_type": null
-              }
-            },
-            {
-              "Function": {
-                "arguments": [],
-                "description": null,
-                "name": "test_nodoc",
-                "return_type": null
-              }
-            },
-            {
-              "Function": {
-                "arguments": [
-                  {
-                    "atype": null,
-                    "name": "str1",
-                    "value": null
-                  },
-                  {
-                    "atype": null,
-                    "name": "str2",
-                    "value": null
-                  }
-                ],
-                "description": {
-                  "description": [
-                    "#TESTCASE(check_if_str_concat_works)",
-                    "#EQ[TL_FCT(str1:'bla',str2:'blub')=>'blablub']"
-                  ]
-                },
-                "name": "test_str",
-                "return_type": null
-              }
-            }
-          ],
-          "name": "class1"
-        }
-      }
-    ]
-  },
-  "analysis::analysis::python::extract_entities::extract_entities_windows_python": {
-    "file": "tests\\analysis.rs",
-    "module_path": "analysis::analysis::python::extract_entities",
-    "test_function": "extract_entities_windows_python",
-    "recorded_value": [
-      {
-        "Function": {
-          "arguments": [
-            {
-              "atype": null,
-              "name": "no1",
-              "value": null
-            },
-            {
-              "atype": null,
-              "name": "no2",
-              "value": null
-            }
-          ],
-          "description": {
-            "description": [
-              "#TESTCASE(check_if_sum_works)",
-              "int test_no = 2;",
-              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
-              "EXPECT_EQ(11, test_int_no1(9, 2));"
-            ]
-          },
-          "name": "test_int_no1",
-          "return_type": null
-        }
-      },
-      {
-        "Entity": {
-          "description": null,
-          "entities": [
-            {
-              "Function": {
-                "arguments": [
-                  {
-                    "atype": null,
-                    "name": "float1",
-                    "value": null
-                  },
-                  {
-                    "atype": null,
-                    "name": "float2",
-                    "value": null
-                  }
-                ],
-                "description": {
-                  "description": [
-                    "#TESTCASE(check_if_sum_works)",
-                    "#EQ[TL_FCT(float1:4.2,float2:3.2)=>7.4]"
-                  ]
-                },
-                "name": "test_float",
-                "return_type": null
-              }
-            },
-            {
-              "Function": {
-                "arguments": [],
-                "description": null,
-                "name": "test_nodoc",
-                "return_type": null
-              }
-            },
-            {
-              "Function": {
-                "arguments": [
-                  {
-                    "atype": null,
-                    "name": "str1",
-                    "value": null
-                  },
-                  {
-                    "atype": null,
-                    "name": "str2",
-                    "value": null
-                  }
-                ],
-                "description": {
-                  "description": [
-                    "#TESTCASE(check_if_str_concat_works)",
-                    "#EQ[TL_FCT(str1:'bla',str2:'blub')=>'blablub']"
-                  ]
-                },
-                "name": "test_str",
-                "return_type": null
-              }
-            }
-          ],
-          "name": "class1"
         }
       }
     ]

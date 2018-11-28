@@ -187,7 +187,7 @@ where
                     if let Some(description) = &function.description {
                         println!(
                             "Description found for function {}: {:?}",
-                            function.name, description.description
+                            function.name, description.lines
                         );
                     }
                 }

@@ -1,0 +1,196 @@
+{
+  "analysis_c::c::extract_entities_linux_c": {
+    "file": "tests/analysis_c.rs",
+    "module_path": "analysis_c::c",
+    "test_function": "extract_entities_linux_c",
+    "recorded_value": [
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "int",
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": "int",
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "#TESTCASE(Source1::CheckIfSumWorks)",
+              "int test_no = 2;",
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "#EQ[TL_FCT(no1:5,no2:2)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
+            ]
+          },
+          "name": "test_int_no1",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "const int *const",
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": "const int *const",
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "#TESTCASE(Source1::TestPtr)",
+              "int test_no = 2;",
+              "int test_no2 = 5;",
+              "#EQ[TL_FCT(no1:&test_no,no2:&test_no2)=>7]"
+            ]
+          },
+          "name": "test_ptr",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [],
+          "description": {
+            "lines": [
+              "#TESTCASE(Source1::EmptyFct)",
+              "#EQ[TL_FCT()=>7]",
+              "#NE[TL_FCT()=>4]"
+            ]
+          },
+          "name": "test_empty_fct",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "const int",
+              "name": "argc",
+              "value": null
+            },
+            {
+              "atype": "char *const []",
+              "name": "argv",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "This function has parameters, yeah"
+            ]
+          },
+          "name": "main",
+          "return_type": "int"
+        }
+      }
+    ]
+  },
+  "analysis_c::c::extract_entities_windows_c": {
+    "file": "tests\\analysis_c.rs",
+    "module_path": "analysis_c::c",
+    "test_function": "extract_entities_windows_c",
+    "recorded_value": [
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "int",
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": "int",
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "#TESTCASE(Source1::CheckIfSumWorks)",
+              "int test_no = 2;",
+              "#EQ[TL_FCT(no1:test_no,no2:5)=>7]",
+              "#EQ[TL_FCT(no1:5,no2:2)=>7]",
+              "EXPECT_EQ(11, test_int_no1(9, 2));"
+            ]
+          },
+          "name": "test_int_no1",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "const int *const",
+              "name": "no1",
+              "value": null
+            },
+            {
+              "atype": "const int *const",
+              "name": "no2",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "#TESTCASE(Source1::TestPtr)",
+              "int test_no = 2;",
+              "int test_no2 = 5;",
+              "#EQ[TL_FCT(no1:&test_no,no2:&test_no2)=>7]"
+            ]
+          },
+          "name": "test_ptr",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [],
+          "description": {
+            "lines": [
+              "#TESTCASE(Source1::EmptyFct)",
+              "#EQ[TL_FCT()=>7]",
+              "#NE[TL_FCT()=>4]"
+            ]
+          },
+          "name": "test_empty_fct",
+          "return_type": "int"
+        }
+      },
+      {
+        "Function": {
+          "arguments": [
+            {
+              "atype": "const int",
+              "name": "argc",
+              "value": null
+            },
+            {
+              "atype": "char *const []",
+              "name": "argv",
+              "value": null
+            }
+          ],
+          "description": {
+            "lines": [
+              "This function has parameters, yeah"
+            ]
+          },
+          "name": "main",
+          "return_type": "int"
+        }
+      }
+    ]
+  }
+}

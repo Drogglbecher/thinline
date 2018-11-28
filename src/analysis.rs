@@ -12,7 +12,7 @@ use walkdir::WalkDir;
 /// Represents a parsed entity description.
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Description {
-    pub description: Vec<String>,
+    pub lines: Vec<String>,
 }
 
 impl Description {
@@ -25,12 +25,10 @@ impl Description {
     ///
     /// let description = Description::new();
     ///
-    /// assert!(description.description.is_empty());
+    /// assert!(description.lines.is_empty());
     /// ```
     pub fn new() -> Self {
-        Self {
-            description: Vec::new(),
-        }
+        Self { lines: Vec::new() }
     }
 
     /// Sets and formats the description.
@@ -43,10 +41,10 @@ impl Description {
     /// let mut description = Description::new();
     /// description.set("EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]");
     ///
-    /// assert_eq!(description.description.len(), 1);
+    /// assert_eq!(description.lines.len(), 1);
     /// ```
     pub fn set(&mut self, description: &str) {
-        self.description = description
+        self.lines = description
             .split('\n')
             .map(|desc| {
                 String::from(
