@@ -3,28 +3,28 @@ extern crate yaml_rust;
 #[cfg(test)]
 mod value_parser {
 
-    static CLASS_STUB: &str = "class //#TEST_CLASS#/Test : public ::testing::Test {
+    static CLASS_STUB: &str = "class #TEST_CLASSTest : public ::testing::Test {
 
     public:
-        //#TEST_CLASS#/Test() {//#CONSTRUCTOR_CONTEXT#/
+        #TEST_CLASSTest() {#CONSTRUCTOR_CONTEXT
         }
 
-        virtual ~//#TEST_CLASS#/Test() {//#DESTRUCTOR_CONTEXT#/
+        virtual ~#TEST_CLASSTest() {#DESTRUCTOR_CONTEXT
         }
 
     protected:
-        virtual void SetUp() {//#SET_UP_CONTEXT#/
+        virtual void SetUp() {#SET_UP_CONTEXT
         }
 
-        virtual void TearDown() {//#TEAR_DOWN_CONTEXT#/
+        virtual void TearDown() {#TEAR_DOWN_CONTEXT
         }
 
-//#CLASS_CONTEXT#/
+#CLASS_CONTEXT
 };
 ";
 
-    static FUNCTION_STUB: &str = "TEST_F(//#TEST_CLASS#/Test, //#TEST_NAME#/) {
-    //#TEST_CONTEXT#/
+    static FUNCTION_STUB: &str = "TEST_F(#TEST_CLASSTest, #TEST_NAME) {
+    #TEST_CONTEXT
 }
 ";
 
