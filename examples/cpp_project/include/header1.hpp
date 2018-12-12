@@ -3,7 +3,7 @@
 
 namespace ns1 {
     /**
-     * # TESTCLASS(c1)
+     * # TEST_CLASS(c1)
      *     # SET_UP
      *         this->class_inst = new c1();
      *
@@ -17,7 +17,7 @@ namespace ns1 {
     class c1 {
         public:
             /**
-             * # TESTCASE(c1::AddTwoNumbers)
+             * # TEST_CASE(c1::AddTwoNumbers)
              *     unsigned int no1 = 5;
              *     # EQ[this->class_inst->TL_FCT(no1: no1, no2: 10) => 15]
              *     # LT[this->class_inst->TL_FCT(no1: no1, no2: 10) => 30]
@@ -30,7 +30,7 @@ namespace ns1 {
     };
 
     /**
-     * # TESTCLASS(c2)
+     * # TEST_CLASS(c2)
      *     # SET_UP
      *         this->class_inst = new c2();
      *
@@ -47,7 +47,7 @@ namespace ns1 {
             ~c2() = default;
 
             /**
-             * # TL_TESTCASE(c2::AddThreeNumbers)
+             * # TEST_CASE(c2::AddThreeNumbers)
              *     unsigned int no1 = 5;
              *     unsigned int no2 = 10;
              *     # EQ[this->class_inst->TL_FCT(no1: no1, no2: no2, no3: 5) => 20]

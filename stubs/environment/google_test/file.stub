@@ -1,12 +1,12 @@
 #include "__tlg__.h"
 #include <gtest/gtest.h>
 
-//#TEST_NAMESPACES#/
-//#PRECLASS_CONTEXT#/
+#TEST_NAMESPACES
+#PRECLASS_CONTEXT
 
-//#TEST_CLASSES#/
+#TEST_CLASSES
 
-//#TEST_CASES#/
+#TEST_CASES
 
 int main(int argc, char ** argv) {
     ::testing::InitGoogleTest(&argc, argv);

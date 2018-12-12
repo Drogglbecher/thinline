@@ -3,8 +3,8 @@ google_test:
   file: google_test/file.stub
   class: google_test/class.stub
   function: |
-    TEST_F(//#TEST_CLASS#/Test, //#TEST_NAME#/) {
-        //#TEST_CONTEXT#/
+    TEST_F(#TEST_CLASSTest, #TEST_NAME) {
+        #TEST_CONTEXT
     }
   output_format: cpp
   test_functions:

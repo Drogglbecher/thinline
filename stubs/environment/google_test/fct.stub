@@ -1,3 +1,3 @@
-TEST_F(//#TEST_CLASS#/Test, //#TEST_NAME#/) {
-    //#TEST_CONTEXT#/
+TEST_F(#TEST_CLASSTest, #TEST_NAME) {
+    #TEST_CONTEXT
 }

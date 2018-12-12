@@ -2,7 +2,7 @@ use analysis::ProjectFile;
 use entity::{Entity, EntityType};
 use failure::Fallible;
 use language_type::LanguageType;
-use std::{marker::PhantomData, path::PathBuf};
+use std::{collections::HashMap, marker::PhantomData, path::PathBuf};
 use stubs::Stubs;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -12,6 +12,10 @@ static STUB_ID_TEAR_DOWN_CONTEXT: &str = "#TEAR_DOWN";
 static STUB_ID_CONSTRUCTOR_CONTEXT: &str = "#CONSTRUCTOR";
 static STUB_ID_DESTRUCTOR_CONTEXT: &str = "#DESTRUCTOR";
 static STUB_ID_CLASS_CONTEXT: &str = "#CLASS_CONTEXT";
+
+static STUB_ID_TEST_CLASS: &str = "#TEST_CLASS";
+static STUB_ID_TEST_NAME: &str = "#TEST_NAME";
+static STUB_ID_TEST_CONTEXT: &str = "#TEST_CONTEXT";
 
 type StubContext = String;
 
@@ -180,19 +184,44 @@ where
         self.stubs.parse(yml, test_env, base_path)
     }
 
-    fn process_entities(parent: &Entity, children: &[EntityType]) -> Fallible<()> {
+    fn process_entities(&self, parent: &Entity, children: &[EntityType]) -> Fallible<()> {
         for child in children {
             match child {
                 EntityType::Function(function) => {
                     if let Some(description) = &function.description {
-                        println!(
-                            "Description found for function {}: {:?}",
-                            function.name, description.lines
+                        trace!(
+                            "Description found for function {} with parent {}: {:?}",
+                            function.name,
+                            parent.name,
+                            description.lines
                         );
+                        if let Some(function_stub) = &self.stubs().function {
+                            let function_stub_format_hashes: HashMap<
+                                &str,
+                                &str,
+                            > = [
+                                (STUB_ID_TEST_CLASS, parent.name.as_str()),
+                                (STUB_ID_TEST_NAME, function.name.as_str()),
+                            ].iter()
+                                .cloned()
+                                .collect();
+                            debug!(
+                                "formatted stub: {:?}",
+                                function_stub.format(&function_stub_format_hashes)?
+                            );
+                        }
                     }
                 }
                 EntityType::Entity(entity) => {
-                    Self::process_entities(entity, &entity.entities)?;
+                    if let Some(description) = &entity.description {
+                        trace!(
+                            "Description found for entity {} with parent {}: {:?}",
+                            entity.name,
+                            parent.name,
+                            description.lines
+                        );
+                    }
+                    self.process_entities(entity, &entity.entities)?;
                 }
                 _ => {}
             }
@@ -203,7 +232,7 @@ where
 
     pub fn process_testfile(&self, project_file: &ProjectFile<T>) -> Fallible<()> {
         for entity in project_file.entities().iter() {
-            Self::process_entities(&entity, &entity.entities)?;
+            self.process_entities(&entity, &entity.entities)?;
         }
 
         Ok(())
