@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Analysis","The analyzer which fulfills parsing and entity extraction tasks."],["Argument","Represents a parsed function argument."],["Description","Represents a parsed entity description."],["Enum","Represents a parsed enum argument."],["Function","Represents a parsed function type."],["ProjectFile","Represents a parsed project file."]]});

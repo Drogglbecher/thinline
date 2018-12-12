@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["StubContextType",""]],"struct":[["Synthesis",""],["TestClass","The representation of a `TestClass` containing different contexts for con-/destructor, setUp, tearDown methods and so on and a vector of test functions."],["TestFile",""],["TestFunction",""]],"trait":[["StubContextConversion",""]]});

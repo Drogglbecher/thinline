@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EntityType","The different types an `Entitiy` can have."]],"struct":[["Entity","The representation of an `Entity` as a possbile generic node on the abstract syntax tree. An `Entity` has to be kind of an `EntityType`."]],"trait":[["EntityConversion",""]]});

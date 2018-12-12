@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BuildScript","The parsed build actions depending on the used OS."],["ProjectParameters","The parsed project parameters."]]});
